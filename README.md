@@ -2,7 +2,7 @@
 
 *A Rigorous Framework for Designing, Evaluating, and Scaling Language Model Interactions*
 
-**Author:** Nik Bear Brown
+**Author:** Humanitarians AI
 
 **Folder:** `books/prompt-engineering/`
 
