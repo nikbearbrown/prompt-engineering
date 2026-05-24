@@ -1,48 +1,22 @@
-<!--
-    99-back-matter.md
-    BACK MATTER — everything that appears after the final chapter.
-    Sections in order:
-      1. Acknowledgments
-      2. About the Author
-      3. Notes (by chapter, if using endnotes rather than footnotes)
-      4. References / Bibliography
-      5. A Note on the Index
-      6. Glossary
-      7. Errata
-    Back matter continues the arabic page numbering from where
-    the final chapter ended. No page restart.
--->
-
 ---
 
 ## Acknowledgments
 
-<!-- Keep it short. Name the people who materially helped the book exist:
-     readers of drafts, researchers, editors, collaborators.
-     One paragraph is enough unless the debt is substantial.
-     Avoid laundry lists. -->
-
-[ACKNOWLEDGMENTS PLACEHOLDER]
+This book exists because Humanitarians AI contributors, fellows, students, editors, and readers keep testing the same question in public: what should humans learn to do when machines can do more of the visible work? Thanks to the people who read drafts, challenged claims, built examples, checked sources, and helped turn a curriculum idea into a usable book.
 
 ---
 
 ## About the Author
 
-**Nik Bear Brown** teaches at Northeastern University, where his **ENGR 0201: AI Fluency Certificate** has trained 700+ learners and anchored Northeastern's Anthropic Enterprise partnership. He is the founder of [Humanitarians AI](https://www.humanitarians.ai/) and the architect of the **Brutalist** AI-assisted production system.
+Nik Bear Brown is an Associate Teaching Professor in Engineering at Northeastern University and founder of Humanitarians AI. His work spans artificial intelligence, machine learning, computational biology, data visualization, creative production systems, and education. Across those projects, the central question is what humans should become better at now that machines are becoming better at so much.
 
-He is the author of *Botspeak* (the AI-fluency curriculum) and *Computational Skepticism for AI* (the practitioner method book), both of which inform the prompt-engineering practice this volume teaches. His PhD in Computer Science is from UCLA.
+He builds AI infrastructure for education, tools that document human judgment, and frameworks for what remains **irreducibly human** in an age of increasingly capable machines. His current projects include Humanitarians AI, Computational Skepticism for AI, Medhavy, AImagineering, Brutalist, and the Irreducibly Human curriculum.
 
-He works in Boston. [nikbearbrown.com](https://www.nikbearbrown.com) · [irreducibly.xyz](https://irreducibly.xyz) · [skepticism.ai](https://www.skepticism.ai)
+More at [nikbearbrown.com](https://www.nikbearbrown.com), [irreducibly.xyz](https://irreducibly.xyz), [skepticism.ai](https://www.skepticism.ai), and [humanitarians.ai](https://www.humanitarians.ai/).
 
 ---
 
 ## Notes
-
-<!-- Use this section for endnotes if you prefer them over footnotes.
-     Group by chapter. Format:
-     ### Chapter 1
-     1. [Citation or explanatory note]
-     If using footnotes in-line (pandoc [^1] syntax), delete this section. -->
 
 [NOTES PLACEHOLDER]
 
@@ -50,37 +24,24 @@ He works in Boston. [nikbearbrown.com](https://www.nikbearbrown.com) · [irreduc
 
 ## References
 
-<!-- Full bibliography. Alphabetical by author last name, or grouped by chapter.
-     Use a consistent citation style throughout (Chicago, APA, or a hybrid). -->
-
 [REFERENCES PLACEHOLDER]
 
 ---
 
-## A Note on the Index
+## No Index
 
-This book is a Kindle / online release in the **Medhavi** intelligent textbook system at [medhavy.com](https://www.medhavy.com/). A print-style index is omitted: the search functionality of digital readers supersedes the page-reference index, and the book is intended to be read alongside the AI tools the platform provides.
+This book is designed primarily for Kindle, online reading, and integration with Medhavy, the AI-powered intelligent textbook system maintained at [medhavy.com](https://www.medhavy.com/). Kindle and web editions are searchable, linkable, and updateable, so a traditional print index is omitted. Future print editions may add a dedicated index after the text is final.
 
-**Medhavi** — मेधावी, from Sanskrit, meaning *intelligent* or *intellectually brilliant* — is the AI-powered intelligent textbook system that hosts this and related titles. Come learn something with us.
+Medhavy, also styled Medhavi, comes from the Sanskrit मेधावी, meaning intelligent or intellectually brilliant. The platform is built around the idea that a textbook can become an adaptive learning environment while still preserving the human work of struggle, revision, explanation, and judgment.
 
 ---
 
 ## Glossary
 
-<!-- Short definitions of key terms used in the book. -->
-
-[GLOSSARY PLACEHOLDER]
+[SHORT DEFINITIONS OF KEY TERMS PLACEHOLDER]
 
 ---
 
-## Errata
+# Errata
 
-<!-- A short list of corrections to the printed text, maintained as readers
-     find errors. Format: page number / section reference, the error, the
-     correction. Updated between editions. -->
-
-[ERRATA PLACEHOLDER]
-
----
-
-*Fun fact: the author's resume includes circus, sumo wrestling, and photojournalism, in roughly that order.*
+Errata, corrections, and suspected mistakes may be submitted through the publisher's website at [humanitarians.ai](https://www.humanitarians.ai/).
