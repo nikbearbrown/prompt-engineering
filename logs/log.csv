@@ -1,0 +1,17 @@
+date,book,chapter_slug,word_count,verify_flags,parse,has_tldr,has_objectives,has_wwcmm,has_stillpuzzling,has_refs
+2026-05-29,prompt-engineering,00-foundations-sampling-and-logits,3966,1,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,01-the-stochastic-machine,4709,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,02-hallucination-and-the-plausibility-truth-gap,5221,1,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,03-the-limits-of-syntax,5473,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,04-sycophancy-and-computational-skepticism,4761,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,05-the-architect-mindset,4532,1,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,06-persona-and-audience-patterns,4295,2,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,07-structuring-and-governing-output,7014,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,08-reasoning-and-range-patterns,4929,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,09-prompt-brittleness-and-evaluation,3745,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,10-long-context-prompting,4605,7,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,11-agentic-and-multi-turn-systems,4515,3,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,12-automated-prompt-optimization,4545,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,13-beyond-prompting-the-fine-tuning-stack,3885,0,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,14-prompt-engineering-for-cli-coding-agents,6128,7,OK,y,y,y,y,y
+2026-05-29,prompt-engineering,15-production-ethics-and-whats-next,5165,1,OK,y,y,y,y,y
