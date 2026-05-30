@@ -1,0 +1,39 @@
+<!-- The Optimizer Grid: Search Strategy by Target | Book: Prompt Engineering | Chapter: 12-automated-prompt-optimization | Figure: 03 | Generated: 2026-05-29 | Source: pantry/12-automated-prompt-optimization-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">The Optimizer Grid: Search Strategy by Target</title><desc id="fig-desc-03">A grid maps five optimizer families by search strategy (rows: propose-and-score, trajectory feedback, textual gradient, evolutionary, Bayesian) against what they optimize (columns: instructions, demonstrations, both). Four families cluster in the instructions column; only the Bayesian method occupies the both column. The demonstrations-only column is empty.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="12-automated-prompt-optimization" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Optimizer Grid: Search Strategy by Target</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">They are not all the same: how they search (rows) against what they optimize (columns)</text>
+
+<!-- column header -->
+<text x="280" y="92" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Instructions</text>
+<text x="430" y="92" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Demonstrations</text>
+<text x="580" y="92" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Both</text>
+
+<!-- grid: plot fill -->
+<rect x="205" y="100" width="450" height="280" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<!-- vertical column dividers -->
+<line x1="355" y1="100" x2="355" y2="380" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="505" y1="100" x2="505" y2="380" stroke="#D4D4D4" stroke-width="1"/>
+<!-- horizontal row dividers (5 bands) -->
+<line x1="205" y1="156" x2="655" y2="156" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="205" y1="212" x2="655" y2="212" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="205" y1="268" x2="655" y2="268" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="205" y1="324" x2="655" y2="324" stroke="#D4D4D4" stroke-width="1"/>
+
+<!-- row labels -->
+<text x="195" y="132" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Propose-and-score</text>
+<text x="195" y="188" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Trajectory feedback</text>
+<text x="195" y="244" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Textual gradient</text>
+<text x="195" y="300" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Evolutionary</text>
+<text x="195" y="356" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Bayesian</text>
+
+<!-- markers: four in instructions column (rows 1-4), secondary -->
+<rect x="266" y="114" width="28" height="28" fill="#545454" stroke="#545454" stroke-width="1"/>
+<rect x="266" y="170" width="28" height="28" fill="#545454" stroke="#545454" stroke-width="1"/>
+<rect x="266" y="226" width="28" height="28" fill="#545454" stroke="#545454" stroke-width="1"/>
+<rect x="266" y="282" width="28" height="28" fill="#545454" stroke="#545454" stroke-width="1"/>
+<!-- single marker in both column, bottom row, emphasis -->
+<rect x="566" y="338" width="28" height="28" fill="#C8102E" stroke="#C8102E" stroke-width="1"/>
+
+<text x="60" y="405" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The field clusters on instructions; the demonstrations-only column is empty; the Bayesian method alone searches the joint instruction-plus-demonstration space.</text>
+</svg>

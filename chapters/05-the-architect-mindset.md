@@ -1,6 +1,6 @@
 > **Voice status:** `voice-unanchored`. Both root `style/` and `books/prompt-engineering/style/` empty as of this draft.
 >
-> **Provenance note:** Drafted from the TIKTOC Ch. 5 entry (absorbing the PAST/PLFR and Constraint-Engineering material) plus standard prompt-engineering knowledge. Pantry source was thin; framework-specific empirical claims are flagged `[verify]`. Running example: Wordsville.
+> **Provenance note:** Drafted from the TIKTOC Ch. 5 entry (absorbing the PAST/PLFR and Constraint-Engineering material) plus standard prompt-engineering knowledge. Pantry source was thin; framework-specific empirical claims (PAST/PLFR acronyms, entropy-reduction) are practitioner mnemonics or mechanism-plus-judgment, noted inline as not independently verified. Running example: Wordsville.
 
 ---
 
@@ -89,7 +89,7 @@ PAST is a scaffold for *the thing you hand the model.* It forces the root and pa
 
 - **Task** — the precise deliverable and its acceptance condition. *What exactly must come back, and how will you know it's right?* *"Return the four fields. The lesson is acceptable only if a 6-year-old could read the definition aloud and a parent would find the illustration brief unobjectionable."* Task is the slot most people skip and the one that most reduces the gap between "the model did something" and "the model did the thing."
 
-Worth noticing: PAST is not magic words. It is a checklist that converts an under-specified request into a specified one by *refusing to let you leave a slot empty.* The Tuesday prompt had an Action and a thin Task and nothing else. Filling Problem and Steps is what closes the ambiguity the sampler was exploiting. `[verify: PAST as a named acronym appears in practitioner prompt-engineering material; treat the slot semantics here as the operative content rather than a specific citation]`
+Worth noticing: PAST is not magic words. It is a checklist that converts an under-specified request into a specified one by *refusing to let you leave a slot empty.* The Tuesday prompt had an Action and a thin Task and nothing else. Filling Problem and Steps is what closes the ambiguity the sampler was exploiting. (PAST is a practitioner mnemonic with no single authoritative primary source; the slot semantics — not the acronym — are the operative content.)
 
 ---
 
@@ -105,7 +105,7 @@ PAST structures the *input*. **PLFR** structures the *pipeline* — the path fro
 
 - **Result** — the *validated* output, and the explicit recognition that *generation and validation are different steps.* This is the PLFR move that PAST does not make: PLFR insists that something checks the Result against the Format contract and the Task's acceptance condition *before* it ships. For Wordsville: a schema validator confirms the four fields exist and the definition is under 15 words; a safety classifier (a *separate* call — Ch. 4's context-isolation logic, Ch. 7's Semantic Filter) screens the illustration brief. The `"shoot"` failure is fixed *here*, at the Result layer, by an external check the generating model cannot talk its way past — not by a better-worded prompt.
 
-The relationship between the scaffolds: **PAST builds the Prompt slot of PLFR.** PAST is the zoom-in on input authoring; PLFR is the zoom-out to the whole input→output→validation pipeline. A small task may need only PAST. Any task whose wrong outputs are costly needs the Result discipline that PLFR makes explicit. `[verify: PLFR acronym provenance; the pipeline decomposition is the load-bearing content]`
+The relationship between the scaffolds: **PAST builds the Prompt slot of PLFR.** PAST is the zoom-in on input authoring; PLFR is the zoom-out to the whole input→output→validation pipeline. A small task may need only PAST. Any task whose wrong outputs are costly needs the Result discipline that PLFR makes explicit. (Like PAST, PLFR is a practitioner mnemonic without a single authoritative source; the pipeline decomposition is the load-bearing content.)
 
 **Misconception, named.** "If the prompt is good enough, I don't need a validation step." This is the Ch. 4 error in a new costume. The model that wrote the output is the worst judge of the output — same distribution, same blind spots. PLFR's Result layer exists precisely because no prompt makes the generator a reliable self-validator. Validation is a *different* layer, run by something else.
 
@@ -133,7 +133,7 @@ This is why the architect treats *what NOT to do* as a design surface, not an af
 
 Each line removes a nameable failure region. Together they collapse the admissible output set to something a 6-year-old's parent would approve — *and* they make the output more consistent across the thousands of words Wordsville will process, because a lower-entropy distribution produces less sample-to-sample variation. Reliability and safety, from the same mechanism.
 
-**One honest limit.** Constraints are conditioning, not hard guarantees; the model can violate a stated negative constraint, exactly as it can ignore any other instruction (Ch. 14 discusses why instruction-following is influential, not absolute). The entropy argument says negative constraints *strongly* reshape the distribution. It does not say they bound it to zero. That residual is why §5.4's Result layer exists — the negative constraints make violations *rare*, the external validator catches the rest. The two layers are complementary: constraints lower the rate; validation catches the remainder. [verify: a controlled measurement of output-entropy reduction under negative vs. positive constraints would make this claim empirical rather than mechanism-plus-judgment; I am not aware of a clean published number]
+**One honest limit.** Constraints are conditioning, not hard guarantees; the model can violate a stated negative constraint, exactly as it can ignore any other instruction (Ch. 14 discusses why instruction-following is influential, not absolute). The entropy argument says negative constraints *strongly* reshape the distribution. It does not say they bound it to zero. That residual is why §5.4's Result layer exists — the negative constraints make violations *rare*, the external validator catches the rest. The two layers are complementary: constraints lower the rate; validation catches the remainder. (The entropy-reduction claim is mechanism-plus-judgment, not an empirical measurement; no clean published number for output-entropy reduction under negative vs. positive constraints is known to the author.)
 
 ---
 
@@ -229,7 +229,7 @@ A controlled study showing that a single, carefully phrased *unstructured* promp
 
 - White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, H., Elnashar, A., Spencer-Smith, J., & Schmidt, D. C. (2023). [*A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT*](https://arxiv.org/abs/2302.11382). arXiv:2302.11382. *(The pattern-catalog tradition the layer decomposition draws on; Template and Output-Customization patterns inform the Format layer.)*
 - Shannon, C. E. (1948). [*A Mathematical Theory of Communication*](https://ieeexplore.ieee.org/document/6773024). *Bell System Technical Journal*, 27(3), 379–423. *(Source of the entropy definition used in §5.5.)*
-- PAST / PLFR scaffolds — practitioner prompt-engineering frameworks. `[verify: locate authoritative primary sources for the PAST and PLFR acronyms; the slot semantics are treated as the operative content in this draft pending citation]`
+- PAST / PLFR scaffolds — practitioner prompt-engineering mnemonics; no single authoritative primary source. The slot semantics, not the acronyms, are the operative content.
 
 ---
 

@@ -1,0 +1,78 @@
+<!-- Multi-turn derailment and summarize-and-restart | Book: Prompt Engineering | Chapter: 11-agentic-and-multi-turn-systems | Figure: 05 | Generated: 2026-05-29 | Source: pantry/11-agentic-and-multi-turn-systems-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-05 fig-desc-05">
+<title id="fig-title-05">Repair-in-place propagates contamination; summarize-and-restart drops it</title>
+<desc id="fig-desc-05">Two horizontal turn-sequence tracks. The top track repairs in place: a wrong third turn contaminates every later turn through to a failure terminal. The bottom track summarizes and restarts: a compression node collapses prior turns into a clean summary, discards the contaminated turns, and proceeds through fresh turns to a success terminal.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="11-agentic-and-multi-turn-systems" figure-number="05" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="arrowk05" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/></marker>
+<marker id="arrowg05" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#545454"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="40" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">A wrong turn does not recover; summarize-and-restart does</text>
+<text x="40" y="62" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Two strategies for the same derailed conversation</text>
+
+<!-- TOP track: repair-in-place, y=130 -->
+<text x="40" y="115" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">repair in place</text>
+<!-- turns: x = 100,180,260,340,420,500 ; clean first two (secondary), wrong at 3rd then contaminated red -->
+<g>
+<rect x="100" y="120" width="44" height="30" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<rect x="180" y="120" width="44" height="30" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<rect x="260" y="120" width="44" height="30" fill="#C8102E"/>
+<rect x="340" y="120" width="44" height="30" fill="#C8102E"/>
+<rect x="420" y="120" width="44" height="30" fill="#C8102E"/>
+</g>
+<!-- wrong-turn kink marker on 3rd -->
+<line x1="282" y1="150" x2="282" y2="166" stroke="#C8102E" stroke-width="2"/>
+<text x="282" y="180" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#C8102E" text-anchor="middle">wrong turn</text>
+<!-- arrows -->
+<g stroke="#2a1a0e" stroke-width="1.5" fill="none">
+<line x1="144" y1="135" x2="176" y2="135" marker-end="url(#arrowk05)"/>
+<line x1="224" y1="135" x2="256" y2="135" marker-end="url(#arrowk05)"/>
+<line x1="304" y1="135" x2="336" y2="135" marker-end="url(#arrowk05)"/>
+<line x1="384" y1="135" x2="416" y2="135" marker-end="url(#arrowk05)"/>
+<line x1="464" y1="135" x2="500" y2="135" marker-end="url(#arrowk05)"/>
+</g>
+<!-- failure terminal -->
+<rect x="502" y="120" width="70" height="30" fill="#C8102E"/>
+<text x="537" y="140" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#FFFFFF" text-anchor="middle">failure</text>
+
+<!-- BOTTOM track: summarize-and-restart, y=270 -->
+<text x="40" y="255" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">summarize and restart</text>
+<!-- first two clean turns + wrong turn (contaminated) -->
+<g>
+<rect x="100" y="260" width="44" height="30" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<rect x="180" y="260" width="44" height="30" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<rect x="260" y="260" width="44" height="30" fill="#C8102E"/>
+</g>
+<g stroke="#2a1a0e" stroke-width="1.5" fill="none">
+<line x1="144" y1="275" x2="176" y2="275" marker-end="url(#arrowk05)"/>
+<line x1="224" y1="275" x2="256" y2="275" marker-end="url(#arrowk05)"/>
+<line x1="304" y1="275" x2="332" y2="275" marker-end="url(#arrowk05)"/>
+</g>
+<!-- compression node (funnel) -->
+<path d="M336 258 L372 258 L360 280 L360 292 L348 292 L348 280 Z" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="354" y="248" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454" text-anchor="middle">summarize</text>
+<!-- discard stub downward (hairline grey) -->
+<line x1="354" y1="292" x2="354" y2="330" stroke="#D4D4D4" stroke-width="1.5" marker-end="url(#arrowg05)"/>
+<rect x="338" y="332" width="32" height="20" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<text x="354" y="346" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="9" fill="#545454" text-anchor="middle">drop</text>
+<!-- clean summary block (green->use ink+secondary; emphasis is red used for failure, so recovery uses ink/secondary). Use secondary for clean recovery -->
+<line x1="372" y1="268" x2="404" y2="268" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrowk05)"/>
+<rect x="406" y="253" width="56" height="30" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="434" y="272" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#2a1a0e" text-anchor="middle">summary</text>
+<!-- fresh clean turns -->
+<g>
+<rect x="490" y="253" width="40" height="30" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<rect x="556" y="253" width="40" height="30" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+</g>
+<g stroke="#2a1a0e" stroke-width="1.5" fill="none">
+<line x1="462" y1="268" x2="486" y2="268" marker-end="url(#arrowk05)"/>
+<line x1="530" y1="268" x2="552" y2="268" marker-end="url(#arrowk05)"/>
+<line x1="596" y1="268" x2="616" y2="268" marker-end="url(#arrowk05)"/>
+</g>
+<!-- success terminal -->
+<rect x="618" y="253" width="60" height="30" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="2"/>
+<text x="648" y="272" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e" text-anchor="middle">success</text>
+
+<text x="40" y="392" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Reasoning from a poisoned thread does not recover; compressing past the wrong turn and restarting drops the contamination.</text>
+</svg>

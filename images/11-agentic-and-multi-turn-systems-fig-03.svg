@@ -1,0 +1,54 @@
+<!-- More tools, more errors | Book: Prompt Engineering | Chapter: 11-agentic-and-multi-turn-systems | Figure: 03 | Generated: 2026-05-29 | Source: pantry/11-agentic-and-multi-turn-systems-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03">
+<title id="fig-title-03">Error rate rises with tool-catalog size; a router surfaces only the relevant few</title>
+<desc id="fig-desc-03">A bar chart of error rate from zero with four bars rising left to right as the tool catalog grows from small to large. The smallest catalog is short, the largest is tall. To the right, a small router inset shows a router node selecting just two of several tool stubs as the mitigation.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="11-agentic-and-multi-turn-systems" figure-number="03" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="arrowrt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">More tools, more errors</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Error rate by tool-catalog size, with a router as the fix</text>
+
+<!-- Plot -->
+<rect x="90" y="90" width="370" height="250" fill="#F5F5F5"/>
+<line x1="90" y1="340" x2="460" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<line x1="90" y1="90" x2="90" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<g font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">
+<line x1="86" y1="340" x2="90" y2="340" stroke="#2a1a0e" stroke-width="1.5"/><text x="80" y="344" text-anchor="end">0</text>
+<line x1="86" y1="277" x2="90" y2="277" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="281" text-anchor="end">25</text>
+<line x1="86" y1="215" x2="90" y2="215" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="219" text-anchor="end">50</text>
+<line x1="86" y1="152" x2="90" y2="152" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="156" text-anchor="end">75</text>
+<line x1="86" y1="90" x2="90" y2="90" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="94" text-anchor="end">100</text>
+</g>
+
+<!-- Four ascending bars. scale 2.5px/pt. heights: 8%->20, 30%->75, 55%->137, 80%->200 -->
+<rect x="120" y="320" width="60" height="20" fill="#545454"/>
+<rect x="200" y="265" width="60" height="75" fill="#545454"/>
+<rect x="280" y="203" width="60" height="137" fill="#545454"/>
+<rect x="360" y="140" width="60" height="200" fill="#C8102E"/>
+
+<text x="150" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">small</text>
+<text x="390" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">large</text>
+<text x="275" y="382" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle">Tool-catalog size &#8594;</text>
+<text x="42" y="215" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle" transform="rotate(-90 42 215)">Error rate (%)</text>
+
+<!-- Router inset (right) -->
+<text x="585" y="110" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle">the fix: a router</text>
+<rect x="540" y="180" width="90" height="44" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="585" y="206" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle">router</text>
+<!-- tool stubs -->
+<g fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1.5">
+<rect x="540" y="270" width="26" height="22"/>
+<rect x="572" y="270" width="26" height="22"/>
+<rect x="604" y="270" width="26" height="22"/>
+<rect x="540" y="302" width="26" height="22"/>
+<rect x="604" y="302" width="26" height="22"/>
+</g>
+<!-- selecting two (red emphasis) -->
+<rect x="572" y="270" width="26" height="22" fill="none" stroke="#C8102E" stroke-width="2"/>
+<rect x="572" y="302" width="26" height="22" fill="#F5F5F5" stroke="#C8102E" stroke-width="2"/>
+<line x1="575" y1="224" x2="585" y2="266" stroke="#C8102E" stroke-width="2" marker-end="url(#arrowrt)"/>
+<line x1="595" y1="224" x2="585" y2="298" stroke="#C8102E" stroke-width="2" marker-end="url(#arrowrt)"/>
+<text x="585" y="346" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">surface the relevant few</text>
+</svg>

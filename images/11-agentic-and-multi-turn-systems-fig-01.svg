@@ -1,0 +1,41 @@
+<!-- The agent loop interrupts the P^N chain | Book: Prompt Engineering | Chapter: 11-agentic-and-multi-turn-systems | Figure: 01 | Generated: 2026-05-29 | Source: pantry/11-agentic-and-multi-turn-systems-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01">
+<title id="fig-title-01">The ReAct loop injects an external Observation that re-anchors the chain</title>
+<desc id="fig-desc-01">A three-node clockwise loop: Thought at top, Action at lower right, Observation at lower left. Thought and Action are model-generated; Observation is fed by an external stub from outside the loop. An anchor tick crosses the Observation-to-Thought return arrow, marking the point that interrupts the compounding dependency chain.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="11-agentic-and-multi-turn-systems" figure-number="01" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="arrowk11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/></marker>
+<marker id="arrowr11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">The loop interrupts the compounding chain</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">An externally-sourced Observation re-anchors the next Thought every few steps</text>
+
+<!-- Loop nodes: Thought top (350,130), Action lower-right (490,300), Observation lower-left (210,300) -->
+<!-- Clockwise arrows: Thought->Action, Action->Observation, Observation->Thought -->
+<line x1="382" y1="155" x2="466" y2="270" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrowk11)"/>
+<line x1="460" y1="312" x2="240" y2="312" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrowk11)"/>
+<line x1="234" y1="270" x2="318" y2="155" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrowk11)"/>
+
+<!-- Anchor tick on the Observation->Thought return arrow (red emphasis) -->
+<line x1="262" y1="227" x2="290" y2="243" stroke="#C8102E" stroke-width="3"/>
+<text x="300" y="225" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">re-anchor</text>
+
+<!-- Thought node (secondary) -->
+<rect x="300" y="105" width="100" height="50" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="350" y="135" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="13" fill="#2a1a0e" text-anchor="middle">Thought</text>
+
+<!-- Action node (secondary) -->
+<rect x="440" y="288" width="100" height="50" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="490" y="318" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="13" fill="#2a1a0e" text-anchor="middle">Action</text>
+
+<!-- Observation node (red emphasis = externally injected) -->
+<rect x="160" y="288" width="120" height="50" fill="#F5F5F5" stroke="#C8102E" stroke-width="2"/>
+<text x="220" y="318" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="13" fill="#C8102E" text-anchor="middle">Observation</text>
+
+<!-- External feed stub into Observation -->
+<line x1="60" y1="313" x2="156" y2="313" stroke="#C8102E" stroke-width="2.5" marker-end="url(#arrowr11)"/>
+<text x="60" y="300" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">external world</text>
+
+<text x="40" y="392" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Observation tokens come from a tool, not the model: they interrupt (not erase) the chain, moving compounding from P to the N toward P to the k.</text>
+</svg>

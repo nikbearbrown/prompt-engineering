@@ -1,4 +1,4 @@
-# Prompt Engineering with LLMs — Chapter Outline
+# Prompt Engineering — Chapter Outline
 
 *Read by `/chapter` to know what's been written, what's planned, and what each chapter assumes. Core claims preserved from Nik's 2026-02-18 Substack TOC.*
 

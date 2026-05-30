@@ -1,0 +1,38 @@
+<!-- The Two Axes: Plausibility and Truth | Book: Prompt Engineering | Chapter: 02-hallucination-and-the-plausibility-truth-gap | Figure: 01 | Generated: 2026-05-29 | Source: pantry/02-hallucination-and-the-plausibility-truth-gap-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01"><title id="fig-title-01">Plausibility and truth are orthogonal axes</title><desc id="fig-desc-01">A 2x2 quadrant map with plausibility on the horizontal axis and truth on the vertical axis. One marker sits in each quadrant; the bottom-right marker, fluent but false, is emphasized as the dangerous hallucination region.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="02-hallucination-and-the-plausibility-truth-gap" figure-number="01" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="ax01" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-end"><path d="M0 0 L10 5 L0 10 z" fill="#2a1a0e"/></marker>
+</defs>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Plausibility and truth are independent</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Knowing one tells you nothing about the other</text>
+
+<!-- plot frame -->
+<rect x="150" y="80" width="400" height="280" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<!-- axes through center -->
+<line x1="150" y1="220" x2="566" y2="220" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ax01)"/>
+<line x1="350" y1="360" x2="350" y2="66" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ax01)"/>
+
+<!-- axis labels -->
+<text x="572" y="224" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Plausibility</text>
+<text x="350" y="60" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">True</text>
+<text x="350" y="380" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">False</text>
+<text x="160" y="244" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">low</text>
+<text x="540" y="244" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">high</text>
+
+<!-- quadrant markers -->
+<!-- top-left: true & implausible -->
+<circle cx="250" cy="150" r="9" fill="#545454"/>
+<text x="250" y="124" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">True but unlikely</text>
+<!-- top-right: true & plausible -->
+<circle cx="450" cy="150" r="9" fill="#545454"/>
+<text x="450" y="124" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">True and fluent</text>
+<!-- bottom-left: false & implausible (inert, gray) -->
+<circle cx="250" cy="290" r="9" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="250" y="318" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">False and obvious</text>
+<!-- bottom-right: false & plausible — DANGER, emphasized red, largest -->
+<circle cx="450" cy="290" r="15" fill="#C8102E"/>
+<text x="450" y="324" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E">Fluent but false</text>
+
+<text x="350" y="404" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The fluent-but-false quadrant is the dangerous one: it reads as correct while being wrong.</text>
+</svg>

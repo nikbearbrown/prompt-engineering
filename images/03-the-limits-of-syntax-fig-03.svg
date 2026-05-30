@@ -1,0 +1,63 @@
+<!-- Adversarial Collapse: Competence Drops Under Variant Tests | Book: Prompt Engineering | Chapter: 03-the-limits-of-syntax | Figure: 03 | Generated: 2026-05-29 | Source: pantry/03-the-limits-of-syntax-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">Adversarial Collapse: Competence Drops Under Variant Tests</title><desc id="fig-desc-03">A grouped bar chart on a zero-based axis. Standard-benchmark accuracy reaches about 92 percent; adversarial-variant accuracy falls to about 60 percent. The drop is far larger than the noise-level band marked near the top.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="03-the-limits-of-syntax" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Accuracy Collapses When the Pattern Is Disrupted</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Same logical structure, rewritten surface; the size of the drop is the argument</text>
+
+<!-- plot background -->
+<rect x="110" y="80" width="520" height="270" fill="#F5F5F5"/>
+<!-- y axis -->
+<line x1="110" y1="80" x2="110" y2="350" stroke="#2a1a0e" stroke-width="1.2"/>
+<!-- x axis (zero baseline) -->
+<line x1="110" y1="350" x2="630" y2="350" stroke="#2a1a0e" stroke-width="1.2"/>
+
+<!-- gridlines + numerals -->
+<g font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">
+<line x1="110" y1="350" x2="630" y2="350" stroke="#D4D4D4" stroke-width="1"/>
+<text x="102" y="354" text-anchor="end">0</text>
+<line x1="110" y1="296" x2="630" y2="296" stroke="#D4D4D4" stroke-width="1"/>
+<text x="102" y="300" text-anchor="end">20</text>
+<line x1="110" y1="242" x2="630" y2="242" stroke="#D4D4D4" stroke-width="1"/>
+<text x="102" y="246" text-anchor="end">40</text>
+<line x1="110" y1="188" x2="630" y2="188" stroke="#D4D4D4" stroke-width="1"/>
+<text x="102" y="192" text-anchor="end">60</text>
+<line x1="110" y1="134" x2="630" y2="134" stroke="#D4D4D4" stroke-width="1"/>
+<text x="102" y="138" text-anchor="end">80</text>
+<line x1="110" y1="80" x2="630" y2="80" stroke="#D4D4D4" stroke-width="1"/>
+<text x="102" y="84" text-anchor="end">100</text>
+</g>
+
+<!-- noise-level reference band near top -->
+<line x1="110" y1="98" x2="630" y2="98" stroke="#545454" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="624" y="74" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">noise-level band (~6 pts)</text>
+
+<!-- Pair A: standard ~92 (=248.4 px tall from 350) -> top y=350-248.4=101.6 ; adversarial ~60 -> 350-162=188 -->
+<!-- bar widths -->
+<rect x="190" y="102" width="70" height="248" fill="#545454"/>
+<rect x="272" y="188" width="70" height="162" fill="#C8102E"/>
+<!-- Pair B: standard ~90 -> 350-243=107 ; adversarial ~58 -> 350-156.6=193.4 -->
+<rect x="410" y="107" width="70" height="243" fill="#545454"/>
+<rect x="492" y="194" width="70" height="156" fill="#C8102E"/>
+
+<!-- value labels -->
+<g font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#2a1a0e" text-anchor="middle">
+<text x="225" y="96">92</text>
+<text x="307" y="182">60</text>
+<text x="445" y="101">90</text>
+<text x="527" y="188">58</text>
+</g>
+
+<!-- category labels -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e" text-anchor="middle">
+<text x="225" y="368">Standard</text>
+<text x="307" y="368">Adversarial</text>
+<text x="445" y="368">Standard</text>
+<text x="527" y="368">Adversarial</text>
+<text x="266" y="386" font-size="12" fill="#545454">Condition 1</text>
+<text x="486" y="386" font-size="12" fill="#545454">Condition 2</text>
+</g>
+
+<text x="36" y="215" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" transform="rotate(-90 36 215)">Accuracy (%)</text>
+
+<text x="110" y="408" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">A ~30-point fall, five times the noise band, exposes competence that was syntactic rather than structural.</text>
+</svg>

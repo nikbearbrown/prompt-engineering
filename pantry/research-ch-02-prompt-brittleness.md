@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §2 — The Brittleness Problem
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** Why semantically-neutral prompt changes move model outputs, and what that means for evaluation.
 **Research date:** 2026-05-29
 ---

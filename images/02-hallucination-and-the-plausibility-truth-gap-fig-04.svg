@@ -1,0 +1,32 @@
+<!-- Why a Reasoning Trace Adds No Truth Term | Book: Prompt Engineering | Chapter: 02-hallucination-and-the-plausibility-truth-gap | Figure: 04 | Generated: 2026-05-29 | Source: pantry/02-hallucination-and-the-plausibility-truth-gap-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04"><title id="fig-title-04">Why a reasoning trace adds no truth term</title><desc id="fig-desc-04">A large region of all plausible outputs contains a smaller step-shaped reasoning region holding both a valid and an invalid marker. A separate correct-answers region overlaps the step-shaped region only partway, showing correlation not containment. A chain-of-thought arrow points into the step-shaped region.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="02-hallucination-and-the-plausibility-truth-gap" figure-number="04" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-end"><path d="M0 0 L10 5 L0 10 z" fill="#C8102E"/></marker>
+</defs>
+<text x="350" y="30" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">A reasoning trace targets a region, not the truth</text>
+<text x="350" y="50" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Looking like reasoning only partly overlaps being correct</text>
+
+<!-- outer all-plausible region -->
+<rect x="90" y="80" width="520" height="270" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1.5"/>
+<text x="106" y="100" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">All plausible outputs</text>
+
+<!-- step-shaped reasoning sub-region (left, sky-blue replaced by ink outline + light fill) -->
+<rect x="160" y="150" width="230" height="150" fill="#FFFFFF" stroke="#545454" stroke-width="1.5"/>
+<text x="275" y="172" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Looks like reasoning</text>
+<!-- valid and invalid markers close together -->
+<circle cx="240" cy="230" r="9" fill="#545454"/>
+<text x="240" y="262" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">valid</text>
+<circle cx="300" cy="230" r="9" fill="#545454"/>
+<text x="300" y="262" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">invalid</text>
+
+<!-- correct-answers region (right), partially overlapping -->
+<rect x="330" y="180" width="220" height="140" fill="none" stroke="#C8102E" stroke-width="2"/>
+<text x="470" y="172" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E">Correct answers</text>
+
+<!-- CoT input arrow into step-shaped region -->
+<path d="M120 360 C 160 330 200 320 230 300" fill="none" stroke="#C8102E" stroke-width="2" marker-end="url(#a4)"/>
+<text x="120" y="378" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Chain-of-thought prompt</text>
+
+<text x="350" y="404" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">CoT steers into the reasoning-looking region regardless of validity; correctness only partly overlaps it.</text>
+</svg>

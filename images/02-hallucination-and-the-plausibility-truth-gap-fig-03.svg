@@ -1,0 +1,72 @@
+<!-- The Fact-Check List Pattern | Book: Prompt Engineering | Chapter: 02-hallucination-and-the-plausibility-truth-gap | Figure: 03 | Generated: 2026-05-29 | Source: pantry/02-hallucination-and-the-plausibility-truth-gap-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">The Fact-Check List Pattern with external verification</title><desc id="fig-desc-03">A fluent answer is split into three enumerated claims inside a model boundary. An external verifier, drawn outside the boundary, checks each claim and returns three verdicts: two confirmed and one rejected. The governing check sits outside the model's distribution.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="02-hallucination-and-the-plausibility-truth-gap" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end"><path d="M0 0 L10 5 L0 10 z" fill="#2a1a0e"/></marker>
+</defs>
+<text x="350" y="30" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Split the answer into claims, verify each outside the model</text>
+<text x="350" y="50" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">The model cannot validate its own fabrications from the same distribution</text>
+
+<!-- model boundary enclosing stages 1-2 -->
+<rect x="32" y="72" width="320" height="296" fill="none" stroke="#D4D4D4" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="42" y="92" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Inside the model's distribution</text>
+
+<!-- fluent answer block -->
+<rect x="50" y="180" width="100" height="80" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<rect x="60" y="196" width="78" height="6" fill="#545454"/>
+<rect x="60" y="210" width="78" height="6" fill="#545454"/>
+<rect x="60" y="224" width="78" height="6" fill="#545454"/>
+<rect x="60" y="238" width="52" height="6" fill="#545454"/>
+<text x="100" y="280" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Fluent answer</text>
+
+<!-- fan out to 3 claims -->
+<g stroke="#2a1a0e" stroke-width="1" fill="none">
+<line x1="152" y1="210" x2="220" y2="130" marker-end="url(#a3)"/>
+<line x1="152" y1="220" x2="220" y2="220" marker-end="url(#a3)"/>
+<line x1="152" y1="230" x2="220" y2="310" marker-end="url(#a3)"/>
+</g>
+
+<!-- three enumerated claim items -->
+<rect x="224" y="112" width="120" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="284" y="134" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Claim 1</text>
+<rect x="224" y="202" width="120" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="284" y="224" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Claim 2</text>
+<rect x="224" y="292" width="120" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="284" y="314" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Claim 3</text>
+
+<!-- arrows out of boundary to verifier -->
+<g stroke="#2a1a0e" stroke-width="1.5" fill="none">
+<line x1="344" y1="130" x2="416" y2="200" marker-end="url(#a3)"/>
+<line x1="344" y1="220" x2="416" y2="220" marker-end="url(#a3)"/>
+<line x1="344" y1="310" x2="416" y2="240" marker-end="url(#a3)"/>
+</g>
+
+<!-- external verifier - OUTSIDE boundary, ochre? no - use secondary/distinct. Use ink outline tool glyph -->
+<g>
+<rect x="420" y="172" width="96" height="96" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="2"/>
+<!-- document/tool glyph -->
+<rect x="444" y="194" width="48" height="56" fill="#FFFFFF" stroke="#545454" stroke-width="1"/>
+<line x1="452" y1="206" x2="484" y2="206" stroke="#545454" stroke-width="1"/>
+<line x1="452" y1="216" x2="484" y2="216" stroke="#545454" stroke-width="1"/>
+<line x1="452" y1="226" x2="484" y2="226" stroke="#545454" stroke-width="1"/>
+<line x1="452" y1="236" x2="472" y2="236" stroke="#545454" stroke-width="1"/>
+</g>
+<text x="468" y="288" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">External verifier</text>
+<text x="468" y="306" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">outside the model</text>
+
+<!-- verdicts -->
+<g stroke="#2a1a0e" stroke-width="1.5" fill="none">
+<line x1="518" y1="200" x2="576" y2="140" marker-end="url(#a3)"/>
+<line x1="518" y1="220" x2="576" y2="220" marker-end="url(#a3)"/>
+<line x1="518" y1="240" x2="576" y2="300" marker-end="url(#a3)"/>
+</g>
+<!-- confirmed (gray-filled with check mark via outline) and rejected (red) -->
+<rect x="580" y="120" width="84" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="622" y="142" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Confirmed</text>
+<rect x="580" y="202" width="84" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="622" y="224" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Confirmed</text>
+<rect x="580" y="282" width="84" height="36" fill="#C8102E"/>
+<text x="622" y="304" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#FFFFFF">Rejected</text>
+
+<text x="350" y="396" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The claims are self-generated, but the governing check comes from outside the model's distribution.</text>
+</svg>

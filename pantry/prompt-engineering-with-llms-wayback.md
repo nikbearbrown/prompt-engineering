@@ -1,4 +1,4 @@
-# Wayback Image Prompts — Prompt Engineering with LLMs
+# Wayback Image Prompts — Prompt Engineering
 
 Text-to-image prompts generated from the AI Wayback Machine sections in `chapters/`.
 Each prompt is anchored to the historical figure named in the chapter section.

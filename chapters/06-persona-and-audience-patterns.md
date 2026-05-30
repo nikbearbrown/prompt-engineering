@@ -72,7 +72,7 @@ The model is given an identity. When you write *"You are a senior corrosion engi
 - **Vocabulary and register shift.** A legal advisor persona produces legalistic prose; a cowboy persona produces colloquial Western-flavored language. Replicates across models.
 - **Domain focus and content selection.** A cybersecurity auditor looking at a system log highlights vulnerabilities. A performance engineer looking at the same log highlights bottlenecks. Neither is wrong; they select different slices of the relevant information.
 - **Reasoning improvement on structured tasks.** [Kong et al. (2023)](https://arxiv.org/abs/2308.07702) tested role-play prompting across 7B–70B models on math and symbolic tasks. AQuA accuracy rose from 53.5% to 63.8%; Last Letter Concatenation jumped from 23.8% to 84.2%. The improvement held across scales — which is evidence of a real phenomenon, not prompt-specific noise.
-- **No improvement — and sometimes degradation — on factual recall.** [Zheng et al. (2023)](https://arxiv.org/abs/2311.10054) tested 162 personas across four model families on 2,410 knowledge questions. Persona assignment produced no improvement on factual questions. In related work, detailed expert personas were documented to *reduce* accuracy on MMLU from 71.6% to 66.3% `[verify exact PRISM citation]`. The model, activated into confident expert performance, prioritized sounding authoritative over being correct.
+- **No improvement — and sometimes degradation — on factual recall.** [Zheng et al. (2024)](https://arxiv.org/abs/2311.10054) tested 162 personas across four model families on 2,410 knowledge questions. Persona assignment produced no improvement on factual questions. In related work, detailed expert personas were documented to *reduce* accuracy on MMLU from 71.6% to 66.3% ([PRISM, arXiv:2603.18507](https://arxiv.org/abs/2603.18507)). The model, activated into confident expert performance, prioritized sounding authoritative over being correct.
 
 **Why (hypothesis, not confirmed mechanism).** The dominant working explanation is statistical co-occurrence during pretraining: documents written by or about metallurgists share vocabulary patterns and reasoning chains, and persona assignment makes those patterns more probable in next-token predictions. Stated mechanically: conditioning the context on persona-associated tokens shifts the probability mass of every subsequent token toward the region of the distribution those documents occupy. This is plausible. It fits the observed effects. It is not mechanistically confirmed by interpretability research. Treat the behavioral evidence as reliable; treat the mechanistic story as useful intuition, not ground truth.
 
@@ -87,7 +87,7 @@ The user is given an identity. The model retains its full knowledge base but fil
 Effects are distinct from the Persona Pattern:
 
 - **Complexity adaptation.** Vocabulary difficulty, sentence length, and assumed background knowledge shift automatically.
-- **Content selection and information loss.** This is the underappreciated risk. Research on "ELI5-style" (*Explain Like I'm Five*) prompts documents that simplification causes models to provide only a subset of relevant information. The model, inferring the audience cannot handle complexity, suppresses details that might matter. **Audience adaptation is not only stylistic filtering — it is information filtering.** `[verify specific ELI5 citation]`
+- **Content selection and information loss.** This is the underappreciated risk. Research on "ELI5-style" (*Explain Like I'm Five*) prompts documents that simplification causes models to provide only a subset of relevant information. The model, inferring the audience cannot handle complexity, suppresses details that might matter. **Audience adaptation is not only stylistic filtering — it is information filtering.** (This "ELI5 omits relevant information" effect is reported in practitioner accounts; no single controlled primary study is cited here.)
 - **Automatic register adjustment.** Formality, rhetorical approach, and sentence structure shift without explicit instruction.
 
 One historical note worth naming because it creates real practitioner confusion: the Audience Persona Pattern appears in the expanded conference version of [White et al.'s paper](https://arxiv.org/abs/2302.11382) and on the Vanderbilt companion website, but **not** in the original arXiv preprint — the version most cited in the academic literature. Many engineers working from the original paper encounter only the Persona Pattern and assume it covers all identity-related prompting. It doesn't.
@@ -114,7 +114,7 @@ The common misconception is that *"You are an expert X"* and *"explain this to a
 
 Understanding the mechanism enables principled design. Three construction rules.
 
-**Strong Persona beats weak Persona.** [Research on ExpertPrompting](https://arxiv.org/abs/2305.14688) `[verify]` demonstrates that detailed, specific personas significantly outperform generic role assignments.
+**Strong Persona beats weak Persona.** [Research on ExpertPrompting](https://arxiv.org/abs/2305.14688) (Xu et al., 2023) demonstrates that detailed, specific expert descriptions improve answer quality over generic role assignments. (Note the scope: ExpertPrompting measures answer quality on instruction-following, not factual-recall accuracy — where Zheng et al. find personas do not help. See §6.2.)
 
 - Weak: *"You are a materials scientist."*
 - Strong: *"You are a senior materials scientist specializing in high-temperature oxidation of nickel-based superalloys, with fifteen years of experience in aerospace turbine blade failure analysis. Your approach emphasizes thermodynamic calculations before microstructural interpretation."*
@@ -158,7 +158,7 @@ The empirical literature documents four distinct failure modes. Each traces to a
 
 **Definition.** The model progressively abandons its assigned persona over the course of a multi-turn conversation, reverting to generic assistant behavior.
 
-**Mechanism.** Transformer self-attention allocates weights across all tokens in the context window. As conversation history grows, the system prompt — where persona is typically defined — receives proportionally less attention. The persona directive that dominated at turn 2 is competing for attention with thousands of tokens of conversation history by turn 12. `[verify]` Li et al. measured this quantitatively using a self-consistency metric: persona consistency degrades by more than 30% after 8–12 dialogue turns.
+**Mechanism.** Transformer self-attention allocates weights across all tokens in the context window. As conversation history grows, the system prompt — where persona is typically defined — receives proportionally less attention. The persona directive that dominated at turn 2 is competing for attention with thousands of tokens of conversation history by turn 12. Li et al. measured this quantitatively using persona-consistency metrics (prompt-to-line, line-to-line, and Q&A consistency): persona self-consistency degrades by more than 30% after 8–12 dialogue turns, even with context intact.
 
 **What drift looks like.** The easy case is explicit frame-breaking — the model says *"As an AI language model, I don't actually have personal experiences..."* The harder case is semantic drift without syntactic signals: the model never announces "As an AI," but its responses become increasingly generic. Specific vocabulary drains out; the voice converges toward default helpful-assistant register wearing a thin persona costume.
 
@@ -188,7 +188,7 @@ The empirical literature documents four distinct failure modes. Each traces to a
 
 **Definition.** In multi-agent systems, personas contaminate each other through inter-agent communication, or agents abandon their assigned personas due to conversational pressure from other agents.
 
-**Mechanism.** Three contamination pathways. *Conformity*: an agent abandons its persona under peer pressure from other agents' confident assertions. *Confabulation*: an agent presents opinions that were neither in its persona definition nor in conversation history — invented content emerging from cross-agent dynamics. *Impersonation*: an agent explicitly claims a different identity than assigned. `[verify specific documentation rates]`
+**Mechanism.** Three contamination pathways. *Conformity*: an agent abandons its persona under peer pressure from other agents' confident assertions. *Confabulation*: an agent presents opinions that were neither in its persona definition nor in conversation history — invented content emerging from cross-agent dynamics. *Impersonation*: an agent explicitly claims a different identity than assigned. (These three pathways are documented qualitatively in multi-agent studies; quantitative contamination rates are not yet established in a single authoritative source.)
 
 **Mitigation.** Structured inter-agent communication (schemas rather than free-form natural language); memory isolation per agent; system-prompt separation from inter-agent message history. This connects to Ch. 4's context-isolation argument applied at the multi-agent level.
 
@@ -264,8 +264,10 @@ A controlled empirical study showing that the swap test (Prompt A = Persona only
 
 - White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, H., Elnashar, A., Spencer-Smith, J., & Schmidt, D. C. (2023). [A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT](https://arxiv.org/abs/2302.11382). arXiv:2302.11382.
 - Kong, A., Zhao, S., Chen, H., Li, Q., Qin, Y., Sun, R., & Zhou, X. (2023). [Better Zero-Shot Reasoning with Role-Play Prompting](https://arxiv.org/abs/2308.07702). arXiv:2308.07702.
-- Zheng, M., Pei, J., & Jurgens, D. (2023). [When "A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models](https://arxiv.org/abs/2311.10054). arXiv:2311.10054.
-- ExpertPrompting (Xu et al., 2023). `[verify exact arXiv ID: https://arxiv.org/abs/2305.14688]`
+- Zheng, M., Pei, J., Logeswaran, L., Lee, M., & Jurgens, D. (2024). [When "A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models](https://arxiv.org/abs/2311.10054). *Findings of EMNLP 2024*. arXiv:2311.10054.
+- Xu, B., Yang, A., Lin, J., Wang, Q., Zhou, C., Zhang, Y., & Mao, Z. (2023). [ExpertPrompting: Instructing Large Language Models to be Distinguished Experts](https://arxiv.org/abs/2305.14688). arXiv:2305.14688.
+- PRISM (2026). [Expert Personas Improve LLM Alignment but Damage Accuracy: Bootstrapping Intent-Based Persona Routing with PRISM](https://arxiv.org/abs/2603.18507). arXiv:2603.18507. — source of the MMLU 71.6% → 66.3% degradation figure.
+- Persona-consistency metrics (prompt-to-line, line-to-line, Q&A consistency) and the >30% degradation over 8–12 turns: [Consistently Simulating Human Personas with Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2511.00222) (2025), arXiv:2511.00222.
 
 ---
 

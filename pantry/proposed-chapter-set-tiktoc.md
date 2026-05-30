@@ -1,4 +1,4 @@
-# Proposed Chapter Set — *Prompt Engineering with LLMs*
+# Proposed Chapter Set — *Prompt Engineering*
 
 *Tik TOC · silent mode · 2026-05-29*
 *Book type: course textbook (graduate, INFO 7375, 15-week semester). Target: 12–14 primary chapters + Chapter 0 foundations.*

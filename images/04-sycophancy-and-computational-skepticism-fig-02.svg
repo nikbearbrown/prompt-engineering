@@ -1,0 +1,65 @@
+<!-- The Dissenting Sub-Agent: Context Isolation | Book: Prompt Engineering | Chapter: 04-sycophancy-and-computational-skepticism | Figure: 02 | Generated: 2026-05-29 | Source: pantry/04-sycophancy-and-computational-skepticism-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02"><title id="fig-title-02">The Dissenting Sub-Agent</title><desc id="fig-desc-02">The original claim and data feed both a primary agent and a dissenter, but the user-pushback signal reaches only the primary, never the dissenter. Both agents feed a consensus detector, which routes agreement to ship and any disagreement to a mandatory human decision diamond.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="04-sycophancy-and-computational-skepticism" figure-number="02" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah2r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Dissenting Sub-Agent: Isolation Is the Commitment</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">The pushback signal reaches the primary only — never the dissenter</text>
+
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" text-anchor="middle">
+<!-- claim-and-data input -->
+<rect x="40" y="120" width="120" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.6"/>
+<text x="100" y="140" fill="#2a1a0e">Claim + data</text>
+<text x="100" y="156" fill="#545454">(protected input)</text>
+
+<!-- pushback input -->
+<rect x="40" y="250" width="120" height="48" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.6"/>
+<text x="100" y="270" fill="#C8102E">User pushback</text>
+<text x="100" y="286" fill="#C8102E">(pressure signal)</text>
+
+<!-- primary agent -->
+<rect x="260" y="110" width="120" height="48" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.6"/>
+<text x="320" y="134" fill="#2a1a0e">Primary agent</text>
+<text x="320" y="150" fill="#545454">sees pushback</text>
+
+<!-- dissenter agent -->
+<rect x="260" y="222" width="120" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.6"/>
+<text x="320" y="246" fill="#2a1a0e">Dissenter agent</text>
+<text x="320" y="262" fill="#545454">isolated</text>
+
+<!-- claim-data fans to BOTH agents -->
+<path d="M160,138 C205,132 215,134 258,134" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<path d="M160,150 C205,200 215,240 258,244" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+
+<!-- pushback to PRIMARY ONLY -->
+<path d="M160,266 C200,230 215,170 258,150" fill="none" stroke="#C8102E" stroke-width="1.6" marker-end="url(#ah2r)"/>
+
+<!-- explicit absence callout near dissenter -->
+<text x="210" y="298" fill="#C8102E" font-size="11">no path to dissenter</text>
+
+<!-- consensus detector -->
+<rect x="450" y="166" width="120" height="48" fill="#F5F5F5" stroke="#545454" stroke-width="1.6"/>
+<text x="510" y="186" fill="#2a1a0e">Consensus</text>
+<text x="510" y="202" fill="#2a1a0e">detector</text>
+<line x1="380" y1="134" x2="448" y2="180" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<line x1="380" y1="246" x2="448" y2="200" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+
+<!-- ship endpoint (agreement) -->
+<rect x="600" y="100" width="80" height="44" fill="#F5F5F5" stroke="#545454" stroke-width="1.2"/>
+<text x="640" y="120" fill="#2a1a0e">Ship</text>
+<text x="640" y="135" fill="#545454">output</text>
+<path d="M560,170 C585,150 590,150 605,140" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<text x="600" y="160" fill="#545454" font-size="10">agree</text>
+
+<!-- human decision diamond (disagreement) -->
+<polygon points="640,236 690,276 640,316 590,276" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.8"/>
+<text x="640" y="272" fill="#2a1a0e">Human</text>
+<text x="640" y="288" fill="#2a1a0e">decision</text>
+<path d="M560,210 C585,236 595,250 605,262" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<text x="592" y="232" fill="#545454" font-size="10">disagree</text>
+</g>
+
+<text x="40" y="384" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The asymmetry is the architecture: denying the dissenter the pressure is what keeps it free to disagree.</text>
+</svg>

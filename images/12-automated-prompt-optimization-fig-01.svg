@@ -1,0 +1,51 @@
+<!-- The Optimization Loop: Write, Score, Propose | Book: Prompt Engineering | Chapter: 12-automated-prompt-optimization | Figure: 01 | Generated: 2026-05-29 | Source: pantry/12-automated-prompt-optimization-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01"><title id="fig-title-01">The Optimization Loop: Write, Score, Propose</title><desc id="fig-desc-01">A closed clockwise cycle: a proposer generates a candidate prompt, a language model runs it on an eval-set example, a scalar metric scores the output against a reference, and the score feeds back to the proposer. The labeled eval set and the metric function enter from outside as fixed user-supplied inputs.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="12-automated-prompt-optimization" figure-number="01" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah1201" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah1201r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+<marker id="ah1201g" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#545454"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Optimization Loop: Write, Score, Propose</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">A closed cycle replaces the human write-observe-tweak loop; the score drives the next proposal</text>
+
+<!-- Proposer (top) -->
+<rect x="350" y="90" width="170" height="56" fill="#F5F5F5" stroke="#C8102E" stroke-width="1.5"/>
+<text x="435" y="116" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Proposer</text>
+<text x="435" y="133" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">generates candidate</text>
+
+<!-- Candidate prompt (right) -->
+<rect x="520" y="185" width="150" height="56" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="595" y="211" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Candidate prompt</text>
+<text x="595" y="228" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">instruction + demos</text>
+
+<!-- LM execution (bottom) -->
+<rect x="350" y="300" width="170" height="56" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="435" y="326" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Language model</text>
+<text x="435" y="343" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">runs on eval example</text>
+
+<!-- Scalar metric (left) -->
+<rect x="200" y="185" width="150" height="56" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="275" y="211" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Scalar metric</text>
+<text x="275" y="228" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">score vs reference</text>
+
+<!-- clockwise arrows -->
+<path d="M520,128 Q595,138 595,185" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1201)"/>
+<path d="M595,241 Q595,328 520,328" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1201)"/>
+<path d="M350,328 Q275,338 275,241" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1201)"/>
+<!-- feedback closing arrow metric -> proposer (emphasis) -->
+<path d="M275,185 Q275,118 350,118" fill="none" stroke="#C8102E" stroke-width="1.8" marker-end="url(#ah1201r)"/>
+<text x="300" y="150" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">feedback</text>
+
+<!-- external fixed inputs -->
+<rect x="30" y="148" width="120" height="40" fill="#FFFFFF" stroke="#545454" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="90" y="167" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Labeled eval set</text>
+<text x="90" y="181" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(fixed input)</text>
+<rect x="30" y="238" width="120" height="40" fill="#FFFFFF" stroke="#545454" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="90" y="257" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Metric function</text>
+<text x="90" y="271" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(fixed input)</text>
+<line x1="150" y1="180" x2="200" y2="200" stroke="#545454" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah1201g)"/>
+<line x1="150" y1="246" x2="200" y2="226" stroke="#545454" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ah1201g)"/>
+
+<text x="60" y="400" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The eval set and metric are user-supplied constants; only the prompt changes from round to round, converging as the score improves.</text>
+</svg>

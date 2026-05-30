@@ -1,0 +1,40 @@
+<!-- Multi-needle collapse | Book: Prompt Engineering | Chapter: 10-long-context-prompting | Figure: 03 | Generated: 2026-05-29 | Source: pantry/10-long-context-prompting-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03">
+<title id="fig-title-03">Retrieval accuracy collapses as the number of needles grows</title>
+<desc id="fig-desc-03">A bar chart with accuracy on the vertical axis from zero and needle count on the horizontal axis. One needle is a tall bar near the top, two needles is intermediate, three needles is short at roughly two-fifths height. A bracket spans the drop from the first to the third bar.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="10-long-context-prompting" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">Single-needle retrieval is solved; multi-needle synthesis is not</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Accuracy by number of target facts requested at once</text>
+
+<!-- Plot area -->
+<rect x="100" y="90" width="500" height="250" fill="#F5F5F5"/>
+<!-- Axes -->
+<line x1="100" y1="340" x2="600" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<line x1="100" y1="90" x2="100" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<!-- Y ticks from zero -->
+<g font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">
+<line x1="96" y1="340" x2="100" y2="340" stroke="#2a1a0e" stroke-width="1.5"/><text x="90" y="344" text-anchor="end">0</text>
+<line x1="96" y1="277" x2="100" y2="277" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="281" text-anchor="end">25</text>
+<line x1="96" y1="215" x2="100" y2="215" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="219" text-anchor="end">50</text>
+<line x1="96" y1="152" x2="100" y2="152" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="156" text-anchor="end">75</text>
+<line x1="96" y1="90" x2="100" y2="90" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="94" text-anchor="end">100</text>
+</g>
+
+<!-- Bars from zero baseline (y=340). acc=100->90, scale 2.5 px/pt -->
+<!-- one needle ~95% -> 340-237.5=102.5 ; two ~67% ->340-167.5=172.5 ; three ~40% ->340-100=240 -->
+<rect x="150" y="102" width="80" height="238" fill="#545454"/>
+<rect x="300" y="172" width="80" height="168" fill="#545454"/>
+<rect x="450" y="240" width="80" height="100" fill="#C8102E"/>
+
+<!-- Drop bracket (hairline) top of bar1 to top of bar3 -->
+<path d="M190 92 L560 92 L560 230" fill="none" stroke="#D4D4D4" stroke-width="1.5"/>
+<text x="570" y="170" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">collapse</text>
+
+<!-- X labels -->
+<text x="190" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">1 needle</text>
+<text x="340" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">2 needles</text>
+<text x="490" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">3 needles</text>
+<text x="350" y="382" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle">Number of target facts &#8594;</text>
+<text x="42" y="215" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle" transform="rotate(-90 42 215)">Accuracy (%)</text>
+</svg>

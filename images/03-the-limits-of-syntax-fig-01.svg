@@ -1,0 +1,58 @@
+<!-- The Chinese Room as Symbol Pipeline | Book: Prompt Engineering | Chapter: 03-the-limits-of-syntax | Figure: 01 | Generated: 2026-05-29 | Source: pantry/03-the-limits-of-syntax-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01"><title id="fig-title-01">The Chinese Room as Symbol Pipeline</title><desc id="fig-desc-01">A sealed room takes symbol cards in, looks them up in a rulebook with an operator, and emits symbol cards out. An external observer, connected only by a dotted line, mistakes the output for understanding.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="03-the-limits-of-syntax" figure-number="01" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah01" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah01r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Chinese Room as Symbol Pipeline</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Syntax sealed inside; the observer's inference of meaning stays outside</text>
+
+<!-- room wall -->
+<rect x="60" y="95" width="430" height="240" fill="none" stroke="#2a1a0e" stroke-width="2"/>
+<text x="275" y="320" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">THE ROOM (syntactic core)</text>
+
+<!-- input slot with symbol cards -->
+<rect x="78" y="150" width="44" height="62" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<rect x="84" y="158" width="32" height="14" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<rect x="84" y="176" width="32" height="14" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<rect x="84" y="194" width="32" height="14" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="100" y="230" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Input slot</text>
+
+<line x1="124" y1="181" x2="178" y2="181" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah01)"/>
+
+<!-- rulebook box -->
+<rect x="180" y="140" width="110" height="62" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="235" y="167" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Rulebook</text>
+<text x="235" y="184" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">lookup</text>
+
+<!-- operator box beside -->
+<rect x="198" y="218" width="74" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="235" y="242" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Operator</text>
+<line x1="235" y1="218" x2="235" y2="204" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah01)"/>
+
+<line x1="290" y1="171" x2="346" y2="171" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah01)"/>
+
+<!-- output slot -->
+<rect x="348" y="150" width="44" height="62" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<rect x="354" y="158" width="32" height="14" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<rect x="354" y="176" width="32" height="14" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<rect x="354" y="194" width="32" height="14" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="370" y="230" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Output slot</text>
+
+<!-- dotted connector to observer (position-based, external) -->
+<line x1="392" y1="181" x2="556" y2="181" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#ah01r)"/>
+
+<!-- observer node outside -->
+<rect x="558" y="156" width="92" height="50" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+<text x="604" y="186" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E">Observer</text>
+
+<!-- inference thought-bubble above observer -->
+<line x1="604" y1="156" x2="604" y2="132" stroke="#C8102E" stroke-width="1.2"/>
+<rect x="540" y="80" width="128" height="50" rx="0" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+<text x="604" y="101" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">Infers</text>
+<text x="604" y="118" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">"it understands"</text>
+<text x="604" y="226" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(external)</text>
+
+<text x="60" y="372" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">No semantic connection occurs anywhere inside the wall. The attribution of meaning is the observer's, not the room's.</text>
+</svg>

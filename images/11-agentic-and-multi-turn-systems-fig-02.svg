@@ -1,0 +1,36 @@
+<!-- Error compounds across a single-shot chain | Book: Prompt Engineering | Chapter: 11-agentic-and-multi-turn-systems | Figure: 02 | Generated: 2026-05-29 | Source: pantry/11-agentic-and-multi-turn-systems-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02">
+<title id="fig-title-02">Chain success decays multiplicatively with length</title>
+<desc id="fig-desc-02">A line chart with chain length on the horizontal axis and chain success on the vertical axis from zero. One monotonically decreasing curve starts high at the top left and decays with a concave-down multiplicative shape toward the lower right without reaching zero. Two reference dots mark a shorter chain higher and a longer chain lower, with guide lines to the vertical axis.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="11-agentic-and-multi-turn-systems" figure-number="02" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">At 95% per step, long chains still fail often</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Chain success approximately P to the N, decaying as step count grows</text>
+
+<!-- Plot -->
+<rect x="100" y="90" width="500" height="250" fill="#F5F5F5"/>
+<line x1="100" y1="340" x2="600" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<line x1="100" y1="90" x2="100" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<g font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">
+<line x1="96" y1="340" x2="100" y2="340" stroke="#2a1a0e" stroke-width="1.5"/><text x="90" y="344" text-anchor="end">0</text>
+<line x1="96" y1="277" x2="100" y2="277" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="281" text-anchor="end">25</text>
+<line x1="96" y1="215" x2="100" y2="215" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="219" text-anchor="end">50</text>
+<line x1="96" y1="152" x2="100" y2="152" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="156" text-anchor="end">75</text>
+<line x1="96" y1="90" x2="100" y2="90" stroke="#D4D4D4" stroke-width="1"/><text x="90" y="94" text-anchor="end">100</text>
+</g>
+
+<!-- Decay curve: starts ~95% (y~102) at left, concave down to ~20% (y~290) at right -->
+<path d="M110 102 C 220 130, 300 180, 360 213 C 430 250, 520 280, 590 292" fill="none" stroke="#C8102E" stroke-width="2.5"/>
+
+<!-- Reference dots: short chain ~60% (y=190) at x~290 ; long chain ~36% (y=250) at x~470 -->
+<line x1="100" y1="190" x2="290" y2="190" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="100" y1="250" x2="470" y2="250" stroke="#D4D4D4" stroke-width="1"/>
+<circle cx="290" cy="190" r="6" fill="#2a1a0e"/>
+<circle cx="470" cy="250" r="6" fill="#2a1a0e"/>
+<text x="290" y="178" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">10 steps</text>
+<text x="470" y="238" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">20 steps</text>
+
+<text x="350" y="362" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle">Chain length (steps) &#8594;</text>
+<text x="42" y="215" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle" transform="rotate(-90 42 215)">Chain success (%)</text>
+<text x="40" y="392" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">A wrong early token poisons the conditioning for everything after it: the motive for breaking the chain.</text>
+</svg>

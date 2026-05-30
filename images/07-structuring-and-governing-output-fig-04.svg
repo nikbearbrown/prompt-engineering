@@ -1,0 +1,54 @@
+<!-- In-prompt self-filter vs. isolated classifier | Book: Prompt Engineering | Chapter: 07-structuring-and-governing-output | Figure: 04 | Generated: 2026-05-29 | Source: pantry/07-structuring-and-governing-output-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04">
+<title id="fig-title-04">In-prompt self-filter versus isolated classifier</title>
+<desc id="fig-desc-04">Two architectures. Left: generator and filter share one context, so the input pressure reaches both and the filter can be talked past. Right: the generator's output artifact passes to a filter in a separate, clean context that the input pressure never reaches.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="07-structuring-and-governing-output" figure-number="04" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="arrow07f4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/>
+</marker>
+</defs>
+
+<!-- divider -->
+<line x1="350" y1="70" x2="350" y2="380" stroke="#D4D4D4" stroke-width="1"/>
+
+<text x="175" y="44" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="15" fill="#2a1a0e">In-prompt self-filter</text>
+<text x="175" y="62" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">shared context &#183; can be talked past</text>
+<text x="525" y="44" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="15" fill="#2a1a0e">Isolated classifier</text>
+<text x="525" y="62" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">clean context &#183; robust</text>
+
+<!-- LEFT: shared boundary (red) -->
+<rect x="70" y="120" width="210" height="190" fill="#C8102E" fill-opacity="0.07" stroke="#C8102E" stroke-width="2"/>
+<text x="175" y="138" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#C8102E">shared context boundary</text>
+<rect x="100" y="156" width="150" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="175" y="184" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Generator</text>
+<rect x="100" y="232" width="150" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="175" y="260" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Filter</text>
+<!-- input/pressure reaches both -->
+<line x1="40" y1="180" x2="98" y2="180" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f4)"/>
+<line x1="40" y1="180" x2="40" y2="256" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="40" y1="256" x2="98" y2="256" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f4)"/>
+<text x="36" y="340" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">input / pressure reaches both</text>
+
+<!-- RIGHT: two separate boundaries -->
+<rect x="395" y="140" width="120" height="80" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="455" y="158" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">generator context</text>
+<rect x="412" y="170" width="86" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="455" y="194" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Generator</text>
+
+<rect x="560" y="240" width="120" height="80" fill="#C8102E" fill-opacity="0.0" stroke="#2a1a0e" stroke-width="2"/>
+<rect x="560" y="240" width="120" height="80" fill="none" stroke="#2a1a0e" stroke-width="2"/>
+<text x="620" y="258" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">isolated context</text>
+<rect x="577" y="270" width="86" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="620" y="294" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Filter</text>
+
+<!-- artifact arrow generator -> filter -->
+<path d="M 515 200 L 540 200 L 540 280 L 558 280" fill="none" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f4)"/>
+<text x="545" y="240" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">artifact only</text>
+
+<!-- input reaches only generator -->
+<line x1="370" y1="180" x2="393" y2="180" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f4)"/>
+<text x="368" y="168" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">input</text>
+<text x="455" y="355" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">pressure never reaches the filter</text>
+</svg>

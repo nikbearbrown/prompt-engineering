@@ -1,0 +1,50 @@
+<!-- The U-shaped position-accuracy curve | Book: Prompt Engineering | Chapter: 10-long-context-prompting | Figure: 01 | Generated: 2026-05-29 | Source: pantry/10-long-context-prompting-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01">
+<title id="fig-title-01">Accuracy traces a U-shape against the position of the relevant fact</title>
+<desc id="fig-desc-01">A line chart with position of the relevant fact on the horizontal axis from start to end and accuracy on the vertical axis from zero. One U-shaped curve is high at both edges and sags markedly in the middle. Two edge points are marked high and one center point at the trough, with guide lines showing the gap.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="10-long-context-prompting" figure-number="01" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">Lost in the middle: accuracy by position of the relevant fact</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Highest at the start and the end, lowest in the middle</text>
+
+<!-- Plot area -->
+<rect x="90" y="90" width="540" height="250" fill="#F5F5F5"/>
+
+<!-- Axes -->
+<line x1="90" y1="340" x2="630" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+<line x1="90" y1="90" x2="90" y2="340" stroke="#2a1a0e" stroke-width="1.5"/>
+
+<!-- Y axis ticks from zero -->
+<g font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">
+<line x1="86" y1="340" x2="90" y2="340" stroke="#2a1a0e" stroke-width="1.5"/><text x="80" y="344" text-anchor="end">0</text>
+<line x1="86" y1="277" x2="90" y2="277" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="281" text-anchor="end">25</text>
+<line x1="86" y1="215" x2="90" y2="215" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="219" text-anchor="end">50</text>
+<line x1="86" y1="152" x2="90" y2="152" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="156" text-anchor="end">75</text>
+<line x1="86" y1="90" x2="90" y2="90" stroke="#D4D4D4" stroke-width="1"/><text x="80" y="94" text-anchor="end">100</text>
+</g>
+
+<!-- U-shaped curve: high (left ~85%) -> trough (center ~45%) -> high (right ~85%) -->
+<!-- y mapping: acc=0 ->340, acc=100 ->90. 85% ->127.5, 45% ->227.5 -->
+<path d="M120 127 C 200 150, 270 220, 360 228 C 450 220, 520 150, 600 127" fill="none" stroke="#C8102E" stroke-width="2.5"/>
+
+<!-- Edge guide lines (hairline) to trough -->
+<line x1="120" y1="127" x2="360" y2="127" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="600" y1="127" x2="360" y2="127" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="360" y1="127" x2="360" y2="228" stroke="#D4D4D4" stroke-width="1" stroke-dasharray="3 3"/>
+
+<!-- Marked points -->
+<circle cx="120" cy="127" r="6" fill="#545454"/>
+<circle cx="600" cy="127" r="6" fill="#545454"/>
+<circle cx="360" cy="228" r="6" fill="#C8102E"/>
+
+<text x="120" y="114" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">primacy</text>
+<text x="600" y="114" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">recency</text>
+<text x="360" y="250" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E" text-anchor="middle">lost in the middle</text>
+
+<!-- X axis labels -->
+<text x="120" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">start</text>
+<text x="360" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">middle</text>
+<text x="600" y="360" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">end</text>
+<text x="360" y="382" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle">Position of the relevant fact &#8594;</text>
+<text x="32" y="215" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" text-anchor="middle" transform="rotate(-90 32 215)">Accuracy (%)</text>
+</svg>

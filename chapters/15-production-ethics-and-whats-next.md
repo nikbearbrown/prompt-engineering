@@ -221,9 +221,9 @@ Separately, longitudinal evidence that *specification discipline itself* — not
 - Meincke, L., Mollick, E. R., Mollick, L., & Shapiro, D. (2025). *Prompting Science Report 1: Prompt Engineering is Complicated and Contingent.* arXiv:2503.04818; SSRN 5165270.
 - Meincke, L., et al. (2025). *Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting.* Wharton GAIL; SSRN 5285532.
 - Meincke, L., et al. (2025). *Prompting Science Report 3: Threaten or Tip.* Wharton GAIL; SSRN 5375404.
-- Basil, S., et al. (2025/2026). *Prompting Science Report 4: Expert Personas Don't Improve Factual Accuracy.* SSRN 5879722. [verify exact date]
+- Basil, S., Shapiro, I., Shapiro, D., Mollick, E. R., Mollick, L., & Meincke, L. (2025). *Prompting Science Report 4: Playing Pretend — Expert Personas Don't Improve Factual Accuracy.* Wharton GAIL; arXiv:2512.05858 (Dec 2025); SSRN 5879722.
 - Karpathy, A. (May 7, 2025). *System prompt learning* — X/Twitter post (x.com/karpathy/status/1921368644069765486). **Non-peer-reviewed; thinking-out-loud proposal, not a paper or formal result.**
-- "Can LLMs Correct Themselves? A Benchmark of Self-Correction in LLMs" (CorrectBench). arXiv:2510.16062 (Oct 2025). **Recent preprint — taxonomy useful; percentage claims pending peer review.** [verify]
+- "Can LLMs Correct Themselves? A Benchmark of Self-Correction in LLMs" (CorrectBench). arXiv:2510.16062 (submitted Oct 17, 2025). **Recent preprint — intrinsic/external/fine-tuned taxonomy useful; specific percentage claims pending peer review.**
 
 ---
 

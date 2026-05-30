@@ -1,0 +1,61 @@
+<!-- Five-step diagnostic protocol | Book: Prompt Engineering | Chapter: 06-persona-and-audience-patterns | Figure: 04 | Generated: 2026-05-29 | Source: pantry/06-persona-and-audience-patterns-cajal.md -->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04">
+<title id="fig-title-04">Five-step diagnostic protocol for a degraded persona system</title>
+<desc id="fig-desc-04">An ordered top-to-bottom protocol: start, then four decision tests (single-turn isolation, prompt-level diagnosis, drift characterization, multi-agent isolation), ending in a compound-failure check whose feedback edge loops back to re-test for masked failures.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="06-persona-and-audience-patterns" figure-number="04" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+<defs>
+<marker id="arrow06f4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/>
+</marker>
+<marker id="arrow06f4r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#C8102E"/>
+</marker>
+</defs>
+
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Diagnosing a degraded persona system</text>
+
+<!-- start -->
+<rect x="280" y="50" width="140" height="38" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="350" y="74" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Start: output degraded</text>
+<line x1="350" y1="88" x2="350" y2="110" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow06f4)"/>
+
+<!-- diamond 1 -->
+<polygon points="350,112 440,150 350,188 260,150" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="350" y="146" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Single-turn</text>
+<text x="350" y="160" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">isolation?</text>
+<text x="448" y="146" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">fails alone &#8594; mismatch</text>
+<line x1="350" y1="188" x2="350" y2="206" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow06f4)"/>
+
+<!-- diamond 2 -->
+<polygon points="350,208 440,246 350,284 260,246" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="350" y="242" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Prompt-level</text>
+<text x="350" y="256" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">diagnosis?</text>
+<text x="448" y="242" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">gap &#8594; hallucination</text>
+<line x1="350" y1="284" x2="350" y2="302" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow06f4)"/>
+
+<!-- diamond 3 -->
+<polygon points="350,304 440,342 350,380 260,342" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="350" y="338" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Drift over</text>
+<text x="350" y="352" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">turns?</text>
+<text x="448" y="342" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">yes &#8594; drift</text>
+<line x1="350" y1="380" x2="350" y2="398" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow06f4)"/>
+
+<!-- diamond 4: multi-agent -->
+<polygon points="350,400 432,432 350,464 268,432" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="350" y="429" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Multi-agent</text>
+<text x="350" y="443" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">isolation?</text>
+<text x="440" y="432" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">yes &#8594; bleeding</text>
+
+<!-- terminal compound check (left side) -->
+<rect x="40" y="246" width="150" height="56" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="115" y="270" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" font-weight="600">Compound-failure</text>
+<text x="115" y="287" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" font-weight="600">check</text>
+
+<!-- path from diamond4 to compound box -->
+<path d="M 268 432 L 115 432 L 115 302" fill="none" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow06f4)"/>
+
+<!-- feedback loop (red) back to diamond 1 -->
+<path d="M 115 246 L 115 150 L 260 150" fill="none" stroke="#C8102E" stroke-width="1.5" marker-end="url(#arrow06f4r)"/>
+<text x="118" y="200" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#C8102E">re-test for masked failures</text>
+</svg>

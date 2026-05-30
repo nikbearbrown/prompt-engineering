@@ -1,0 +1,45 @@
+<!-- Reasoning elicitation by model tier | Book: Prompt Engineering | Chapter: 08-reasoning-and-range-patterns | Figure: 05 | Generated: 2026-05-29 | Source: pantry/08-reasoning-and-range-patterns-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-05 fig-desc-05">
+<title id="fig-title-05">Reasoning elicitation by model tier</title>
+<desc id="fig-desc-05">A four-tier ladder mapping model tier to recommended action. Large base models gain from chain-of-thought. Mid-tier instruction-tuned models gain modestly. Reasoning-tuned models should get nothing added. Any tier you control can use CoT-decoding instead.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="08-reasoning-and-range-patterns" figure-number="05" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+
+<text x="350" y="36" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Whether to elicit reasoning depends on the tier</text>
+
+<!-- column headers -->
+<text x="180" y="68" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454" font-weight="600">Model tier</text>
+<text x="490" y="68" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454" font-weight="600">Recommended action</text>
+
+<!-- ROW 1: large base -->
+<line x1="60" y1="82" x2="640" y2="82" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="70" y="96" width="60" height="44" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="180" y="123" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Large base model</text>
+<rect x="360" y="100" width="260" height="36" fill="#C8102E" stroke="#2a1a0e" stroke-width="1"/>
+<text x="490" y="123" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#FFFFFF" font-weight="600">Add CoT &#8212; clear gain</text>
+
+<!-- ROW 2: mid-tier -->
+<line x1="60" y1="150" x2="640" y2="150" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="70" y="162" width="74" height="52" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="180" y="192" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Mid-tier instruct</text>
+<rect x="360" y="170" width="170" height="36" fill="#C8102E" fill-opacity="0.45" stroke="#2a1a0e" stroke-width="1"/>
+<text x="445" y="193" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Add CoT &#8212; modest help</text>
+
+<!-- ROW 3: reasoning-tuned -->
+<line x1="60" y1="224" x2="640" y2="224" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="70" y="236" width="88" height="60" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="180" y="270" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Reasoning-tuned</text>
+<rect x="360" y="248" width="260" height="36" fill="#FFFFFF" stroke="#C8102E" stroke-width="2"/>
+<text x="490" y="271" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E" font-weight="600">Add nothing &#8212; redundant</text>
+
+<!-- ROW 4: any tier, decoding -->
+<line x1="60" y1="304" x2="640" y2="304" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="70" y="316" width="100" height="66" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="180" y="396" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Any tier you control</text>
+<rect x="360" y="331" width="260" height="36" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="490" y="354" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Use CoT-decoding instead</text>
+<line x1="60" y1="386" x2="640" y2="386" stroke="#D4D4D4" stroke-width="1"/>
+
+<!-- capability arrow -->
+<text x="34" y="240" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454" transform="rotate(-90 34 240)">capability increases &#8595;</text>
+</svg>

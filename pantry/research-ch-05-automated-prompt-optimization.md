@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §5 — Automated Prompt Optimization: DSPy and the Post-Manual Era
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** Treating prompting as an optimization problem — Signatures, optimizers (MIPROv2, APE, OPRO), and when automation beats hand-tuning.
 **Research date:** 2026-05-29
 

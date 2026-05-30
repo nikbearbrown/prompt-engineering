@@ -1,0 +1,50 @@
+<!-- Temperature Reshapes the Distribution | Book: Prompt Engineering | Chapter: 00-foundations-sampling-and-logits | Figure: 02 | Generated: 2026-05-29 | Source: pantry/00-foundations-sampling-and-logits-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02"><title id="fig-title-02">Temperature reshapes the distribution</title><desc id="fig-desc-02">Three bar-chart panels sharing a baseline. Low temperature concentrates probability on one token, neutral temperature gives a descending staircase, and high temperature flattens the bars toward uniform.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="00-foundations-sampling-and-logits" figure-number="02" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Temperature reshapes the distribution</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Dividing each logit by T sharpens onto one token, or flattens toward uniform</text>
+
+<!-- Panel 1: low T (sharp) -->
+<g>
+<rect x="50" y="90" width="180" height="220" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="50" y1="290" x2="230" y2="290" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="50" y1="90" x2="50" y2="290" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="62" y="285" width="24" height="5" fill="#545454"/>
+<rect x="92" y="115" width="24" height="175" fill="#545454"/>
+<rect x="122" y="283" width="24" height="7" fill="#545454"/>
+<rect x="152" y="286" width="24" height="4" fill="#545454"/>
+<rect x="182" y="287" width="24" height="3" fill="#545454"/>
+<text x="140" y="334" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Low temperature</text>
+<text x="140" y="354" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">sharp</text>
+</g>
+
+<!-- Panel 2: neutral T (staircase) -->
+<g>
+<rect x="260" y="90" width="180" height="220" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="260" y1="290" x2="440" y2="290" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="260" y1="90" x2="260" y2="290" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="272" y="120" width="24" height="170" fill="#545454"/>
+<rect x="302" y="160" width="24" height="130" fill="#545454"/>
+<rect x="332" y="200" width="24" height="90" fill="#545454"/>
+<rect x="362" y="235" width="24" height="55" fill="#545454"/>
+<rect x="392" y="262" width="24" height="28" fill="#545454"/>
+<text x="350" y="334" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Neutral temperature</text>
+<text x="350" y="354" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">graded</text>
+</g>
+
+<!-- Panel 3: high T (flat) -->
+<g>
+<rect x="470" y="90" width="180" height="220" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="470" y1="290" x2="650" y2="290" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="470" y1="90" x2="470" y2="290" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="482" y="208" width="24" height="82" fill="#545454"/>
+<rect x="512" y="200" width="24" height="90" fill="#545454"/>
+<rect x="542" y="205" width="24" height="85" fill="#545454"/>
+<rect x="572" y="198" width="24" height="92" fill="#545454"/>
+<rect x="602" y="206" width="24" height="84" fill="#545454"/>
+<text x="560" y="334" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">High temperature</text>
+<text x="560" y="354" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">near-uniform</text>
+</g>
+
+<text x="350" y="390" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Same distribution under three temperatures. Bars measured from a shared zero baseline.</text>
+</svg>

@@ -1,0 +1,68 @@
+<!-- Calibration Drift: One Added Input Voids the Architecture | Book: Prompt Engineering | Chapter: 04-sycophancy-and-computational-skepticism | Figure: 03 | Generated: 2026-05-29 | Source: pantry/04-sycophancy-and-computational-skepticism-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">Calibration Drift</title><desc id="fig-desc-03">Two identical-layout panels of the dissenter system. Left, intact: pushback reaches only the primary, the agents disagree, and the human gate fires (active). Right, drifted: one extra pushback-to-dissenter arrow makes both agents agree, and the human gate goes dark and never fires.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="04-sycophancy-and-computational-skepticism" figure-number="03" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah3" markerWidth="8" markerHeight="8" refX="6.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#2a1a0e"/></marker>
+<marker id="ah3r" markerWidth="8" markerHeight="8" refX="6.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Calibration Drift: One Arrow Voids the Architecture</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">The diagrams look identical; only the added arrow and the dead gate differ</text>
+
+<!-- panel divider -->
+<line x1="350" y1="72" x2="350" y2="372" stroke="#D4D4D4" stroke-width="1"/>
+<text x="180" y="92" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Intact</text>
+<text x="520" y="92" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Drifted</text>
+
+<!-- ============ LEFT PANEL ============ -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" text-anchor="middle">
+<!-- pushback -->
+<rect x="40" y="120" width="86" height="34" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.4"/>
+<text x="83" y="141" fill="#C8102E">Pushback</text>
+<!-- primary -->
+<rect x="170" y="110" width="86" height="34" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.4"/>
+<text x="213" y="131" fill="#2a1a0e">Primary</text>
+<!-- dissenter -->
+<rect x="170" y="200" width="86" height="34" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="213" y="221" fill="#2a1a0e">Dissenter</text>
+<!-- pushback -> primary only -->
+<path d="M126,134 C150,128 152,128 168,127" fill="none" stroke="#C8102E" stroke-width="1.4" marker-end="url(#ah3r)"/>
+<!-- consensus -->
+<rect x="170" y="280" width="86" height="34" fill="#F5F5F5" stroke="#545454" stroke-width="1.4"/>
+<text x="213" y="301" fill="#2a1a0e">Consensus</text>
+<line x1="213" y1="144" x2="213" y2="198" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah3)"/>
+<line x1="213" y1="234" x2="213" y2="278" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="213" y="258" fill="#545454">disagree</text>
+<!-- human diamond ACTIVE -->
+<polygon points="213,320 247,348 213,376 179,348" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="2.2"/>
+<text x="213" y="345" fill="#2a1a0e">Human</text>
+<text x="213" y="358" fill="#2a1a0e">FIRES</text>
+<line x1="213" y1="314" x2="213" y2="318" stroke="#2a1a0e" stroke-width="2.2" marker-end="url(#ah3)"/>
+</g>
+
+<!-- ============ RIGHT PANEL ============ -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" text-anchor="middle">
+<rect x="380" y="120" width="86" height="34" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.4"/>
+<text x="423" y="141" fill="#C8102E">Pushback</text>
+<rect x="510" y="110" width="86" height="34" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.4"/>
+<text x="553" y="131" fill="#2a1a0e">Primary</text>
+<rect x="510" y="200" width="86" height="34" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="553" y="221" fill="#2a1a0e">Dissenter</text>
+<!-- pushback -> primary -->
+<path d="M466,134 C490,128 492,128 508,127" fill="none" stroke="#C8102E" stroke-width="1.4" marker-end="url(#ah3r)"/>
+<!-- OFFENDING extra arrow pushback -> dissenter -->
+<path d="M423,154 C423,200 460,214 508,217" fill="none" stroke="#C8102E" stroke-width="2.6" marker-end="url(#ah3r)"/>
+<text x="445" y="250" fill="#C8102E">added arrow</text>
+<!-- consensus -->
+<rect x="510" y="280" width="86" height="34" fill="#F5F5F5" stroke="#545454" stroke-width="1.4"/>
+<text x="553" y="301" fill="#2a1a0e">Consensus</text>
+<line x1="553" y1="144" x2="553" y2="198" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah3)"/>
+<line x1="553" y1="234" x2="553" y2="278" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah3)"/>
+<text x="553" y="258" fill="#545454">agree</text>
+<!-- human diamond DARK / inactive -->
+<polygon points="553,320 587,348 553,376 519,348" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="553" y="345" fill="#545454">Human</text>
+<text x="553" y="358" fill="#545454">never fires</text>
+</g>
+
+<text x="40" y="404" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Feeding the dissenter the pressure "for calibration" leaves the diagram intact while quietly disabling the safeguard.</text>
+</svg>

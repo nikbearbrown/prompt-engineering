@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §7 — Contested and Emerging Areas
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** Three live debates — whether prompting is obsolescing, when self-critique helps vs. hurts, and how multimodal prompting differs.
 **Research date:** 2026-05-29
 

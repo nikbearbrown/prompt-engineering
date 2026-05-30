@@ -45,7 +45,7 @@ This is the foundational chapter. It assumes only the book's stated baseline: ba
 
 Open any chat model. Type *"The capital of France is"* and watch it answer *"Paris."* It feels like a lookup — like the model reached into a table, found the row for France, and read off the cell. It is not a lookup. Something more peculiar happened, and the peculiarity is the whole subject of this book.
 
-Here is what actually happened. The model read your tokens, ran them through its layers, and at the final step produced a list of numbers — one number for *every* token in its vocabulary. Modern vocabularies run roughly 50,000 to 130,000 entries `[verify current vocab sizes for GPT-4o / Claude / Llama 3]`, so this list is a vector with tens of thousands of components. The entry for ` Paris` was high. The entry for ` Lyon` was lower but not zero. The entry for ` Tokyo` was lower still. The entry for ` banana` was very low — but, and this is the load-bearing fact, *not zero*. Every token in the vocabulary received a score. The model then converted those scores into probabilities and *drew a sample*. It happened to draw ` Paris` because ` Paris` had most of the probability mass. On a different draw, with the dial set differently, it might have drawn ` Lyon`.
+Here is what actually happened. The model read your tokens, ran them through its layers, and at the final step produced a list of numbers — one number for *every* token in its vocabulary. Modern vocabularies run from roughly 100,000 entries (GPT-4's cl100k tokenizer; Llama 3 at 128,256) up to about 200,000 (GPT-4o's o200k tokenizer), so this list is a vector with tens of thousands of components. The entry for ` Paris` was high. The entry for ` Lyon` was lower but not zero. The entry for ` Tokyo` was lower still. The entry for ` banana` was very low — but, and this is the load-bearing fact, *not zero*. Every token in the vocabulary received a score. The model then converted those scores into probabilities and *drew a sample*. It happened to draw ` Paris` because ` Paris` had most of the probability mass. On a different draw, with the dial set differently, it might have drawn ` Lyon`.
 
 The model did not retrieve "Paris." It sampled it. The answer felt deterministic because the distribution was sharply peaked — almost all the mass sat on one token — but the machinery underneath was probabilistic the whole time. Change the shape of that distribution and the same prompt yields different text. That is the mechanism this chapter makes precise, before Ch. 1 turns it into a behavioral law.
 
@@ -120,7 +120,7 @@ So the mechanism is clean. **Low $T$ sharpens** (concentrates mass on the leader
   deterministic     calibrated       prompt washed out
 ```
 
-**Common misconception.** *"Temperature 0 is the safe default — it removes randomness, so it removes errors."* It removes *sampling* randomness, not error. Greedy decoding always picks the locally highest-probability token, which can walk the model into a globally worse continuation, and on some models it triggers pathological **looping** — the model gets pinned on a high-probability token that re-licenses itself, and repeats. Google's own Gemini 3 API guidance recommends keeping temperature at the default 1.0 because lowering it can cause looping and degradation on reasoning tasks, and multiple Gemini 2.5 production incidents in early 2026 showed infinite repetition loops `[verify Gemini guidance URL and incident dates]`. So "always use temperature 0" is a folk rule with a documented, model-specific counterexample. Temperature is a tunable parameter, not a safety setting.
+**Common misconception.** *"Temperature 0 is the safe default — it removes randomness, so it removes errors."* It removes *sampling* randomness, not error. Greedy decoding always picks the locally highest-probability token, which can walk the model into a globally worse continuation, and on some models it triggers pathological **looping** — the model gets pinned on a high-probability token that re-licenses itself, and repeats. Google's own Gemini 3 developer guidance recommends keeping temperature at the default 1.0 because lowering it can cause looping and degradation on complex reasoning tasks (ai.google.dev/gemini-api/docs/gemini-3). So "always use temperature 0" is a folk rule with a documented, model-specific counterexample. Temperature is a tunable parameter, not a safety setting.
 
 A note for builders: APIs differ on whether they accept $T = 0$ literally (some clamp it to a tiny epsilon to avoid dividing by zero), and the *useful* range of $T$ is model-specific. There is no universal "correct" temperature; there is a temperature that, for *your* model and *your* task, produces the diversity-versus-determinism trade-off you want — a claim you settle empirically, which is the book's whole posture.
 
@@ -152,7 +152,7 @@ The weakness of top-k is that $k$ is *fixed* regardless of the distribution's sh
 
 ### Top-p (nucleus) sampling
 
-**Top-p**, also called **nucleus sampling** and introduced by Holtzman et al. (2020) `[verify: "The Curious Case of Neural Text Degeneration," arXiv:1904.09751]`, makes the cut *adaptive*. Mechanism: sort tokens by probability, then walk down the sorted list accumulating probability mass until the running total first reaches the threshold $p$; keep exactly that set (the "nucleus"), discard the rest, renormalize, and sample.
+**Top-p**, also called **nucleus sampling** and introduced by Holtzman et al. (2020, "The Curious Case of Neural Text Degeneration," arXiv:1904.09751), makes the cut *adaptive*. Mechanism: sort tokens by probability, then walk down the sorted list accumulating probability mass until the running total first reaches the threshold $p$; keep exactly that set (the "nucleus"), discard the rest, renormalize, and sample.
 
 Same five-token example, $p = (0.40, 0.25, 0.20, 0.10, 0.05)$, with **top-p, $p = 0.80$**:
 
@@ -229,12 +229,12 @@ The central claim of this chapter is mechanical and largely settled: an autoregr
 
 ## References
 
-- Holtzman, A., Buys, J., Du, L., Forbes, M., & Choi, Y. (2020). The Curious Case of Neural Text Degeneration. *ICLR 2020*. `[verify arXiv:1904.09751]` — origin of nucleus (top-p) sampling and the degeneration analysis motivating truncation.
-- Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention Is All You Need. *NeurIPS 2017*. `[verify arXiv:1706.03762]` — the transformer; the softmax output layer over the vocabulary is standard here.
-- Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press. — standard reference for the softmax function and its properties (Ch. 6). `[verify chapter/section for softmax + temperature]`
-- Ackley, D. H., Hinton, G. E., & Sejnowski, T. J. (1985). A Learning Algorithm for Boltzmann Machines. *Cognitive Science*, 9(1). `[verify]` — the statistical-physics origin of the temperature parameter in the Boltzmann/Gibbs distribution form softmax-with-temperature mirrors.
-- Fan, A., Lewis, M., & Dauphin, Y. (2018). Hierarchical Neural Story Generation. *ACL 2018*. `[verify arXiv:1805.04833]` — early use of top-k sampling for generation.
-- Google. Gemini API generation-configuration guidance (temperature and looping). `[verify exact URL and version; documents the low-temperature looping caution referenced in §0.3]`
+- Holtzman, A., Buys, J., Du, L., Forbes, M., & Choi, Y. (2020). The Curious Case of Neural Text Degeneration. *ICLR 2020*. arXiv:1904.09751 — origin of nucleus (top-p) sampling and the degeneration analysis motivating truncation.
+- Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention Is All You Need. *NeurIPS 2017*. arXiv:1706.03762 — the transformer; the softmax output layer over the vocabulary is standard here.
+- Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press. — standard reference for the softmax function and its properties (Ch. 6, "Deep Feedforward Networks," §6.2.2.3).
+- Ackley, D. H., Hinton, G. E., & Sejnowski, T. J. (1985). A Learning Algorithm for Boltzmann Machines. *Cognitive Science*, 9(1), 147–169 — the statistical-physics origin of the temperature parameter in the Boltzmann/Gibbs distribution form softmax-with-temperature mirrors.
+- Fan, A., Lewis, M., & Dauphin, Y. (2018). Hierarchical Neural Story Generation. *ACL 2018*. arXiv:1805.04833 — early use of top-k sampling for generation.
+- Google. Gemini 3 Developer Guide (generateContent API), temperature and looping guidance. https://ai.google.dev/gemini-api/docs/gemini-3 — documents the low-temperature looping caution referenced in §0.3.
 
 ---
 

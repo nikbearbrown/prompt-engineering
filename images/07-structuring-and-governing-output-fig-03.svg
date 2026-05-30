@@ -1,0 +1,73 @@
+<!-- The shared failure and its escape hatch | Book: Prompt Engineering | Chapter: 07-structuring-and-governing-output | Figure: 03 | Generated: 2026-05-29 | Source: pantry/07-structuring-and-governing-output-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03">
+<title id="fig-title-03">The shared failure and its escape hatch</title>
+<desc id="fig-desc-03">A four-row correspondence. Each structuring pattern shares one failure: an empty committed slot pressures the model to confabulate. A matched escape value gives a legal, low-entropy honest completion in that slot instead.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="07-structuring-and-governing-output" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="arrow07f3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/>
+</marker>
+</defs>
+
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Every pattern's empty slot, made safe by an escape value</text>
+
+<!-- column headers -->
+<text x="190" y="64" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E" font-weight="600">Empty slot &#8594; confabulation</text>
+<text x="540" y="64" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" font-weight="600">Escape value &#8594; honest completion</text>
+
+<!-- row template -->
+<!-- pattern labels at far left -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">
+<text x="30" y="100" text-anchor="start">Template</text>
+<text x="30" y="172" text-anchor="start">Recipe</text>
+<text x="30" y="244" text-anchor="start">Outline</text>
+<text x="30" y="316" text-anchor="start">Menu Actions</text>
+</g>
+
+<!-- ROW 1 -->
+<rect x="120" y="78" width="150" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="135" y="92" width="120" height="8" fill="#545454"/>
+<rect x="135" y="106" width="120" height="10" fill="none" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 3"/>
+<line x1="280" y1="102" x2="430" y2="102" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f3)"/>
+<rect x="440" y="78" width="150" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="455" y="92" width="120" height="8" fill="#545454"/>
+<rect x="455" y="106" width="120" height="10" fill="#C8102E" fill-opacity="0.12" stroke="#2a1a0e" stroke-width="1"/>
+<polygon points="466,107 466,115 462,111" fill="#2a1a0e"/>
+
+<!-- ROW 2 -->
+<rect x="120" y="150" width="150" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="135" y="164" width="120" height="8" fill="#545454"/>
+<rect x="135" y="178" width="120" height="10" fill="none" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 3"/>
+<line x1="280" y1="174" x2="430" y2="174" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f3)"/>
+<rect x="440" y="150" width="150" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="455" y="164" width="120" height="8" fill="#545454"/>
+<rect x="455" y="178" width="120" height="10" fill="#C8102E" fill-opacity="0.12" stroke="#2a1a0e" stroke-width="1"/>
+<polygon points="466,179 466,187 462,183" fill="#2a1a0e"/>
+
+<!-- ROW 3 -->
+<rect x="120" y="222" width="150" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="135" y="236" width="120" height="8" fill="#545454"/>
+<rect x="135" y="250" width="120" height="10" fill="none" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 3"/>
+<line x1="280" y1="246" x2="430" y2="246" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f3)"/>
+<rect x="440" y="222" width="150" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="455" y="236" width="120" height="8" fill="#545454"/>
+<rect x="455" y="250" width="120" height="10" fill="#C8102E" fill-opacity="0.12" stroke="#2a1a0e" stroke-width="1"/>
+<polygon points="466,251 466,259 462,255" fill="#2a1a0e"/>
+
+<!-- ROW 4 -->
+<rect x="120" y="294" width="150" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="135" y="308" width="120" height="8" fill="#545454"/>
+<rect x="135" y="322" width="120" height="10" fill="none" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 3"/>
+<line x1="280" y1="318" x2="430" y2="318" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f3)"/>
+<rect x="440" y="294" width="150" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="455" y="308" width="120" height="8" fill="#545454"/>
+<rect x="455" y="322" width="120" height="10" fill="#C8102E" fill-opacity="0.12" stroke="#2a1a0e" stroke-width="1"/>
+<polygon points="466,323 466,331 462,327" fill="#2a1a0e"/>
+
+<!-- legend -->
+<rect x="120" y="368" width="14" height="10" fill="none" stroke="#C8102E" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="140" y="377" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">unsafe empty slot</text>
+<rect x="290" y="368" width="14" height="10" fill="#C8102E" fill-opacity="0.12" stroke="#2a1a0e" stroke-width="1"/>
+<text x="310" y="377" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">legal escape value installed</text>
+</svg>

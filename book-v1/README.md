@@ -1,4 +1,4 @@
-# book-v1 — Prompt Engineering with LLMs
+# book-v1 — Prompt Engineering
 
 Consolidated build of drafts produced in this session. Each file contains chapter draft + research notes + hero image brief, separated by a triple-rule divider and marked "DRAFTING MATERIALS — not for publication."
 

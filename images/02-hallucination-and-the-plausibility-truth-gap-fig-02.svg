@@ -1,0 +1,60 @@
+<!-- Where Truth Would Have to Live in the Loss | Book: Prompt Engineering | Chapter: 02-hallucination-and-the-plausibility-truth-gap | Figure: 02 | Generated: 2026-05-29 | Source: pantry/02-hallucination-and-the-plausibility-truth-gap-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02"><title id="fig-title-02">Where truth would have to live in the loss, and does not</title><desc id="fig-desc-02">A closed training loop: a corpus feeds a model, which predicts the next token, compared against the actual next token, with the loss fed back. A detached world-and-facts block sits off to the side with a broken connector that never reaches the comparison, marking the missing truth term.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="02-hallucination-and-the-plausibility-truth-gap" figure-number="02" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="solid2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end"><path d="M0 0 L10 5 L0 10 z" fill="#2a1a0e"/></marker>
+<marker id="fb2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end"><path d="M0 0 L10 5 L0 10 z" fill="#545454"/></marker>
+</defs>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The objective closes over text alone</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">There is no slot where a truth-of-the-world signal can enter</text>
+
+<!-- corpus block -->
+<rect x="44" y="150" width="100" height="70" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<rect x="54" y="164" width="70" height="6" fill="#545454"/>
+<rect x="54" y="178" width="80" height="6" fill="#545454"/>
+<rect x="54" y="192" width="56" height="6" fill="#545454"/>
+<rect x="54" y="206" width="74" height="6" fill="#545454"/>
+<text x="94" y="240" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Corpus</text>
+
+<line x1="146" y1="185" x2="200" y2="185" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#solid2)"/>
+
+<!-- model block -->
+<rect x="202" y="150" width="100" height="70" fill="#F5F5F5" stroke="#C8102E" stroke-width="1.5"/>
+<text x="252" y="190" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="13" fill="#2a1a0e">Model</text>
+<text x="252" y="240" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">predicts next token</text>
+
+<line x1="304" y1="185" x2="356" y2="185" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#solid2)"/>
+
+<!-- predicted token glyph -->
+<rect x="358" y="162" width="44" height="46" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<rect x="368" y="174" width="24" height="22" fill="#D4D4D4"/>
+<text x="380" y="228" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Predicted</text>
+
+<line x1="404" y1="185" x2="446" y2="185" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#solid2)"/>
+
+<!-- comparison node -->
+<g>
+<polygon points="500,150 540,185 500,220 460,185" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="500" y="190" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="16" fill="#545454">=?</text>
+</g>
+<text x="500" y="240" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Compare</text>
+
+<!-- actual next token from corpus, into comparison from above -->
+<rect x="478" y="92" width="44" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<rect x="488" y="102" width="24" height="16" fill="#D4D4D4"/>
+<text x="500" y="86" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Actual next token</text>
+<line x1="500" y1="128" x2="500" y2="148" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#solid2)"/>
+
+<!-- loss feedback arrow (exists) red emphasis back to model -->
+<path d="M500 222 C 500 290 252 290 252 224" fill="none" stroke="#C8102E" stroke-width="2" marker-end="url(#solid2)"/>
+<text x="376" y="308" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">Loss signal feeds back</text>
+
+<!-- detached world/facts block with broken connector -->
+<rect x="556" y="300" width="110" height="60" fill="#FFFFFF" stroke="#545454" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="611" y="326" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">World</text>
+<text x="611" y="344" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">and facts</text>
+<!-- broken connector toward comparison, stops short -->
+<line x1="556" y1="300" x2="528" y2="232" stroke="#545454" stroke-width="1.5" stroke-dasharray="5 5"/>
+<circle cx="528" cy="232" r="4" fill="none" stroke="#545454" stroke-width="1.5"/>
+<text x="611" y="386" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">never connects</text>
+</svg>

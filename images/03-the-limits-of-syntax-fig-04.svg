@@ -1,0 +1,59 @@
+<!-- The Contract-Review Agent: Syntactic Steps, Semantic Anchors, Human Node | Book: Prompt Engineering | Chapter: 03-the-limits-of-syntax | Figure: 04 | Generated: 2026-05-29 | Source: pantry/03-the-limits-of-syntax-cajal.md -->
+<svg viewBox="0 0 700 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04"><title id="fig-title-04">The Contract-Review Agent</title><desc id="fig-desc-04">A seven-node vertical workflow alternating model steps with tool-grounded semantic anchors. A diamond human-decision node makes the one judgment the model cannot, then redirects a new task back up to the per-clause processing step before a final risk report.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="03-the-limits-of-syntax" figure-number="04" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah04" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah04r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="540" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Contract-Review Agent</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Syntactic model steps, tool-grounded semantic anchors, and a mandatory human gate</text>
+
+<!-- legend -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">
+<rect x="470" y="74" width="14" height="14" fill="#F5F5F5" stroke="#2a1a0e"/><text x="490" y="85">Model step (syntactic)</text>
+<rect x="470" y="94" width="14" height="14" fill="#F5F5F5" stroke="#545454"/><text x="490" y="105">Tool / semantic anchor</text>
+<rect x="470" y="114" width="14" height="14" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/><text x="490" y="125">Human / redirect</text>
+</g>
+
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" text-anchor="middle">
+<!-- 1 plan (model) -->
+<rect x="250" y="80" width="150" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="325" y="104" fill="#2a1a0e">Agent generates plan</text>
+<line x1="325" y1="120" x2="325" y2="138" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah04)"/>
+
+<!-- 2 document parser (tool) -->
+<rect x="250" y="140" width="150" height="40" fill="#F5F5F5" stroke="#545454" stroke-width="1.4"/>
+<text x="325" y="158" fill="#2a1a0e">Document parser</text>
+<text x="325" y="173" fill="#545454">returns ground-truth text</text>
+<line x1="325" y1="180" x2="325" y2="198" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah04)"/>
+
+<!-- 3 per-clause processing (model) -->
+<rect x="250" y="200" width="150" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="325" y="224" fill="#2a1a0e">Model processes clauses</text>
+<line x1="325" y1="240" x2="325" y2="258" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah04)"/>
+
+<!-- 4 benchmark database (tool) -->
+<rect x="250" y="260" width="150" height="40" fill="#F5F5F5" stroke="#545454" stroke-width="1.4"/>
+<text x="325" y="278" fill="#2a1a0e">Benchmark database</text>
+<text x="325" y="293" fill="#545454">returns external data</text>
+<line x1="325" y1="300" x2="325" y2="318" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah04)"/>
+
+<!-- 5 human decision diamond -->
+<polygon points="325,320 405,365 325,410 245,365" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.6"/>
+<text x="325" y="362" fill="#C8102E">Human</text>
+<text x="325" y="377" fill="#C8102E">decision</text>
+
+<!-- 6 redirect (human) — curved feedback to node 3 -->
+<path d="M245,365 C150,365 150,220 248,220" fill="none" stroke="#C8102E" stroke-width="1.6" marker-end="url(#ah04r)"/>
+<text x="120" y="296" text-anchor="middle" fill="#C8102E" font-size="11">redirect</text>
+<text x="120" y="310" text-anchor="middle" fill="#C8102E" font-size="11">new task</text>
+
+<!-- down to report -->
+<line x1="325" y1="410" x2="325" y2="438" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah04)"/>
+
+<!-- 7 final report -->
+<rect x="250" y="440" width="150" height="44" fill="#F5F5F5" stroke="#545454" stroke-width="1.2"/>
+<text x="325" y="460" fill="#2a1a0e">Structured</text>
+<text x="325" y="475" fill="#2a1a0e">risk report</text>
+</g>
+</svg>

@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §3 — Long-Context Prompting: Position Effects
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** How models use (and misuse) position in long contexts — Lost-in-the-Middle, multi-needle collapse, and injection risk.
 **Research date:** 2026-05-29
 ---

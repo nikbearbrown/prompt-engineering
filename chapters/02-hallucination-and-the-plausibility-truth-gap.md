@@ -1,6 +1,6 @@
 > **Voice status:** `voice-unanchored`. Both root `style/` and `books/prompt-engineering/style/` empty as of this draft. Drafted to match the anatomy and voice of the model chapter (06-persona-patterns.md).
 >
-> **Absorption note:** This chapter develops the Fact-Check List Pattern named here and treated in depth in the provisional 6C draft (output-governing patterns). It also absorbs the "format over truth" finding (Wang et al. 2023) from research §1. Cross-references to later chapters use the TIKTOC numbering; `[verify]` flags mark claims pending source confirmation.
+> **Absorption note:** This chapter develops the Fact-Check List Pattern named here and treated in depth in the provisional 6C draft (output-governing patterns). It also absorbs the "format over truth" finding (Wang et al. 2023) from research §1. Cross-references to later chapters use the TIKTOC numbering.
 
 ---
 
@@ -76,6 +76,8 @@ These are **orthogonal**: knowing where an output sits on one axis tells you not
 
 Hold the word "hallucination" at arm's length for a moment. It is a misleading name — it suggests a perceptual glitch, a rare misfire, something a healthy model wouldn't do. Mechanism before name: what actually happens is that the model samples the most probable continuation, and *sometimes the most probable continuation is false*. There is no separate "hallucination mode." The same forward pass that produces a true citation produces a fabricated one. We keep the word because the field uses it, but the mechanism is just sampling from a distribution that was never shaped by truth.
 
+This is the same point [Brown's *Botspeak*](#references) — the companion AI-fluency book to this one — compresses into a single rule: *confidence is a textual feature, with no necessary relationship to correctness.* Fluency, a confident register, round numbers, and well-formed citations are **learned patterns**, not signals of grounding; a wrong-but-plausible output is best read not as a malfunction but as *the shape of a placeholder* — a continuation that fits where a correct one would go, produced without any particular source. That book frames the practitioner's growth as a shift from *fluent* to *literate*: the move from "this might be wrong" to "I know what wrong looks like here." It is the same orthogonality this chapter derives from the loss function, stated as a reading discipline — and the Fact-Check List Pattern below is one way to make that discipline operational rather than vibes-based.
+
 ---
 
 ## 2.3 Inside the objective: where truth would have to live, and doesn't
@@ -98,6 +100,8 @@ A second-order effect compounds it. Post-training alignment — the reinforcemen
 
 **The misconception, dissolved.** Why does fluent-implies-correct work for humans and fail for models? Because in humans, fluency is *caused by* competence — you cannot fluently explain thermodynamics without knowing thermodynamics. In a language model, fluency is caused by *exposure to fluent text*, which is entirely decoupled from whether any particular generated statement is true. The model can produce the rhythm of expertise (Ch. 6's persona-hallucination failure mode is exactly this) without the substance. You inherited a heuristic calibrated on a machine — the human brain — where the two axes are bolted together. You are now operating a machine where they are not.
 
+This decoupling of *form* from *content* is the engine of what [Brown's *Computational Skepticism for AI*](#references) — a companion volume to this one — names the **fluency trap**, and the trap is two-stage: a fluent output not only inflates your confidence in *it*, it inflates your confidence in your own *evaluation* of it, so the very property that should trigger scrutiny suppresses it. The blunt statement of the orthogonality, in that book's words, is that *a sentence can be maximally fluent and maximally wrong simultaneously*. The defense it prescribes is to refuse to let fluency *do epistemic work* — and §2.5's Fact-Check List is one way to install that refusal as a procedure rather than a resolution.
+
 ---
 
 ## 2.4 The fix that isn't: why a reasoning trace doesn't add a truth term
@@ -108,12 +112,12 @@ This is the most important misconception in the chapter, because the fix is real
 
 The decisive evidence is an ablation. [Wang et al. (2023)](https://arxiv.org/abs/2212.10001), "Towards Understanding Chain-of-Thought Prompting," fed models reasoning exemplars whose steps were **invalid** — logically wrong, but still relevant to the problem and correctly ordered. If CoT worked by getting the model to follow valid logic, invalid exemplars should wreck performance. They did not. Prompting with invalid reasoning steps **recovered 80–90% of valid-CoT performance.** What mattered was not the *correctness* of the rationale but its **relevance to the query** and the **correct ordering of steps**.
 
-Read that result for what it says about our two axes. A reasoning trace is itself a token sequence, generated by the same maximum-likelihood machinery as everything else. CoT does not install a truth term; it conditions the decoding trajectory into a **plausible step-shaped manifold** — the region of the output space where text *looks like* reasoning. Landing in that region happens to correlate with correct answers on problems whose correct solution has a step-shaped structure the model has seen many variants of (arithmetic, symbolic manipulation). It is still optimizing the shape of the output, not its validity. The trace is plausibility wearing the costume of logic. [verify: the 80–90% figure is from Wang et al. 2023, ACL, arXiv:2212.10001; confirmed in research notes.]
+Read that result for what it says about our two axes. A reasoning trace is itself a token sequence, generated by the same maximum-likelihood machinery as everything else. CoT does not install a truth term; it conditions the decoding trajectory into a **plausible step-shaped manifold** — the region of the output space where text *looks like* reasoning. Landing in that region happens to correlate with correct answers on problems whose correct solution has a step-shaped structure the model has seen many variants of (arithmetic, symbolic manipulation). It is still optimizing the shape of the output, not its validity. The trace is plausibility wearing the costume of logic.
 
 Two consequences for the prompt engineer, both falsifiable:
 
 - **A reasoning trace is not a verification.** A fluent, well-ordered, confident chain of steps can lead to a wrong answer, and the steps will look just as reasoning-shaped as a correct chain. Do not read the visible trace as evidence the conclusion is true; it is evidence the conclusion is *step-shaped*. This is the §2.1 failure generalized: the trace, like the citation, optimizes appearance.
-- **CoT is conditional, not universal.** On reasoning-tuned models, [Meincke, Mollick et al. (2025)](https://arxiv.org/abs/2506.07142) report that explicit "think step by step" adds little and sometimes *adds answer-to-answer variance*, occasionally flipping otherwise-correct answers. CoT earns its place by mechanism (conditioning toward a useful trajectory shape) under stated conditions — not as a truth charm. [verify: Meincke/Mollick "Prompting Science Report 2," arXiv:2506.07142; recent preprint, flag as 2025 and possibly not peer-reviewed.] We return to this conditionality in Ch. 8.
+- **CoT is conditional, not universal.** On reasoning-tuned models, [Meincke, Mollick et al. (2025)](https://arxiv.org/abs/2506.07142) report that explicit "think step by step" adds little and sometimes *adds answer-to-answer variance*, occasionally flipping otherwise-correct answers. CoT earns its place by mechanism (conditioning toward a useful trajectory shape) under stated conditions — not as a truth charm. (Meincke/Mollick "Prompting Science Report 2," arXiv:2506.07142, is a 2025 Wharton preprint, not peer-reviewed at time of writing.) We return to this conditionality in Ch. 8.
 
 So showing the work does not close the plausibility–truth gap. It often *improves the answer* on structured problems — worth using — while leaving the gap exactly where it was on the surface: a wrong chain looks like a right one. We need something that does not live inside the model's own distribution.
 
@@ -132,7 +136,7 @@ Under this pattern, the Mycroft assistant would produce its prose **and then**:
 
 Now look at what changed. The fluent paragraph is unchanged; it is still optimized for plausibility. But its **factual commitments have been separated from the connective prose and rendered as discrete, checkable items.** This is the operational form of the orthogonality claim. An unfalsifiable paragraph becomes a falsifiable list: item 1 is a topic lookup, item 2 a verbatim-string search, item 3 a page check. The pattern converts diffuse plausibility into enumerated commitments a verifier — human or tool — can attack one at a time. The analyst's job shifts from "reverse-engineer which sentences are even claims and then verify each" to "run down these three items."
 
-There is a second, weaker effect worth naming honestly: forcing the model to *name* a claim sometimes surfaces its own uncertainty — a claim asserted confidently inside flowing prose looks shakier isolated as line item 2, and models will somewhat more often hedge an isolated claim than a buried one. Treat this as a mild bonus, not a mechanism to rely on; whether it is a real calibration effect or a formatting artifact is genuinely open. [verify: weak uncertainty-surfacing effect — suggestive but underpowered; flag as unconfirmed.]
+There is a second, weaker effect worth naming honestly: forcing the model to *name* a claim sometimes surfaces its own uncertainty — a claim asserted confidently inside flowing prose looks shakier isolated as line item 2, and models will somewhat more often hedge an isolated claim than a buried one. Treat this as a mild bonus, not a mechanism to rely on; whether it is a real calibration effect or a formatting artifact is genuinely open (suggestive but underpowered; not independently confirmed).
 
 ### The honest limit (state it before you trust the pattern)
 
@@ -215,6 +219,8 @@ Ch. 1's stochastic-machine framing supplies the substrate: output is a *sample* 
 - Wang, B., Min, S., Deng, X., Shen, J., Wu, Y., Zettlemoyer, L., & Sun, H. (2023). [Towards Understanding Chain-of-Thought Prompting: An Empirical Study of What Matters](https://arxiv.org/abs/2212.10001). *ACL 2023* (Long Papers). arXiv:2212.10001.
 - Meincke, L., Mollick, E. R., Mollick, L., & Shapiro, D. (2025). [Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting](https://arxiv.org/abs/2506.07142). arXiv:2506.07142. *(Recent preprint; flag as 2025, possibly not peer-reviewed.)*
 - White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, H., Elnashar, A., Spencer-Smith, J., & Schmidt, D. C. (2023). [A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT](https://arxiv.org/abs/2302.11382). arXiv:2302.11382. *(Source of the Fact-Check List Pattern.)*
+- Brown, N. B. *Botspeak: The Practitioner's Guide to AI Fluency.* Companion volume. *(Source of "confidence is a textual feature," "the shape of a placeholder," and the fluent-vs-literate distinction.)*
+- Brown, N. B. *Computational Skepticism for AI.* Companion volume. *(Source of the two-stage "fluency trap," the form-vs-content framing, and "a sentence can be maximally fluent and maximally wrong simultaneously.")*
 
 ---
 

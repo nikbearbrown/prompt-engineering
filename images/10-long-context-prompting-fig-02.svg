@@ -1,0 +1,46 @@
+<!-- Why recency: the autoregressive anchor | Book: Prompt Engineering | Chapter: 10-long-context-prompting | Figure: 02 | Generated: 2026-05-29 | Source: pantry/10-long-context-prompting-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02">
+<title id="fig-title-02">Recency bias is the autoregressive objective seen from the prompt side</title>
+<desc id="fig-desc-02">A horizontal row of eight token cells. The rightmost is the token being predicted, drawn as an open cell with a target ring. Conditioning arrows fan into it from the prior cells, drawn thick from the nearest neighbors and progressively thinner from cells further left, so visual weight concentrates on the most recent context.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="10-long-context-prompting" figure-number="02" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C8102E"/></marker>
+<marker id="arrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#545454"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">Each token is predicted from the ones immediately before it</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Recent context is weighted most heavily, so it dominates the next-token prediction</text>
+
+<!-- Eight token cells, evenly spaced -->
+<!-- cells at x = 50, 130, 210, 290, 370, 450, 530, 610 ; y=240, w=60, h=44 -->
+<g fill="#F5F5F5" stroke="#545454" stroke-width="1.5">
+<rect x="50" y="240" width="60" height="44"/>
+<rect x="130" y="240" width="60" height="44"/>
+<rect x="210" y="240" width="60" height="44"/>
+<rect x="290" y="240" width="60" height="44"/>
+<rect x="370" y="240" width="60" height="44"/>
+<rect x="450" y="240" width="60" height="44"/>
+<rect x="530" y="240" width="60" height="44"/>
+</g>
+<!-- Predicted cell (rightmost, open) with target ring (red emphasis) -->
+<rect x="610" y="240" width="60" height="44" fill="#FFFFFF" stroke="#C8102E" stroke-width="2"/>
+<circle cx="640" cy="262" r="9" fill="none" stroke="#C8102E" stroke-width="2"/>
+<circle cx="640" cy="262" r="3" fill="#C8102E"/>
+<text x="640" y="306" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E" text-anchor="middle">next token</text>
+
+<!-- Conditioning arrows fanning into predicted cell, graded thick-near / thin-far -->
+<!-- nearest (heavy, red) -->
+<path d="M560 232 Q 600 180 632 234" fill="none" stroke="#C8102E" stroke-width="4" marker-end="url(#arrowR)"/>
+<path d="M480 232 Q 555 168 628 234" fill="none" stroke="#C8102E" stroke-width="3" marker-end="url(#arrowR)"/>
+<!-- middle (grey, medium) -->
+<path d="M400 232 Q 515 150 624 234" fill="none" stroke="#545454" stroke-width="2" marker-end="url(#arrowG)"/>
+<path d="M320 232 Q 480 135 620 233" fill="none" stroke="#545454" stroke-width="1.2" marker-end="url(#arrowG)"/>
+<!-- far (faint) -->
+<path d="M240 232 Q 450 120 616 233" fill="none" stroke="#D4D4D4" stroke-width="1" marker-end="url(#arrowG)"/>
+<path d="M160 232 Q 420 108 612 233" fill="none" stroke="#D4D4D4" stroke-width="0.8" marker-end="url(#arrowG)"/>
+
+<text x="560" y="335" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E" text-anchor="middle">strong influence (near)</text>
+<text x="200" y="335" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">faint influence (far)</text>
+
+<text x="40" y="385" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The next-token objective conditions each step on its immediate neighbors, so the tail of the prompt carries the most weight.</text>
+</svg>

@@ -1,0 +1,55 @@
+<!-- The recommended long-context layout | Book: Prompt Engineering | Chapter: 10-long-context-prompting | Figure: 05 | Generated: 2026-05-29 | Source: pantry/10-long-context-prompting-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-05 fig-desc-05">
+<title id="fig-title-05">The recommended layout puts load-bearing tokens last</title>
+<desc id="fig-desc-05">A tall vertical prompt container in three stacked zones. The top zone holds low-priority context, the middle zone is filler with a concave trough notch marking the under-attended region, and the bottom zone subdivides into instruction, safety rules, key facts, and the question. A side tick indicator rises to a maximum at the bottom, mirroring recency.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="10-long-context-prompting" figure-number="05" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="40" y="42" font-family="'EB Garamond',Georgia,serif" font-size="18" fill="#2a1a0e">Engineer the layout to the attention curve</text>
+<text x="40" y="64" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Low-priority context up top, filler in the trough, load-bearing tokens last</text>
+
+<!-- Container -->
+<rect x="180" y="90" width="200" height="290" fill="none" stroke="#2a1a0e" stroke-width="1.5"/>
+
+<!-- Top zone: low-priority context -->
+<rect x="181" y="91" width="198" height="70" fill="#F5F5F5"/>
+<line x1="180" y1="161" x2="380" y2="161" stroke="#D4D4D4" stroke-width="1"/>
+<text x="280" y="130" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">low-priority context</text>
+
+<!-- Middle zone: filler with trough notch -->
+<rect x="181" y="161" width="198" height="120" fill="#F5F5F5"/>
+<!-- concave trough notch on right side -->
+<path d="M379 191 Q 350 221 379 251" fill="#FFFFFF" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="180" y1="281" x2="380" y2="281" stroke="#D4D4D4" stroke-width="1"/>
+<text x="280" y="216" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">filler / mid-relevance</text>
+<text x="280" y="234" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">(under-attended trough)</text>
+
+<!-- Bottom zone: four load-bearing sub-bands (red emphasis) -->
+<rect x="181" y="281" width="198" height="24" fill="#C8102E"/>
+<rect x="181" y="305" width="198" height="24" fill="#C8102E"/>
+<rect x="181" y="329" width="198" height="24" fill="#C8102E"/>
+<rect x="181" y="353" width="198" height="26" fill="#C8102E"/>
+<line x1="181" y1="305" x2="379" y2="305" stroke="#FFFFFF" stroke-width="1"/>
+<line x1="181" y1="329" x2="379" y2="329" stroke="#FFFFFF" stroke-width="1"/>
+<line x1="181" y1="353" x2="379" y2="353" stroke="#FFFFFF" stroke-width="1"/>
+<text x="280" y="297" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#FFFFFF" text-anchor="middle">instruction</text>
+<text x="280" y="321" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#FFFFFF" text-anchor="middle">safety rules</text>
+<text x="280" y="345" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#FFFFFF" text-anchor="middle">key facts</text>
+<text x="280" y="370" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#FFFFFF" text-anchor="middle">user question</text>
+
+<!-- Side attention-tick indicator (secondary), short at top, shortest at trough, tallest at bottom -->
+<g stroke="#545454" stroke-width="2">
+<line x1="410" y1="110" x2="430" y2="110"/>
+<line x1="410" y1="135" x2="425" y2="135"/>
+<line x1="410" y1="160" x2="420" y2="160"/>
+<line x1="410" y1="195" x2="418" y2="195"/>
+<line x1="410" y1="221" x2="414" y2="221"/>
+<line x1="410" y1="247" x2="418" y2="247"/>
+<line x1="410" y1="290" x2="450" y2="290"/>
+<line x1="410" y1="320" x2="465" y2="320"/>
+<line x1="410" y1="350" x2="480" y2="350"/>
+<line x1="410" y1="372" x2="490" y2="372"/>
+</g>
+<line x1="408" y1="100" x2="408" y2="380" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="500" y="240" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" transform="rotate(-90 500 240)" text-anchor="middle">attention weight &#8594;</text>
+<text x="430" y="396" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">peaks at the bottom (recency)</text>
+</svg>

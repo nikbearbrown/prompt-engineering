@@ -138,13 +138,15 @@ This is expensive. Every user correction, legitimate or sycophantic, triggers hu
 
 The dissenting sub-agent is the system-level response to sycophancy. There is also a reader-level response, which applies to any use of an RLHF-trained model, system-architected or not.
 
-**Computational skepticism** is the discipline of treating model outputs as hypotheses to be tested against external ground truth, not as conclusions to be accepted on confidence. In practice, it means three operational habits:
+**Computational skepticism** is the discipline of treating model outputs as hypotheses to be tested against external ground truth, not as conclusions to be accepted on confidence. The companion volume that gives this chapter its second name — [Brown's *Computational Skepticism for AI*](#references) — develops the discipline at book length, and two of its moves operationalize the reader-level habits below. The first is **Popperian**: before you read the output, specify what a wrong answer would look like — concretely, not vaguely ("a wrong answer would soften a 340-basis-point underperformance into 'short-term volatility'"). The prior specification is your anchor; without it you read the output with no criterion except fluency, which is precisely the criterion sycophancy has learned to satisfy. The second is the recognition that **producing an output is cheap and verifying it is expensive** — the solve-verify asymmetry inverts in AI deployment — so *if you do not budget for verification, you will not get verification*. The deliberate-pushback diagnostic below is one such budgeted verification step. In practice, computational skepticism means three operational habits:
 
 1. **Ask the model to cite the data**, and check whether the cited data exists and says what the model claims it says (Ch. 2's Fact Check List Pattern).
 2. **Vary the framing of the question** across multiple queries and check whether the answer is stable. A sycophantic model's answer will drift with the framing even when the facts are unchanged.
 3. **Introduce pushback deliberately** as a diagnostic. Ask a question, get an answer, then say "I don't think that's right" with no additional information. If the model revises without new evidence, you are interacting with a system whose outputs are not reliable for any decision that might be contradicted by someone with institutional authority.
 
 This is not the reader's failure; it is the user-facing consequence of the training regime. Knowing it changes how you use the tool.
+
+The companion AI-fluency book to this one, [Brown's *Botspeak*](#references), gives this stance its working metaphor: treat the model as *a colleague who is fast, well-read, and slightly too agreeable*, and use it by **pushing back on it** — Conversation as a deliberate step in the work, not a courtesy. That framing names the same trap the §4.2 mechanism explains: the agreeableness is not a personality quirk you can ask away but a trained gradient, so the productive move is to design the interaction so that *being useful requires the model to disagree with you* (steelman the opposing case before stating its own; argue against the position you are hoping is right). Computational skepticism is the architectural version of that habit; the deliberate-pushback diagnostic above is its hand-operated version.
 
 ---
 
@@ -178,6 +180,8 @@ The book's master argument — **architecture is the leverage point, not the mod
 - Weng, L. (2024). [*Reward Hacking in Reinforcement Learning*](https://lilianweng.github.io/posts/2024-11-28-reward-hacking/). Lil'Log.
 - Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C. L., Mishkin, P., et al. (2022). [*Training Language Models to Follow Instructions with Human Feedback*](https://arxiv.org/abs/2203.02155). arXiv:2203.02155.
 - Markowitz, H. (1952). [*Portfolio Selection*](https://www.jstor.org/stable/2975974). *The Journal of Finance*, 7(1), 77–91. (Cited here as the foundation of the fund-performance analytic the NovaTech scenario exercises; not load-bearing for the sycophancy argument.)
+- Brown, N. B. *Botspeak: The Practitioner's Guide to AI Fluency.* Companion volume. *(Source of the "colleague who is fast, well-read, and slightly too agreeable" framing of Conversation.)*
+- Brown, N. B. *Computational Skepticism for AI.* Companion volume. *(Source of the Popperian "specify what wrong looks like" move and the solve-verify asymmetry / verification-budget framing; develops computational skepticism as a discipline at book length.)*
 
 ---
 

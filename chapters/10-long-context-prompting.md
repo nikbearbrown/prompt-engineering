@@ -1,6 +1,6 @@
 > **Voice status:** `voice-unanchored`. Both root `style/` and `books/prompt-engineering/style/` empty as of this draft.
 >
-> **Sourcing note:** Figures from research-ch-03 confirmed via WebSearch snippets quoting source abstracts; arXiv PDF fetches were rate-limited on the research run. `[verify]` flags mark the numbers that warrant a PDF pass against the source tables (NINJA arXiv:2511.04707; multilingual NIAH arXiv:2409.18006) before print.
+> **Sourcing note:** Figures verified against source abstracts on a dedicated fact-check pass — NINJA (arXiv:2511.04707), multilingual NIAH / mLongRR (arXiv:2409.18006), Found-in-the-Middle (arXiv:2406.16008), and Lost-in-the-Middle (arXiv:2307.03172) all confirmed.
 
 ---
 
@@ -23,7 +23,7 @@
 
 ## TL;DR
 
-A language model does not read a long context uniformly. Accuracy on a fact is highest when that fact sits at the **beginning** or **end** of the input and sags in the **middle** — a U-shaped curve replicated across models and tasks ([Liu et al., 2024](https://arxiv.org/abs/2307.03172)). The recency half of that curve is an artifact of the autoregressive next-token objective: a model trained to predict each token from the ones immediately before it learns to weight recent context heavily. Three consequences follow for prompt design. First, place your highest-priority instruction **last**, where recency makes it most likely to be obeyed. Second, do not trust single-needle retrieval benchmarks — asking for three facts at once can drop accuracy from ~95% to ~40% ([multilingual NIAH, 2024](https://arxiv.org/abs/2409.18006)) `[verify]`. Third, the same position machinery is an attack surface: placing a harmful goal at the *front* of a long context raised attack success on one model from a 23.7% baseline to 58.8% ([NINJA, 2025](https://arxiv.org/abs/2511.04707)) `[verify]`, which means safety rules belong at the end and user content must never be the last thing the model reads.
+A language model does not read a long context uniformly. Accuracy on a fact is highest when that fact sits at the **beginning** or **end** of the input and sags in the **middle** — a U-shaped curve replicated across models and tasks ([Liu et al., 2024](https://arxiv.org/abs/2307.03172)). The recency half of that curve is an artifact of the autoregressive next-token objective: a model trained to predict each token from the ones immediately before it learns to weight recent context heavily. Three consequences follow for prompt design. First, place your highest-priority instruction **last**, where recency makes it most likely to be obeyed. Second, do not trust single-needle retrieval benchmarks — asking for three facts at once can drop accuracy from ~96% to ~40% ([multilingual NIAH, 2024](https://arxiv.org/abs/2409.18006)). Third, the same position machinery is an attack surface: placing a harmful goal at the *front* of a long context raised attack success on one model from a 23.7% baseline to 58.8% ([NINJA, 2025](https://arxiv.org/abs/2511.04707)), which means safety rules belong at the end and user content must never be the last thing the model reads.
 
 ---
 
@@ -59,7 +59,7 @@ The lesson this chapter develops: in long-context prompting, *where you put a th
 
 ## 10.2 The U-shaped curve
 
-You already have a prior for this, even if you have never seen an LLM. Recite a grocery list someone read you ten seconds ago and you will reliably get the *first* item and the *last* item; the middle is mush. Psychologists named this the **serial-position effect** — strong recall at the start (primacy) and end (recency), weak recall in the middle ([Murdock's 1962 free-recall curve](https://en.wikipedia.org/wiki/Serial-position_effect) is the canonical human plot) `[verify]`.
+You already have a prior for this, even if you have never seen an LLM. Recite a grocery list someone read you ten seconds ago and you will reliably get the *first* item and the *last* item; the middle is mush. Psychologists named this the **serial-position effect** — strong recall at the start (primacy) and end (recency), weak recall in the middle ([Murdock's 1962 free-recall curve](https://en.wikipedia.org/wiki/Serial-position_effect) — *Journal of Verbal Learning and Verbal Behavior*, 64, 482–488 — is the canonical human plot).
 
 Language models show a curve of the same *shape*. The mechanisms are not the same — there is no human short-term store inside a transformer — but the picture rhymes, and the rhyme is a useful hook so long as we puncture it before it misleads.
 
@@ -93,7 +93,7 @@ But primacy is **weaker than recency and decays as the window fills**. Early tok
 
 ### The honest split: how much is fixable
 
-Here is where the easy story breaks, and you should let it. "Found in the Middle" proposed a training-free, inference-time **calibration**: estimate the position-only component of the attention bias and subtract it, recovering up to **15 percentage points** of RAG accuracy `[verify]`. That recovery is evidence that *part* of the bias is a correctable attention artifact — not the immutable consequence of the training objective.
+Here is where the easy story breaks, and you should let it. "Found in the Middle" proposed a training-free, inference-time **calibration**: estimate the position-only component of the attention bias and subtract it, recovering up to **15 percentage points** of RAG accuracy. That recovery is evidence that *part* of the bias is a correctable attention artifact — not the immutable consequence of the training objective.
 
 So the honest position is two-part, and you should resist collapsing it:
 
@@ -110,13 +110,13 @@ Anyone who tells you the whole curve is an unfixable law of nature is overclaimi
 
 Single-needle retrieval — "find the one out-of-place sentence in this haystack" — is largely **solved** on frontier models. Numbers near 95–96% are routine on modern models for one fact in one long document. If your evaluation stops there, you will conclude your long-context system works.
 
-It does not, and here is the gotcha. Ask for *more than one* fact at once and the floor drops out. Work on multilingual needle-in-a-haystack ([arXiv:2409.18006](https://arxiv.org/abs/2409.18006)) reports that retrieving a **single** target sentence runs ~95% on strong models, but **three target sentences in English drops to roughly 40%** `[verify]`. That is the empirical basis for "multi-needle collapse," and note the correction the research file insists on: the figure is closer to **~40% for 3 needles**, not the rounder, more optimistic "~60%" that circulates. Cite the specific n-needle number, not a comfortable round one.
+It does not, and here is the gotcha. Ask for *more than one* fact at once and the floor drops out. Work on multilingual needle-in-a-haystack ([Multilingual Needle in a Haystack / mLongRR, arXiv:2409.18006](https://arxiv.org/abs/2409.18006)) reports that the best models (Gemini-1.5, GPT-4o) hit **~96% in English** with a **single** target sentence, but **three target sentences in English drops to roughly 40%** (and 0% in low-resource Somali) — confirmed against the paper's abstract. That is the empirical basis for "multi-needle collapse," and note the correction the research file insists on: the figure is **~40% for 3 needles**, not the rounder, more optimistic "~60%" that circulates. Cite the specific n-needle number, not a comfortable round one.
 
 LangChain's extension of Kamradt's test to N needles confirms the direction: retrieval drops as needle count rises and as context lengthens, and needles placed earlier in a long context are retrieved less reliably — consistent with recency dominance ([LangChain multi-needle blog](https://blog.langchain.com/multi-needle-in-a-haystack/)).
 
 Why does adding a second and third needle break things so much harder than the first? Two mechanisms compound. First, **synthesis is not retrieval**: pulling one fact to the front of generation is easy; holding three facts simultaneously salient while composing an answer competes for the same finite attention budget. Second, **the U-curve applies to each needle separately** — with three needles scattered through a long context, at least one of them is probably sitting in the middle, where the curve says it will be missed.
 
-There is a related, under-sourced prediction worth flagging honestly. When two documents in a long context *contradict* each other, the recency bias predicts the model will silently resolve toward the more recent fact without flagging the conflict — call it **silent contradiction resolution**. This is intuitive and consistent with recency, but the research file found no clean primary citation isolating *position-driven* contradiction resolution with calibration failure. Treat it as a reasoned prediction from the recency mechanism, not an established result. `[verify]`
+There is a related, under-sourced prediction worth flagging honestly. When two documents in a long context *contradict* each other, the recency bias predicts the model will silently resolve toward the more recent fact without flagging the conflict — call it **silent contradiction resolution**. This is intuitive and consistent with recency, but no clean primary citation isolating *position-driven* contradiction resolution with calibration failure could be located (UNVERIFIED — not an established result in the literature). Treat it as a reasoned prediction from the recency mechanism, not a documented finding.
 
 The broader lesson generalizes past long context, and it is the Ch. 9 lesson wearing new clothes: **a benchmark that looks solved can hide the real failure.** Single-needle at 95% is a press release. Three-needle synthesis at 40% is your production system.
 
@@ -165,7 +165,7 @@ If the model attends most to the front and end of a long context, then an attack
 
 **Many-shot jailbreaking.** [Anil et al. (2024)](https://www.anthropic.com/research/many-shot-jailbreaking) (Anthropic; NeurIPS 2024) showed that stuffing hundreds of faux dialogue turns demonstrating an unwanted behavior *into the context* overrides alignment. Attack strength scales with shot count, near-zero at 5 shots and reliable around 256, following a power law in the log of the number of shots, and it works across GPT-3.5/4, Claude 2.0, Llama 2 70B, and Mistral 7B. The point for us: long context is not just a recall problem, it is an *attack surface*, and in-context demonstrations exploit the same positional/recency machinery that helps legitimate instructions.
 
-**NINJA — position-dependent safety.** The sharper result for this chapter is [NINJA, "Jailbreaking in the Haystack" (2025)](https://arxiv.org/abs/2511.04707) (arXiv:2511.04707). NINJA appends benign, model-generated, thematically relevant filler to a harmful goal and varies the *position* of that goal in the context. On HarmBench, attack success rose **from a 23.7% baseline to 58.8% for Llama-3.1-8B-Instruct** `[verify]` (also 23.7% → 42.5% for Qwen2.5-7B-Instruct, and roughly 23% → 29% for Gemini Flash). NINJA explicitly attributes the effect to the same U-shaped primacy/recency bias: putting the harmful goal at the *beginning* maximizes attack success, and putting it at the *end* mitigates.
+**NINJA — position-dependent safety.** The sharper result for this chapter is [NINJA, "Jailbreaking in the Haystack" (2025)](https://arxiv.org/abs/2511.04707) (arXiv:2511.04707). NINJA appends benign, model-generated, thematically relevant filler to a harmful goal and varies the *position* of that goal in the context. On HarmBench, attack success rose **from a 23.7% baseline to 58.8% for Llama-3.1-8B-Instruct** (also 23.7% → 42.5% for Qwen2.5-7B-Instruct, and roughly 23% → 29% for Gemini Flash) — figures confirmed against the NINJA paper. NINJA explicitly attributes the effect to the same U-shaped primacy/recency bias: putting the harmful goal at the *beginning* maximizes attack success, and putting it at the *end* mitigates.
 
 State that result precisely, because it is easy to mangle. **58.8% is the post-attack attack-success rate for one specific model (Llama-3.1-8B-Instruct), up from a 23.7% baseline — it is not a universal ceiling.** "Up to 58.8% on Llama-3.1-8B, from a 23.7% baseline" is the honest phrasing; "up to 58.8% attack success" stated bare implies a law that the data does not support.
 
@@ -225,8 +225,8 @@ A controlled study showing that, on a representative multi-needle synthesis task
 - Hsieh, C.-P., Sun, S., Kriman, S., Acharya, S., Rekesh, D., Jia, F., Zhang, Y., & Ginsburg, B. (2024). [RULER: What's the Real Context Size of Your Long-Context Language Models?](https://arxiv.org/abs/2404.06654) arXiv:2404.06654.
 - Hsieh, C.-Y., et al. (2024). [Found in the Middle: Calibrating Positional Attention Bias Improves Long Context Utilization](https://arxiv.org/abs/2406.16008). ACL 2024 Findings (2024.findings-acl.890). arXiv:2406.16008.
 - Anil, C., Durmus, E., Panickssery, N., Sharma, M., Benton, J., … Perez, E., Grosse, R., Duvenaud, D. (2024). [Many-shot Jailbreaking](https://www.anthropic.com/research/many-shot-jailbreaking). Anthropic; NeurIPS 2024.
-- NINJA — [Jailbreaking in the Haystack](https://arxiv.org/abs/2511.04707) (2025). arXiv:2511.04707. `[verify table numbers against PDF]`
-- Multilingual needle-in-a-haystack (2024). [arXiv:2409.18006](https://arxiv.org/abs/2409.18006). `[verify 3-needle 40% figure against PDF]`
+- NINJA — [Jailbreaking in the Haystack](https://arxiv.org/abs/2511.04707) (2025). arXiv:2511.04707. (23.7% → 58.8% ASR on Llama-3.1-8B-Instruct confirmed against the paper.)
+- Multilingual Needle in a Haystack / mLongRR (2024). [arXiv:2409.18006](https://arxiv.org/abs/2409.18006). (~96% single-needle → ~40% three-needle in English confirmed against the abstract.)
 - Kamradt, G. (2023). [Needle In A Haystack — Pressure Testing LLMs](https://github.com/gkamradt/LLMTest_NeedleInAHaystack). GitHub repository.
 - LangChain (2024). [Multi Needle in a Haystack](https://blog.langchain.com/multi-needle-in-a-haystack/). Blog.
 - Databricks (2024). [Long Context RAG Performance of Large Language Models](https://arxiv.org/abs/2411.03538). arXiv:2411.03538.

@@ -269,7 +269,7 @@ Persona is architectural. Architecture is the leverage point. The fractured turb
 
 ## Book / numbering placement
 
-- **Book:** Prompt Engineering with LLMs — confirmed by student's Author's Note header and exact match to PE book outline's core claim.
+- **Book:** Prompt Engineering — confirmed by student's Author's Note header and exact match to PE book outline's core claim.
 - **Chapter number:** Student labeled as **Ch. 12**; PE book outline places Persona Patterns at **Ch. 6** ("Shaping Who the Model Is and Who It Speaks To"). Placed at Ch. 6 per the outline's verbatim core-claim match. Flagged for editor — if the student has a reason to believe Ch. 12 is correct, the outline may need reconciliation, but the content matches Ch. 6 identically and there's no Ch. 12 slot in the PE book's 20-chapter structure that fits Persona Patterns.
 
 ## Length compression

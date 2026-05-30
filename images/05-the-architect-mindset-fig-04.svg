@@ -1,0 +1,66 @@
+<!-- Two Failures, Two Layers | Book: Prompt Engineering | Chapter: 05-the-architect-mindset | Figure: 04 | Generated: 2026-05-29 | Source: pantry/05-the-architect-mindset-cajal.md -->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04"><title id="fig-title-04">Two Failures, Two Layers</title><desc id="fig-desc-04">The assembled prompt system as a vertical pipeline: persona/root, sense-selection, constraints, format, generation, external Result-layer validator, ship. One failure trace (wrong word sense) lands early on sense-selection plus constraints; a second trace (unsafe completion) lands on constraints then is caught at the external validator. Two failures resolve at two different layers.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="05-the-architect-mindset" figure-number="04" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah4" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah4o" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8860E"/></marker>
+<marker id="ah4r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Two Failures Pinned to Two Different Layers</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Wrong-sense is fixed early; unsafe-completion is caught late at the validator</text>
+
+<!-- legend -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11">
+<line x1="470" y1="78" x2="500" y2="78" stroke="#C8860E" stroke-width="2.4"/><text x="506" y="82" fill="#2a1a0e">Wrong word sense</text>
+<line x1="470" y1="98" x2="500" y2="98" stroke="#C8102E" stroke-width="2.4"/><text x="506" y="102" fill="#2a1a0e">Unsafe completion</text>
+</g>
+
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" text-anchor="middle">
+<!-- main vertical pipeline, x=300 -->
+<rect x="240" y="78" width="160" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="320" y="102" fill="#2a1a0e">Persona / root</text>
+<line x1="320" y1="118" x2="320" y2="134" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah4)"/>
+
+<rect x="240" y="136" width="160" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="320" y="160" fill="#2a1a0e">Sense-selection step</text>
+<line x1="320" y1="176" x2="320" y2="192" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah4)"/>
+
+<rect x="240" y="194" width="160" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="320" y="218" fill="#2a1a0e">Constraints</text>
+<line x1="320" y1="234" x2="320" y2="250" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah4)"/>
+
+<rect x="240" y="252" width="160" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="320" y="276" fill="#2a1a0e">Format</text>
+<line x1="320" y1="292" x2="320" y2="308" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah4)"/>
+
+<rect x="240" y="310" width="160" height="40" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.4"/>
+<text x="320" y="334" fill="#2a1a0e">Generation</text>
+<line x1="320" y1="350" x2="320" y2="366" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah4)"/>
+
+<rect x="240" y="368" width="160" height="44" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="2"/>
+<text x="320" y="388" fill="#2a1a0e">Result-layer</text>
+<text x="320" y="403" fill="#2a1a0e">validator (external)</text>
+<line x1="320" y1="412" x2="320" y2="428" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah4)"/>
+
+<rect x="252" y="430" width="136" height="38" fill="#D4D4D4" stroke="#545454" stroke-width="1.2"/>
+<text x="320" y="454" fill="#2a1a0e">Ship</text>
+</g>
+
+<!-- TRACE 1: wrong word sense -> sense-selection AND constraints (left side, ochre/decorative? no - this is a data trace; use secondary? brief allows two data colors; ochre decorative only. Use #545454 + dash? Need two distinct traces. Spec maps wrong-sense to ochre but brutalist says ochre decorative only. Use secondary #545454 dashed for trace1, red for trace2.) -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10">
+<path d="M150,156 L238,156" fill="none" stroke="#C8860E" stroke-width="2.4" marker-end="url(#ah4o)"/>
+<path d="M150,156 C140,170 140,200 150,214 L238,214" fill="none" stroke="#C8860E" stroke-width="2.4" marker-end="url(#ah4o)"/>
+<text x="120" y="184" text-anchor="middle" fill="#2a1a0e">Wrong</text>
+<text x="120" y="198" text-anchor="middle" fill="#2a1a0e">sense</text>
+<text x="120" y="212" text-anchor="middle" fill="#545454" font-size="9">fixed early</text>
+</g>
+
+<!-- TRACE 2: unsafe completion -> constraints (reduced) then forward to validator (caught) -->
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10">
+<path d="M560,214 L402,214" fill="none" stroke="#C8102E" stroke-width="2.4" marker-end="url(#ah4r)"/>
+<path d="M560,214 C580,260 580,360 404,388" fill="none" stroke="#C8102E" stroke-width="2.4" marker-end="url(#ah4r)"/>
+<text x="600" y="218" text-anchor="middle" fill="#2a1a0e">Unsafe</text>
+<text x="600" y="232" text-anchor="middle" fill="#545454" font-size="9">reduced</text>
+<text x="600" y="380" text-anchor="middle" fill="#545454" font-size="9">caught late</text>
+</g>
+</svg>

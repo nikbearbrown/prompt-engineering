@@ -1,0 +1,73 @@
+<!-- The Decoding Pipeline | Book: Prompt Engineering | Chapter: 00-foundations-sampling-and-logits | Figure: 01 | Generated: 2026-05-29 | Source: pantry/00-foundations-sampling-and-logits-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01"><title id="fig-title-01">The decoding pipeline: from raw logits to a sampled token</title><desc id="fig-desc-01">A left-to-right chain of six ordered stages: raw logits, temperature scaling, softmax, truncation, renormalization, and the drawn sample. Each stage feeds the next with a single arrow, fixing the order in which a token is emitted.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="00-foundations-sampling-and-logits" figure-number="01" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="arrow01" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end"><path d="M0 0 L10 5 L0 10 z" fill="#2a1a0e"/></marker>
+</defs>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">From raw logits to a sampled token</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">A fixed-order pipeline rescales, normalizes, truncates, then draws</text>
+
+<!-- Stage 1: raw logits -->
+<g>
+<rect x="36" y="120" width="76" height="170" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="46" y="180" width="12" height="105" fill="#545454"/>
+<rect x="62" y="150" width="12" height="135" fill="#545454"/>
+<rect x="78" y="210" width="12" height="75" fill="#545454"/>
+<rect x="94" y="135" width="12" height="150" fill="#545454"/>
+<line x1="36" y1="285" x2="112" y2="285" stroke="#2a1a0e" stroke-width="1"/>
+<text x="74" y="312" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Raw logits</text>
+</g>
+<line x1="114" y1="205" x2="138" y2="205" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrow01)"/>
+
+<!-- Stage 2: temperature scaling -->
+<g>
+<rect x="142" y="170" width="70" height="70" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<text x="177" y="212" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="20" fill="#2a1a0e">/ T</text>
+<text x="177" y="312" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Scale by T</text>
+</g>
+<line x1="214" y1="205" x2="238" y2="205" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrow01)"/>
+
+<!-- Stage 3: softmax (anchor, red emphasis) -->
+<g>
+<rect x="242" y="150" width="86" height="110" fill="#F5F5F5" stroke="#C8102E" stroke-width="1.5"/>
+<path d="M252 250 Q285 158 318 250" fill="none" stroke="#C8102E" stroke-width="2"/>
+<line x1="252" y1="250" x2="318" y2="250" stroke="#2a1a0e" stroke-width="1"/>
+<text x="285" y="312" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Softmax</text>
+</g>
+<line x1="330" y1="205" x2="354" y2="205" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrow01)"/>
+
+<!-- Stage 4: truncation -->
+<g>
+<rect x="358" y="150" width="86" height="110" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="366" y="175" width="11" height="74" fill="#545454"/>
+<rect x="380" y="158" width="11" height="91" fill="#545454"/>
+<rect x="394" y="200" width="11" height="49" fill="#545454"/>
+<rect x="408" y="215" width="11" height="34" fill="#D4D4D4"/>
+<rect x="422" y="228" width="11" height="21" fill="#D4D4D4"/>
+<line x1="406" y1="146" x2="406" y2="254" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="4 3"/>
+<line x1="358" y1="249" x2="444" y2="249" stroke="#2a1a0e" stroke-width="1"/>
+<text x="401" y="312" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Truncate</text>
+</g>
+<line x1="446" y1="205" x2="470" y2="205" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrow01)"/>
+
+<!-- Stage 5: renormalize -->
+<g>
+<rect x="474" y="160" width="72" height="90" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="484" y="186" width="14" height="53" fill="#545454"/>
+<rect x="503" y="170" width="14" height="69" fill="#545454"/>
+<rect x="522" y="205" width="14" height="34" fill="#545454"/>
+<line x1="474" y1="239" x2="546" y2="239" stroke="#2a1a0e" stroke-width="1"/>
+<text x="510" y="312" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Renormalize</text>
+</g>
+<line x1="548" y1="205" x2="572" y2="205" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#arrow01)"/>
+
+<!-- Stage 6: sampled token -->
+<g>
+<rect x="576" y="160" width="58" height="90" fill="#F5F5F5" stroke="#D4D4D4" stroke-width="1"/>
+<rect x="595" y="175" width="20" height="64" fill="#C8102E"/>
+<line x1="576" y1="239" x2="634" y2="239" stroke="#2a1a0e" stroke-width="1"/>
+<text x="605" y="312" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Sampled token</text>
+</g>
+
+<text x="350" y="372" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Order is fixed: temperature acts before softmax; truncation acts after; sampling is last.</text>
+</svg>

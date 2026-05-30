@@ -121,6 +121,8 @@ This is the brittleness literature's recommended correction (Sclar et al. 2024; 
 
 This is, in miniature, the *construct validity* problem from research methodology (Campbell & Stanley): a single-format score is a construct-invalid proxy for "capability," and a leaderboard built on one format is a textbook illustration of Campbell's Law — *when a measure becomes a target it ceases to be a good measure* (which is, not coincidentally, the title sentiment of Alzahrani et al., "When Benchmarks are Targets"). The factorial framing — format variants × tasks × models, estimate the variance attributable to the nuisance factor format — is the experimental-design move (Fisher, Yates, Cox) applied to prompts. Brittleness is a *validity* problem, and the response is a *measurement* discipline.
 
+The variant sweep is, in the vocabulary of [Brown's *Computational Skepticism for AI*](#references) — a companion volume — a *verification budget*: producing a single prompt's number is cheap, and establishing what that number *means* is the expensive part you must explicitly fund. The book's blunt formulation generalizes the §9.1 failure: *if you do not budget for verification, you will not get verification.* The team that reported 0.86 did not refuse to verify; they verified at the cheapest level (one held-out run) and mistook it for the expensive one (a distribution). The PromptEval 1–4× figure is what makes the real verification budget affordable rather than aspirational — which is exactly why the cheap version is no longer an excuse.
+
 ---
 
 ## 9.5 Specificity as a robustness hedge — and its limit
@@ -173,6 +175,7 @@ A robust demonstration that, for current frontier models on realistic *agentic a
 - Min, S., Lyu, X., Holtzman, A., Artetxe, M., Lewis, M., Hajishirzi, H., & Zettlemoyer, L. (2022). [Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?](https://arxiv.org/abs/2202.12837) *EMNLP 2022.* arXiv:2202.12837. `[verify arXiv ID]`
 - Polo, F. M., Weber, L., Choshen, L., Sun, Y., Xu, G., & Yurochkin, M. (2024). [Efficient multi-prompt evaluation of LLMs (PromptEval)](https://arxiv.org/abs/2405.17202). *NeurIPS 2024.* arXiv:2405.17202. `[verify author list / title before quoting]`
 - Hugging Face (2023). [What's going on with the Open LLM Leaderboard?](https://huggingface.co/blog/open-llm-leaderboard-mmlu) (MMLU implementation-divergence investigation). `[verify exact URL]`
+- Brown, N. B. *Computational Skepticism for AI.* Companion volume. *(Source of the solve-verify asymmetry and the "verification budget" framing — "if you do not budget for verification, you will not get verification.")*
 
 ---
 

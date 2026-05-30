@@ -1,0 +1,55 @@
+<!-- The Grounded-vs-Ungrounded Self-Correction Decision Tree | Book: Prompt Engineering | Chapter: 15-production-ethics-and-whats-next | Figure: 02 | Generated: 2026-05-29 | Source: pantry/15-production-ethics-and-whats-next-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02"><title id="fig-title-02">When Does Self-Correction Help?</title><desc id="fig-desc-02">A decision tree on external grounding: a verifiable signal routes to grounded self-correction; a single-answer task with no signal routes to self-consistency; an open-ended task to intrinsic refinement; ungrounded self-grading is the barred, avoided route.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="15-production-ethics-and-whats-next" figure-number="02" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah15b" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">When Does Self-Correction Help?</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">External grounding decides whether checking improves or degrades the answer</text>
+
+<!-- first diamond -->
+<polygon points="200,76 295,114 200,152 105,114" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="200" y="110" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">external verifiable</text>
+<text x="200" y="124" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">signal?</text>
+
+<!-- right branch yes -> grounded correction -->
+<path d="M275,135 Q360,160 400,176" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15b)"/>
+<text x="345" y="150" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">yes</text>
+<rect x="402" y="178" width="160" height="58" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="482" y="202" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">grounded self-correction</text>
+<text x="482" y="220" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">helps — checks against the signal</text>
+
+<!-- left branch no -> second diamond -->
+<path d="M155,140 Q120,180 155,212" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15b)"/>
+<text x="110" y="180" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">no</text>
+
+<!-- second diamond -->
+<polygon points="200,180 290,218 200,256 110,218" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="200" y="214" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">single verifiable</text>
+<text x="200" y="228" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">answer?</text>
+
+<!-- second diamond yes -> self-consistency -->
+<path d="M270,240 Q360,270 400,288" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15b)"/>
+<text x="340" y="262" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">yes</text>
+<rect x="402" y="290" width="160" height="58" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="482" y="314" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">self-consistency vote</text>
+<text x="482" y="332" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">helps — no self-judging</text>
+
+<!-- second diamond no/open-ended -> intrinsic refine -->
+<path d="M155,243 Q120,290 155,316" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15b)"/>
+<text x="100" y="285" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">open-ended</text>
+<rect x="55" y="318" width="160" height="58" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.5"/>
+<text x="135" y="342" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">intrinsic refinement</text>
+<text x="135" y="360" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">conditional — unresolved</text>
+
+<!-- avoided route: ungrounded self-grading, barred -->
+<path d="M290,225 Q400,240 470,260" fill="none" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect x="470" y="100" width="160" height="58" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.5"/>
+<text x="550" y="124" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E">ask model to grade itself</text>
+<text x="550" y="142" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">avoid — ungrounded</text>
+<!-- barrier slash through its incoming path -->
+<line x1="430" y1="232" x2="470" y2="218" stroke="#C8102E" stroke-width="1.5"/>
+<line x1="442" y1="208" x2="458" y2="240" stroke="#C8102E" stroke-width="2.5"/>
+
+<text x="40" y="400" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Without an external signal to check against, asking the model to grade its own reasoning invites over-revision, not improvement.</text>
+</svg>

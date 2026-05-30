@@ -1,0 +1,55 @@
+<!-- GRPO Group-Relative Baseline (Critic Removed) | Book: Prompt Engineering | Chapter: 13-beyond-prompting-the-fine-tuning-stack | Figure: 04 | Generated: 2026-05-29 | Source: pantry/13-beyond-prompting-the-fine-tuning-stack-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04"><title id="fig-title-04">GRPO Group-Relative Baseline (Critic Removed)</title><desc id="fig-desc-04">Two panels. Left, PPO: one prompt, one output, and a separate critic network that supplies the baseline, an extra cost component. Right, GRPO: one prompt fans out to a group of four sampled outputs; their rewards are standardized against the group mean, so outputs above the mean line are reinforced and those below are suppressed. No critic appears on the right; its absence is the message.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="13-beyond-prompting-the-fine-tuning-stack" figure-number="04" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah1304" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah1304r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">GRPO Group-Relative Baseline (Critic Removed)</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">PPO needs a learned critic; GRPO substitutes a within-group standardized baseline</text>
+
+<!-- divider -->
+<line x1="350" y1="80" x2="350" y2="380" stroke="#D4D4D4" stroke-width="1"/>
+<text x="180" y="100" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">PPO</text>
+<text x="520" y="100" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">GRPO</text>
+
+<!-- LEFT PPO -->
+<rect x="130" y="120" width="100" height="40" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="180" y="144" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Prompt</text>
+<line x1="180" y1="160" x2="180" y2="186" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1304)"/>
+<rect x="130" y="188" width="100" height="40" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="180" y="212" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Output</text>
+<!-- critic block, emphasis -->
+<rect x="120" y="270" width="120" height="56" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.8"/>
+<text x="180" y="294" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">Critic network</text>
+<text x="180" y="310" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">extra cost</text>
+<line x1="180" y1="270" x2="180" y2="230" stroke="#C8102E" stroke-width="1.5" marker-end="url(#ah1304r)"/>
+<text x="232" y="252" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">baseline</text>
+
+<!-- RIGHT GRPO -->
+<rect x="470" y="116" width="100" height="36" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="520" y="139" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Prompt</text>
+<!-- fan out to 4 outputs -->
+<line x1="520" y1="152" x2="410" y2="186" stroke="#2a1a0e" stroke-width="1.3" marker-end="url(#ah1304)"/>
+<line x1="520" y1="152" x2="478" y2="186" stroke="#2a1a0e" stroke-width="1.3" marker-end="url(#ah1304)"/>
+<line x1="520" y1="152" x2="562" y2="186" stroke="#2a1a0e" stroke-width="1.3" marker-end="url(#ah1304)"/>
+<line x1="520" y1="152" x2="630" y2="186" stroke="#2a1a0e" stroke-width="1.3" marker-end="url(#ah1304)"/>
+<!-- outputs above mean (reinforced) -->
+<rect x="388" y="188" width="44" height="28" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="410" y="206" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#2a1a0e">o1</text>
+<rect x="456" y="194" width="44" height="28" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="478" y="212" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#2a1a0e">o2</text>
+<!-- outputs below mean (suppressed) -->
+<rect x="540" y="280" width="44" height="28" fill="#FFFFFF" stroke="#545454" stroke-width="1.5"/>
+<text x="562" y="298" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">o3</text>
+<rect x="608" y="288" width="44" height="28" fill="#FFFFFF" stroke="#545454" stroke-width="1.5"/>
+<text x="630" y="306" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">o4</text>
+<!-- group-mean baseline rule, emphasis -->
+<line x1="380" y1="250" x2="660" y2="250" stroke="#C8102E" stroke-width="1.8"/>
+<text x="666" y="254" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#C8102E"></text>
+<text x="388" y="244" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#C8102E">group mean (baseline)</text>
+<text x="396" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">reinforced</text>
+<text x="630" y="332" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">suppressed</text>
+
+<text x="60" y="402" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">GRPO samples a group per prompt and standardizes their rewards as the advantage. The absence of a separate critic on the right is the saving.</text>
+</svg>

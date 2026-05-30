@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §4 — Agentic and Multi-Turn Prompting
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** Structuring agent loops, controlling tool exposure, enforcing structured output, and managing multi-turn context.
 **Research date:** 2026-05-29
 ---

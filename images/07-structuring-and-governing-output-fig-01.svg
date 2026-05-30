@@ -1,0 +1,46 @@
+<!-- Structure as conditioning: entropy collapse after a committed token | Book: Prompt Engineering | Chapter: 07-structuring-and-governing-output | Figure: 01 | Generated: 2026-05-29 | Source: pantry/07-structuring-and-governing-output-cajal.md -->
+<svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01">
+<title id="fig-title-01">Entropy collapse after committing a structural token</title>
+<desc id="fig-desc-01">Two stacked next-token distributions on a shared baseline. Before structural commitment, probability is spread broadly across many tokens (high entropy). After committing a label, mass concentrates into one or two tall bars (low entropy) and the rest are suppressed.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="07-structuring-and-governing-output" figure-number="01" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="480" fill="#FFFFFF"/>
+
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Committing a structural token narrows what comes next</text>
+
+<!-- TOP PANEL: high entropy -->
+<text x="90" y="64" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" font-weight="600">Before commitment</text>
+<text x="610" y="64" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">high entropy &#183; broad</text>
+<rect x="90" y="72" width="520" height="140" fill="#F5F5F5" stroke="none"/>
+<!-- baseline + y axis -->
+<line x1="90" y1="212" x2="610" y2="212" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="90" y1="72" x2="90" y2="212" stroke="#2a1a0e" stroke-width="1"/>
+<text x="84" y="80" text-anchor="end" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">P</text>
+<!-- 8 bars, moderate similar height -->
+<rect x="118" y="120" width="44" height="92" fill="#545454"/>
+<rect x="178" y="108" width="44" height="104" fill="#545454"/>
+<rect x="238" y="128" width="44" height="84" fill="#545454"/>
+<rect x="298" y="114" width="44" height="98" fill="#545454"/>
+<rect x="358" y="124" width="44" height="88" fill="#545454"/>
+<rect x="418" y="110" width="44" height="102" fill="#545454"/>
+<rect x="478" y="130" width="44" height="82" fill="#545454"/>
+<rect x="538" y="118" width="44" height="94" fill="#545454"/>
+<text x="350" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">next-token candidates</text>
+
+<!-- BOTTOM PANEL: low entropy -->
+<text x="90" y="290" text-anchor="start" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" font-weight="600">After committed label</text>
+<text x="610" y="290" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">low entropy &#183; concentrated</text>
+<rect x="90" y="298" width="520" height="140" fill="#F5F5F5" stroke="none"/>
+<line x1="90" y1="438" x2="610" y2="438" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="90" y1="298" x2="90" y2="438" stroke="#2a1a0e" stroke-width="1"/>
+<text x="84" y="306" text-anchor="end" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">P</text>
+<!-- 2 tall red bars left, rest suppressed gray -->
+<rect x="118" y="306" width="44" height="132" fill="#C8102E"/>
+<rect x="178" y="338" width="44" height="100" fill="#C8102E"/>
+<rect x="238" y="424" width="44" height="14" fill="#545454"/>
+<rect x="298" y="428" width="44" height="10" fill="#545454"/>
+<rect x="358" y="426" width="44" height="12" fill="#545454"/>
+<rect x="418" y="430" width="44" height="8" fill="#545454"/>
+<rect x="478" y="427" width="44" height="11" fill="#545454"/>
+<rect x="538" y="429" width="44" height="9" fill="#545454"/>
+<text x="350" y="458" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">label-appropriate continuations dominate</text>
+</svg>

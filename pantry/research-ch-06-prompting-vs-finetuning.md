@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §6 — Prompt Engineering vs. Fine-Tuning: The Evolving Answer
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** Why the prompting/fine-tuning binary is false — the layered stack (prompt-optimize → SFT → RL) and how to decide.
 **Research date:** 2026-05-29
 

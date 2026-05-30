@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §1 — Foundational Techniques: What the Research Actually Shows
-## Prompt Engineering with LLMs
+## Prompt Engineering
 **Chapter one-line:** What the research actually shows about CoT, few-shot, persona, formatting, and base vs instruction-tuned models.
 **Research date:** 2026-05-29
 

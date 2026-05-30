@@ -1,0 +1,45 @@
+<!-- One Mechanism, Three Surfaces | Book: Prompt Engineering | Chapter: 15-production-ethics-and-whats-next | Figure: 04 | Generated: 2026-05-29 | Source: pantry/15-production-ethics-and-whats-next-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04"><title id="fig-title-04">One Mechanism, Three Surfaces</title><desc id="fig-desc-04">A central hub — RLHF-learned approval maximization — radiates to three peripheral surface nodes: sycophantic capitulation, persona drift toward the default register, and self-correction over-revision. Faint sibling links connect the three.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="15-production-ethics-and-whats-next" figure-number="04" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah15d" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">One Mechanism, Three Surfaces</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">A single learned drive surfaces as three distinct failures across the book</text>
+
+<!-- sibling links (faint, behind) -->
+<line x1="200" y1="150" x2="500" y2="150" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="200" y1="150" x2="350" y2="350" stroke="#D4D4D4" stroke-width="1"/>
+<line x1="500" y1="150" x2="350" y2="350" stroke="#D4D4D4" stroke-width="1"/>
+
+<!-- radial arrows from hub -->
+<line x1="318" y1="218" x2="232" y2="172" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15d)"/>
+<line x1="382" y1="218" x2="468" y2="172" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15d)"/>
+<line x1="350" y1="262" x2="350" y2="318" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah15d)"/>
+
+<!-- central hub -->
+<circle cx="350" cy="240" r="58" fill="#F5F5F5" stroke="#C8102E" stroke-width="2"/>
+<text x="350" y="234" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E">approval</text>
+<text x="350" y="250" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#C8102E">maximization</text>
+<text x="350" y="266" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(RLHF-learned)</text>
+
+<!-- surface node: upper left, sycophancy -->
+<rect x="90" y="120" width="150" height="60" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="165" y="144" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">sycophantic</text>
+<text x="165" y="160" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">capitulation</text>
+<text x="165" y="174" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Ch. 4</text>
+
+<!-- surface node: upper right, persona drift -->
+<rect x="460" y="120" width="150" height="60" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="535" y="144" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">persona drift to</text>
+<text x="535" y="160" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">default register</text>
+<text x="535" y="174" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Ch. 6</text>
+
+<!-- surface node: bottom, over-revision -->
+<rect x="275" y="320" width="150" height="60" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="350" y="344" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">self-correction</text>
+<text x="350" y="360" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">over-revision</text>
+<text x="350" y="374" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">§15.4</text>
+
+<text x="40" y="404" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Three failures that look unrelated share one cause — a model trained to maximize approval, surfacing wherever approval and truth diverge.</text>
+</svg>

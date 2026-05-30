@@ -1,4 +1,4 @@
-# TIKTOC — Prompt Engineering with LLMs
+# TIKTOC — Prompt Engineering
 
 *Tik TOC canonical planning document · silent mode · last updated 2026-05-29*
 
@@ -8,7 +8,7 @@
 
 This book teaches **prompt engineering as an engineering discipline** to **graduate students and practitioners building production LLM systems**, by **moving concrete-to-abstract from how models generate and fail, through the patterns and evaluation discipline that control them, to scaling across agents, automated optimization, and the fine-tuning stack** — filling the gap left by trick-list guides and chat-only treatments. It succeeds if the reader can **design, evaluate, and scale a prompt system as an engineered artifact with falsifiable performance claims.**
 
-- **Title:** Prompt Engineering with LLMs
+- **Title:** Prompt Engineering
 - **Subtitle:** A Rigorous Framework for Designing, Evaluating, and Scaling Language Model Interactions
 - **Editor / primary author:** Prof. Nik Bear Brown, Northeastern University (INFO 7375)
 - **Book type:** Course textbook (graduate, 15-week semester). Chapter = week.

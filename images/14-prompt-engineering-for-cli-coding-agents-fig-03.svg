@@ -1,0 +1,66 @@
+<!-- The Plan-Then-Execute Split | Book: Prompt Engineering | Chapter: 14-prompt-engineering-for-cli-coding-agents | Figure: 03 | Generated: 2026-05-29 | Source: pantry/14-prompt-engineering-for-cli-coding-agents-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">The Plan-Then-Execute Split</title><desc id="fig-desc-03">A cluttered planning session saves a durable plan; a discard barrier blocks the polluted exploratory context but passes the plan into a fresh clean execution session that produces a verified outcome.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="14-prompt-engineering-for-cli-coding-agents" figure-number="03" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah14c" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah14cr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Plan-Then-Execute Split</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Discard the polluted exploratory window; execute from only the saved plan</text>
+
+<!-- Session A: planning, cluttered -->
+<rect x="40" y="90" width="220" height="170" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="150" y="110" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Planning session</text>
+<text x="150" y="126" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">accumulates dead-end exploration</text>
+<!-- clutter blobs (ochre decorative) -->
+<rect x="70" y="142" width="44" height="30" fill="#C8860E" stroke="#2a1a0e" stroke-width="1" transform="rotate(-8 92 157)"/>
+<rect x="120" y="150" width="50" height="28" fill="#C8860E" stroke="#2a1a0e" stroke-width="1" transform="rotate(6 145 164)"/>
+<rect x="95" y="178" width="46" height="30" fill="#C8860E" stroke="#2a1a0e" stroke-width="1" transform="rotate(4 118 193)"/>
+<rect x="160" y="180" width="42" height="26" fill="#C8860E" stroke="#2a1a0e" stroke-width="1" transform="rotate(-10 181 193)"/>
+<text x="150" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">polluted context</text>
+
+<!-- saved plan document -->
+<rect x="105" y="300" width="90" height="60" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+<path d="M180,300 L180,315 L195,315 Z" fill="#D4D4D4" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="118" y1="322" x2="170" y2="322" stroke="#545454" stroke-width="1"/>
+<line x1="118" y1="332" x2="170" y2="332" stroke="#545454" stroke-width="1"/>
+<line x1="118" y1="342" x2="155" y2="342" stroke="#545454" stroke-width="1"/>
+<text x="150" y="378" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">saved plan</text>
+<!-- arrow A down to plan -->
+<line x1="150" y1="260" x2="150" y2="298" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah14c)"/>
+
+<!-- discard barrier -->
+<line x1="330" y1="80" x2="330" y2="360" stroke="#545454" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="330" y="74" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">/clear — discard</text>
+<!-- gate break: scissors-style notch -->
+<path d="M322,210 L338,200 M322,200 L338,210" stroke="#545454" stroke-width="1.5"/>
+
+<!-- blocked arrow: polluted context cannot cross (red, blocked at barrier) -->
+<line x1="262" y1="190" x2="318" y2="190" stroke="#C8102E" stroke-width="1.5" marker-end="url(#ah14cr)"/>
+<line x1="322" y1="182" x2="338" y2="198" stroke="#C8102E" stroke-width="2"/>
+<line x1="322" y1="198" x2="338" y2="182" stroke="#C8102E" stroke-width="2"/>
+<text x="295" y="178" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">blocked</text>
+
+<!-- plan passes through -->
+<path d="M195,330 Q280,340 280,250 Q280,210 380,210" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah14c)"/>
+<text x="370" y="248" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">plan passes</text>
+
+<!-- Session B: execution, clean -->
+<rect x="400" y="90" width="260" height="170" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.5"/>
+<text x="530" y="110" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Execution session</text>
+<text x="530" y="126" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">fresh, clean window</text>
+<!-- arriving plan document inside B -->
+<rect x="425" y="160" width="80" height="56" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<path d="M490,160 L490,174 L505,174 Z" fill="#D4D4D4" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="437" y1="182" x2="485" y2="182" stroke="#545454" stroke-width="1"/>
+<line x1="437" y1="192" x2="485" y2="192" stroke="#545454" stroke-width="1"/>
+<text x="465" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">plan only</text>
+
+<!-- outgoing to verified outcome -->
+<line x1="505" y1="188" x2="575" y2="188" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah14c)"/>
+<rect x="578" y="165" width="62" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.5"/>
+<path d="M593,189 L606,200 L626,176" fill="none" stroke="#2a1a0e" stroke-width="2"/>
+<text x="609" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">clean result</text>
+
+<text x="40" y="392" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The durable plan is the only thing that crosses the gate; execution starts from a context unpolluted by the search for it.</text>
+</svg>

@@ -1,0 +1,66 @@
+<!-- Decision procedure: match the pattern to where uncertainty lives | Book: Prompt Engineering | Chapter: 07-structuring-and-governing-output | Figure: 05 | Generated: 2026-05-29 | Source: pantry/07-structuring-and-governing-output-cajal.md -->
+<svg viewBox="0 0 700 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-05 fig-desc-05">
+<title id="fig-title-05">Decision procedure: match the pattern to where uncertainty lives</title>
+<desc id="fig-desc-05">An ordered five-question spine. Each question locates the variance that hurts (format, procedure, organization, action space, admissibility) and exits right to a pattern. If none apply, the path ends in an out-of-scope correctness problem no pattern here solves.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="07-structuring-and-governing-output" figure-number="05" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="540" fill="#FFFFFF"/>
+<defs>
+<marker id="arrow07f5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/>
+</marker>
+</defs>
+
+<text x="350" y="30" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Where does the variance that hurts live?</text>
+
+<!-- start -->
+<rect x="150" y="44" width="160" height="34" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="66" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Start</text>
+<line x1="230" y1="78" x2="230" y2="94" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+
+<!-- diamond 1: format -->
+<polygon points="230,96 310,128 230,160 150,128" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="132" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Format?</text>
+<line x1="310" y1="128" x2="475" y2="128" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+<rect x="480" y="110" width="180" height="36" fill="#C8102E" fill-opacity="0.0" stroke="#2a1a0e" stroke-width="1"/>
+<text x="570" y="133" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Template</text>
+<line x1="230" y1="160" x2="230" y2="178" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+
+<!-- diamond 2: procedure -->
+<polygon points="230,180 310,212 230,244 150,212" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="216" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Procedure?</text>
+<line x1="310" y1="212" x2="475" y2="212" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+<rect x="480" y="194" width="180" height="36" fill="none" stroke="#2a1a0e" stroke-width="1"/>
+<text x="570" y="217" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Recipe</text>
+<line x1="230" y1="244" x2="230" y2="262" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+
+<!-- diamond 3: organization -->
+<polygon points="230,264 310,296 230,328 150,296" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="294" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Long</text>
+<text x="230" y="308" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">output?</text>
+<line x1="310" y1="296" x2="475" y2="296" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+<rect x="480" y="278" width="180" height="36" fill="none" stroke="#2a1a0e" stroke-width="1"/>
+<text x="570" y="301" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Outline Expansion</text>
+<line x1="230" y1="328" x2="230" y2="346" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+
+<!-- diamond 4: action space -->
+<polygon points="230,348 310,380 230,412 150,380" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="378" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Action</text>
+<text x="230" y="392" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">space?</text>
+<line x1="310" y1="380" x2="475" y2="380" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+<rect x="480" y="362" width="180" height="36" fill="none" stroke="#2a1a0e" stroke-width="1"/>
+<text x="570" y="385" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Menu Actions</text>
+<line x1="230" y1="412" x2="230" y2="430" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+
+<!-- diamond 5: admissibility -->
+<polygon points="230,432 310,464 230,496 150,464" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="462" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Admissi-</text>
+<text x="230" y="476" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">bility?</text>
+<line x1="310" y1="464" x2="475" y2="464" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+<rect x="480" y="446" width="180" height="36" fill="none" stroke="#2a1a0e" stroke-width="1"/>
+<text x="570" y="469" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Governing filter</text>
+
+<!-- none of the above terminal (red emphasis) -->
+<line x1="230" y1="496" x2="230" y2="510" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow07f5)"/>
+<rect x="120" y="512" width="220" height="22" fill="#C8102E" stroke="#2a1a0e" stroke-width="1"/>
+<text x="230" y="528" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#FFFFFF" font-weight="600">None: a correctness problem no pattern solves</text>
+</svg>

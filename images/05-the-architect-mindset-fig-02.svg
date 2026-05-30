@@ -1,0 +1,56 @@
+<!-- PAST Builds the Prompt Slot of PLFR | Book: Prompt Engineering | Chapter: 05-the-architect-mindset | Figure: 02 | Generated: 2026-05-29 | Source: pantry/05-the-architect-mindset-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02"><title id="fig-title-02">PAST Builds the Prompt Slot of PLFR</title><desc id="fig-desc-02">A nested pipeline. The PLFR Prompt stage is a container holding four PAST sub-slots — Problem, Action, Steps, Task. From it the flow runs to Logic, Format, and Result. An external validator, outside the generator, branches off Result and returns to an accept endpoint.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="05-the-architect-mindset" figure-number="02" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">PAST Nests Inside the Prompt Stage of PLFR</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">The authored input fills one slot; validation is external to generation</text>
+
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" text-anchor="middle">
+<!-- PAST-filled Prompt container -->
+<rect x="40" y="100" width="150" height="220" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.8"/>
+<text x="115" y="120" fill="#2a1a0e" font-size="12">Prompt</text>
+<rect x="56" y="132" width="118" height="38" fill="#FFFFFF" stroke="#545454"/>
+<text x="115" y="155" fill="#2a1a0e">Problem</text>
+<rect x="56" y="176" width="118" height="38" fill="#FFFFFF" stroke="#545454"/>
+<text x="115" y="199" fill="#2a1a0e">Action</text>
+<rect x="56" y="220" width="118" height="38" fill="#FFFFFF" stroke="#545454"/>
+<text x="115" y="243" fill="#2a1a0e">Steps</text>
+<rect x="56" y="264" width="118" height="38" fill="#FFFFFF" stroke="#545454"/>
+<text x="115" y="287" fill="#2a1a0e">Task</text>
+<text x="115" y="316" fill="#545454" font-size="10">PAST slots</text>
+
+<line x1="190" y1="210" x2="226" y2="210" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+
+<!-- Logic -->
+<rect x="228" y="186" width="96" height="48" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.6"/>
+<text x="276" y="214" fill="#2a1a0e">Logic</text>
+<line x1="324" y1="210" x2="350" y2="210" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+
+<!-- Format -->
+<rect x="352" y="186" width="96" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.6"/>
+<text x="400" y="214" fill="#2a1a0e">Format</text>
+<line x1="448" y1="210" x2="474" y2="210" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+
+<!-- Result -->
+<rect x="476" y="186" width="96" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.6"/>
+<text x="524" y="214" fill="#2a1a0e">Result</text>
+
+<!-- external validator: branch off Result, distinct dashed outline -->
+<line x1="524" y1="186" x2="524" y2="138" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<rect x="466" y="92" width="116" height="46" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="1.8" stroke-dasharray="5 3"/>
+<text x="524" y="113" fill="#2a1a0e">External</text>
+<text x="524" y="128" fill="#2a1a0e">validator</text>
+<text x="610" y="116" fill="#545454" font-size="10" text-anchor="middle">(outside</text>
+<text x="610" y="129" fill="#545454" font-size="10" text-anchor="middle">generator)</text>
+
+<!-- return to accept endpoint -->
+<line x1="524" y1="234" x2="524" y2="278" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<path d="M466,115 C420,115 410,290 470,295" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah2)"/>
+<rect x="476" y="278" width="96" height="42" fill="#D4D4D4" stroke="#545454" stroke-width="1.2"/>
+<text x="524" y="304" fill="#2a1a0e">Accept</text>
+</g>
+
+<text x="40" y="368" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">PAST authors the input; PLFR runs it; the validator checks the Result before anything is accepted.</text>
+</svg>

@@ -1,0 +1,45 @@
+<!-- GEPA vs GRPO: Per-Benchmark Accuracy Deltas | Book: Prompt Engineering | Chapter: 13-beyond-prompting-the-fine-tuning-stack | Figure: 05 | Generated: 2026-05-29 | Source: pantry/13-beyond-prompting-the-fine-tuning-stack-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-05 fig-desc-05"><title id="fig-title-05">GEPA vs GRPO: Per-Benchmark Accuracy Deltas</title><desc id="fig-desc-05">A horizontal dot plot of GEPA's accuracy advantage over GRPO on four benchmarks, ordered by descending delta on a shared zero-based x-axis: HotpotQA plus 19.0, HoVer plus 13.7, PUPA plus 5.2, IFBench plus 2.7. A vertical reference line marks the average of about 6 points, contrasting the mean with the peak.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="13-beyond-prompting-the-fine-tuning-stack" figure-number="05" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">GEPA vs GRPO: Per-Benchmark Accuracy Deltas</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">The advantage is not flat: it varies sharply by benchmark, averaging about 6 points</text>
+
+<!-- plot region. x from zero at x=200 to x=620 spans 0..20 points; scale = 21 px/pt -->
+<rect x="200" y="90" width="420" height="240" fill="#F5F5F5"/>
+<!-- x axis baseline at zero -->
+<line x1="200" y1="330" x2="620" y2="330" stroke="#545454" stroke-width="1"/>
+<line x1="200" y1="90" x2="200" y2="330" stroke="#545454" stroke-width="1"/>
+<text x="200" y="348" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">0</text>
+<text x="410" y="364" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">accuracy delta (points), GEPA over GRPO</text>
+
+<!-- mean reference line at ~6 pts: x = 200 + 6*21 = 326 -->
+<line x1="326" y1="90" x2="326" y2="330" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="326" y="84" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">mean ~6</text>
+
+<!-- rows: descending. dot at x = 200 + val*21 -->
+<!-- HotpotQA +19.0 -> x=599, y=130 -->
+<line x1="200" y1="130" x2="599" y2="130" stroke="#545454" stroke-width="1"/>
+<circle cx="599" cy="130" r="6" fill="#545454"/>
+<text x="194" y="134" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">HotpotQA</text>
+<text x="611" y="126" text-anchor="start" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">+19.0</text>
+
+<!-- HoVer +13.7 -> x=487.7, y=185 -->
+<line x1="200" y1="185" x2="488" y2="185" stroke="#545454" stroke-width="1"/>
+<circle cx="488" cy="185" r="6" fill="#545454"/>
+<text x="194" y="189" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">HoVer</text>
+<text x="500" y="181" text-anchor="start" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">+13.7</text>
+
+<!-- PUPA +5.2 -> x=309.2, y=240 -->
+<line x1="200" y1="240" x2="309" y2="240" stroke="#545454" stroke-width="1"/>
+<circle cx="309" cy="240" r="6" fill="#545454"/>
+<text x="194" y="244" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">PUPA</text>
+<text x="321" y="236" text-anchor="start" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">+5.2</text>
+
+<!-- IFBench +2.7 -> x=256.7, y=295 -->
+<line x1="200" y1="295" x2="257" y2="295" stroke="#545454" stroke-width="1"/>
+<circle cx="257" cy="295" r="6" fill="#545454"/>
+<text x="194" y="299" text-anchor="end" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">IFBench</text>
+<text x="269" y="291" text-anchor="start" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">+2.7</text>
+
+<text x="60" y="392" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The spread runs from +2.7 to +19.0; the mean near 6 sits far below the HotpotQA peak. Reporting it as a flat "6 to 19" range hides this shape.</text>
+</svg>

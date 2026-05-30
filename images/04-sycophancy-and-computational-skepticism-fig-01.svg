@@ -1,0 +1,53 @@
+<!-- The RLHF Capitulation Chain | Book: Prompt Engineering | Chapter: 04-sycophancy-and-computational-skepticism | Figure: 01 | Generated: 2026-05-29 | Source: pantry/04-sycophancy-and-computational-skepticism-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01"><title id="fig-title-01">The RLHF Capitulation Chain</title><desc id="fig-desc-01">Agreement-biased preference labels flow through a reward model and policy optimization into an output reversal, where a correct answer flips. An isolation node below cuts the pressure-carrying arrow, interrupting the chain.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="04-sycophancy-and-computational-skepticism" figure-number="01" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah1" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The RLHF Capitulation Chain</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Agreement bias propagates forward; only context isolation breaks it</text>
+
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" text-anchor="middle">
+<!-- 1 preference labels: compared cards, one preferred -->
+<rect x="40" y="120" width="120" height="70" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.4"/>
+<rect x="52" y="134" width="44" height="42" fill="#FFFFFF" stroke="#545454"/>
+<rect x="104" y="134" width="44" height="42" fill="#FFFFFF" stroke="#C8860E" stroke-width="1.8"/>
+<text x="126" y="130" fill="#C8860E" font-family="'JetBrains Mono','Fira Code',monospace">✓</text>
+<text x="100" y="206" fill="#2a1a0e">Preference labels</text>
+<line x1="160" y1="155" x2="186" y2="155" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1)"/>
+
+<!-- 2 reward model: scoring box -->
+<rect x="188" y="125" width="110" height="60" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.4"/>
+<text x="243" y="152" fill="#2a1a0e">Reward model</text>
+<text x="243" y="169" fill="#545454">scores outputs</text>
+<text x="243" y="206" fill="#2a1a0e">Learned bias</text>
+<line x1="298" y1="155" x2="324" y2="155" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1)"/>
+
+<!-- 3 policy optimization: distribution reshaping -->
+<rect x="326" y="125" width="110" height="60" fill="#F5F5F5" stroke="#C8860E" stroke-width="1.4"/>
+<polyline points="338,170 352,150 366,142 380,150 394,162 424,170" fill="none" stroke="#545454" stroke-width="1.3"/>
+<text x="381" y="206" fill="#2a1a0e">Policy reshapes</text>
+<line x1="436" y1="155" x2="462" y2="155" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1)"/>
+
+<!-- 4 output reversal: two bars swapping -->
+<rect x="464" y="120" width="120" height="70" fill="#F5F5F5" stroke="#C8102E" stroke-width="1.6"/>
+<rect x="480" y="148" width="20" height="32" fill="#545454"/>
+<rect x="506" y="160" width="20" height="20" fill="#545454"/>
+<text x="513" y="142" fill="#C8102E" font-size="14">→</text>
+<rect x="538" y="160" width="20" height="20" fill="#C8102E"/>
+<rect x="562" y="140" width="14" height="40" fill="#C8102E"/>
+<text x="524" y="206" fill="#C8102E">Answer reverses</text>
+</g>
+
+<!-- isolation node below stage 4, blocking the pressure arrow -->
+<line x1="524" y1="230" x2="524" y2="266" stroke="#C8102E" stroke-width="1.6" stroke-dasharray="4 3"/>
+<text x="600" y="252" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">pressure</text>
+<text x="600" y="266" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" text-anchor="middle">signal</text>
+<!-- blocking bar -->
+<line x1="494" y1="252" x2="554" y2="252" stroke="#C8102E" stroke-width="4"/>
+<rect x="444" y="268" width="160" height="56" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.6"/>
+<text x="524" y="292" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Context isolation</text>
+<text x="524" y="309" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">cuts the pressure path</text>
+
+<text x="40" y="372" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Stages 1-4 form the bias-propagation path. Isolation denies the pressure signal to the deciding step, so the answer holds.</text>
+</svg>

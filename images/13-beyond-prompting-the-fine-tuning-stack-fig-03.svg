@@ -1,0 +1,30 @@
+<!-- LoRA Trainable-Parameter Reduction | Book: Prompt Engineering | Chapter: 13-beyond-prompting-the-fine-tuning-stack | Figure: 03 | Generated: 2026-05-29 | Source: pantry/13-beyond-prompting-the-fine-tuning-stack-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">LoRA Trainable-Parameter Reduction</title><desc id="fig-desc-03">A zero-based bar chart comparing trainable parameter counts for r equals 8 and d equals k equals 4096. The full-shape update is about 16.78 million parameters, a tall bar. The LoRA update is about 65.5 thousand parameters, a near-flat sliver beside it, a roughly 256-fold reduction shown honestly on a linear axis.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="13-beyond-prompting-the-fine-tuning-stack" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">LoRA Trainable-Parameter Reduction</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">For r = 8, d = k = 4096: about a 256-fold cut, shown on a true zero-based axis</text>
+
+<!-- plot background -->
+<rect x="150" y="90" width="400" height="260" fill="#F5F5F5"/>
+<!-- y axis -->
+<line x1="150" y1="90" x2="150" y2="350" stroke="#545454" stroke-width="1"/>
+<!-- baseline -->
+<line x1="150" y1="350" x2="550" y2="350" stroke="#545454" stroke-width="1"/>
+
+<!-- full-shape bar: 16,777,216 -> full height 256 px (top at 94) -->
+<rect x="210" y="94" width="100" height="256" fill="#545454"/>
+<text x="260" y="86" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">16,777,216</text>
+<text x="260" y="370" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Full-shape update</text>
+<text x="260" y="385" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">d x k</text>
+
+<!-- LoRA bar: 65,536 -> 256/256 = 1 px (sliver). Render ~2px so it is visible as a line. -->
+<rect x="390" y="348" width="100" height="2" fill="#C8102E"/>
+<text x="440" y="340" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#C8102E">65,536</text>
+<text x="440" y="370" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">LoRA update</text>
+<text x="440" y="385" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="11" fill="#545454">r (d + k)</text>
+
+<!-- y axis label -->
+<text x="138" y="220" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454" transform="rotate(-90 138 220)">trainable parameters</text>
+
+<text x="60" y="408" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">On a zero-based linear axis the LoRA bar is a barely visible sliver. That near-flat line is the point: the gap is roughly 256x.</text>
+</svg>

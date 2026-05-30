@@ -1,4 +1,4 @@
-# Prompt Engineering with LLMs
+# Prompt Engineering
 
 *A Rigorous Framework for Designing, Evaluating, and Scaling Language Model Interactions*
 

@@ -1,0 +1,54 @@
+<!-- The Four Layers of a Prompt | Book: Prompt Engineering | Chapter: 05-the-architect-mindset | Figure: 01 | Generated: 2026-05-29 | Source: pantry/05-the-architect-mindset-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-01 fig-desc-01"><title id="fig-title-01">The Four Layers of a Prompt</title><desc id="fig-desc-01">Four stacked bands — root (broad target), constraints (region with a notch carved out), persona (a reweighted sub-region), and format (a rigid grid) — each conditioning the output distribution differently. A bracket on the right joins all four to a single composed-output node.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="05-the-architect-mindset" figure-number="01" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah1" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Four Layers of a Prompt</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Four separable layers compose onto one output distribution — debug each alone</text>
+
+<g font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12">
+<!-- ROOT band: broad target region -->
+<rect x="120" y="80" width="360" height="58" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<ellipse cx="300" cy="109" rx="150" ry="18" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="100" y="113" text-anchor="end" fill="#2a1a0e">Root</text>
+<text x="300" y="113" text-anchor="middle" font-size="10" fill="#545454">broad target region</text>
+
+<!-- CONSTRAINTS band: region with a notch carved out -->
+<rect x="120" y="142" width="360" height="58" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<path d="M180,178 L240,178 L240,158 L300,158 L300,178 L420,178 L420,184 L180,184 Z" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="100" y="175" text-anchor="end" fill="#2a1a0e">Constraints</text>
+<text x="300" y="195" text-anchor="middle" font-size="10" fill="#545454">region with a notch carved out</text>
+
+<!-- PERSONA band: reweighted sub-region -->
+<rect x="120" y="204" width="360" height="58" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<rect x="180" y="218" width="60" height="30" fill="#D4D4D4" stroke="#545454"/>
+<rect x="248" y="212" width="60" height="42" fill="#C8860E" opacity="0.5" stroke="#C8860E"/>
+<rect x="316" y="222" width="60" height="22" fill="#D4D4D4" stroke="#545454"/>
+<text x="100" y="237" text-anchor="end" fill="#2a1a0e">Persona</text>
+<text x="300" y="258" text-anchor="middle" font-size="10" fill="#545454">reweighted sub-region</text>
+
+<!-- FORMAT band: rigid grid -->
+<rect x="120" y="266" width="360" height="58" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<g stroke="#545454" stroke-width="1">
+<rect x="216" y="278" width="168" height="34" fill="none"/>
+<line x1="258" y1="278" x2="258" y2="312"/>
+<line x1="300" y1="278" x2="300" y2="312"/>
+<line x1="342" y1="278" x2="342" y2="312"/>
+<line x1="216" y1="295" x2="384" y2="295"/>
+</g>
+<text x="100" y="299" text-anchor="end" fill="#2a1a0e">Format</text>
+<text x="300" y="320" text-anchor="middle" font-size="10" fill="#545454">rigid grid</text>
+</g>
+
+<!-- vertical bracket joining all four -->
+<path d="M496,80 L512,80 L512,324 L496,324" fill="none" stroke="#2a1a0e" stroke-width="1.5"/>
+<line x1="512" y1="202" x2="566" y2="202" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1)"/>
+
+<!-- composed output node -->
+<rect x="568" y="174" width="100" height="56" fill="#D4D4D4" stroke="#545454" stroke-width="1.4"/>
+<text x="618" y="198" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Composed</text>
+<text x="618" y="214" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">output</text>
+
+<text x="120" y="358" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Each layer acts on the distribution in its own way, so a failure can be traced to the layer that caused it.</text>
+</svg>

@@ -72,7 +72,7 @@ This is the same Thought→Action→Observation loop developed in Ch. 11, now ru
 
 ### The 80% rule
 
-Anthropic's published best practices report that output quality begins to degrade as the context approaches roughly **80% of capacity** [verify exact %]. Treat that figure as a soft architectural constraint rather than a sharp cliff: the practical implication is that you should plan to *restart or compact* around 80% rather than watch quality erode while you fill the last fifth.
+Practitioner experience and Anthropic's own auto-compaction defaults converge on a working rule of thumb: output quality begins to degrade as the context approaches roughly **80% of capacity** [practitioner heuristic, not a published threshold; auto-compaction in Claude Code triggers in this range]. Treat that figure as a soft architectural constraint rather than a sharp cliff: the practical implication is that you should plan to *restart or compact* around 80% rather than watch quality erode while you fill the last fifth.
 
 We can make the intuition explicit. Let $C$ be the context window size in tokens and $u(t)$ the tokens consumed after $t$ loop iterations. Useful work continues while
 
@@ -94,13 +94,13 @@ In chat, the system prompt carries your standing instructions. A CLI agent has a
 
 ### Where the file actually lands — and why that matters
 
-Here is the design fact that surprises most engineers, and that explains a lot of "why won't it follow my rules" frustration. In Claude Code, `CLAUDE.md` is **not injected as the system prompt.** It is delivered as a `<system-reminder>` block inside a *user* message, after the real system prompt, carrying a caveat to the effect of: *this context may or may not be relevant; you should not respond to it unless it is highly relevant.* [verify exact wording]
+Here is the design fact that surprises most engineers, and that explains a lot of "why won't it follow my rules" frustration. In Claude Code, `CLAUDE.md` is **not injected as the system prompt.** It is delivered as a `<system-reminder>` block inside a *user* message, after the real system prompt, carrying a caveat to the effect of: *this context may or may not be relevant; you should not respond to it unless it is highly relevant.*
 
 Read that caveat carefully, because it determines how your file behaves. Your instructions are **influential, not absolute.** They sit in user-message position, which means the model weighs them against everything else in the window rather than treating them as inviolable. And the agent is explicitly instructed to *ignore sections it judges irrelevant* — a guardrail added after narrow, hotfix-laden instruction files were observed to degrade performance by injecting task-specific noise into every unrelated request. The consequence for design is sharp: **only universally applicable instructions belong in the file.** A rule that matters for one module, dropped into the global file, is either ignored (when irrelevant, wasting space) or misapplied (when the model wrongly judges it relevant). Vague or conflicting rules get applied inconsistently for the same reason.
 
 ### The instruction-capacity ceiling
 
-There is a second, harder limit, and it is the one that turns "write good rules" into "write *few* good rules." A model can only follow so many distinct instructions before adherence degrades. Practitioner research circulating in 2025 (via HumanLayer) puts the ceiling for frontier thinking models at roughly **150–200 distinct instructions** before adherence breaks down; smaller or non-thinking models decay faster (exponentially rather than linearly). Crucially, the agent's *own* system prompt is reported to consume on the order of **50 of those slots** before your file ever loads — leaving you perhaps 100–150. [verify all figures]
+There is a second, harder limit, and it is the one that turns "write good rules" into "write *few* good rules." A model can only follow so many distinct instructions before adherence degrades. Practitioner research circulating in 2025 (via HumanLayer) puts the ceiling for frontier thinking models at roughly **150–200 distinct instructions** before adherence breaks down; smaller or non-thinking models decay faster (exponentially rather than linearly). Crucially, the agent's *own* system prompt is reported to consume on the order of **50 of those slots** before your file ever loads — leaving you perhaps 100–150. [These are practitioner figures circulated via HumanLayer, not numbers from a controlled, published study — treat them as order-of-magnitude guidance, not measured constants.]
 
 Two consequences follow, and the second is the dangerous one.
 
@@ -108,7 +108,7 @@ First, budget discipline: you are not writing into an empty instruction space. Y
 
 Second — and this is the part that should change your behavior — past the threshold, models are reported to **ignore instructions roughly uniformly, not selectively.** It is not that your 201st instruction gets dropped while the first 200 hold. It is that *all* of them start to slip. This is why a bloated instruction file is worse than a short one even for the rules it shares with the short version: the bloat degrades adherence to everything, including the rules you cared about most. The mechanism rhymes with the long-context dilution of Ch. 10 — too many competing directives, like too many competing tokens, flatten the salience of each.
 
-The practical ceiling that falls out of this is **roughly 80–120 lines, and under 100 is better.** HumanLayer reports running a production file under 60 lines. [verify] The file is an *onboarding map*, not a manual.
+The practical ceiling that falls out of this is **roughly 80–120 lines, and under 100 is better.** HumanLayer reports running a production file under 60 lines [practitioner report, not a controlled study]. The file is an *onboarding map*, not a manual.
 
 ### What belongs, what doesn't
 
@@ -237,7 +237,7 @@ The framing that organizes this comes from Simon Willison: the **lethal trifecta
 2. it is exposed to **untrusted content** (file contents, dependencies, web results it didn't author);
 3. it can **communicate externally** (network calls, writing files, opening PRs, running shell commands).
 
-A default CLI coding agent has all three. That is the point of Willison's framing: the danger is not a clever individual exploit but the *structural combination.* If an attacker can get text in front of the agent (untrusted content) while the agent can read your secrets (private data) and make a network call (external communication), the attacker can in principle read+exfiltrate. Documented patterns include file-content injection that reads and exfiltrates secrets, poisoned editor config that achieves code execution, and malicious MCP server entries that reach arbitrary command execution. A single 2025 disclosure reported **30+ vulnerabilities across six tools** (Cursor, Roo Code, JetBrains Junie, Copilot, Kiro.dev, Claude Code), including a Codex CLI MCP-entry path (CVE-2025-61260). [verify CVE and count] OWASP's 2025 Top-10 for LLM Applications lists prompt injection at **#1**, and notes there is no foolproof model-layer prevention.
+A default CLI coding agent has all three. That is the point of Willison's framing: the danger is not a clever individual exploit but the *structural combination.* If an attacker can get text in front of the agent (untrusted content) while the agent can read your secrets (private data) and make a network call (external communication), the attacker can in principle read+exfiltrate. Documented patterns include file-content injection that reads and exfiltrates secrets, poisoned editor config that achieves code execution, and malicious MCP server entries that reach arbitrary command execution. A single 2025 disclosure reported **30+ vulnerabilities across six tools** (Cursor, Roo Code, JetBrains Junie, Copilot, Kiro.dev, Claude Code), including a Codex CLI MCP-entry path (CVE-2025-61260, patched in Codex CLI 0.23.0). OWASP's 2025 Top-10 for LLM Applications lists prompt injection at **#1**, and notes there is no foolproof model-layer prevention.
 
 This is where Ch. 4's computational skepticism returns, now aimed at files. The skepticism posture treats user assertions as claims to be checked rather than facts to be accepted; the agent version treats *file content* the same way — text in a repo is data to be processed, never instructions to be obeyed.
 
@@ -304,16 +304,16 @@ Separately, a demonstrated *model-layer* defense that reliably prevents prompt i
 
 ## References
 
-- Willison, S. (2025). *The lethal trifecta for AI agents: private data, untrusted content, and external communication.* simonwillison.net. [verify exact URL/date]
-- Anthropic (2025). *Effective context engineering for AI agents.* Anthropic Engineering blog (Sep 2025). [verify]
-- Anthropic (2025). *Equipping agents with Agent Skills.* Anthropic Engineering blog (Dec 2025). [verify]
-- Anthropic. *Claude Code documentation* — best practices, modifying system prompts, context management. [verify]
-- HumanLayer (2025). *Writing a good CLAUDE.md* (Nov 2025) — instruction-capacity and file-length practice. [verify]
+- Willison, S. (2025). *The lethal trifecta for AI agents: private data, untrusted content, and external communication.* simonwillison.net, Jun 16, 2025. https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/
+- Anthropic (2025). *Effective context engineering for AI agents.* Anthropic Engineering blog (Sep 2025). https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+- Anthropic (2025). *Equipping agents for the real world with Agent Skills.* Anthropic Engineering blog (Dec 18, 2025). https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- Anthropic. *Best practices for Claude Code* (code.claude.com/docs) — best practices, modifying system prompts, context management.
+- HumanLayer (2025). *Writing a good CLAUDE.md* (Nov 2025) — instruction-capacity and file-length practice [practitioner write-up, not a peer-reviewed study].
 - Yang, J., et al. (2024). *SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering.* NeurIPS 2024.
 - Zhan, Q., et al. (2024). *InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents.* ACL 2024.
-- OWASP (2025). *Top 10 for Large Language Model Applications* — prompt injection (#1). [verify]
-- VILA-Lab. *Dive into Claude Code* — corpus of 253 CLAUDE.md files across 242 repos. arXiv:2604.14228 [verify].
-- The Hacker News / Cymulate (Dec 2025). *30+ vulnerabilities across six coding-agent tools.* CVE-2025-61260 (Codex CLI MCP entry). [verify CVE and count]
+- OWASP (2025). *Top 10 for Large Language Model Applications* — prompt injection ranked LLM01 (#1). https://genai.owasp.org/llmrisk/llm01-prompt-injection/
+- VILA-Lab (Liu, J., Zhao, X., Shang, X., & Shen, Z.). *Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems* — corpus of 253 CLAUDE.md files across 242 repos. arXiv:2604.14228.
+- The Hacker News / Cymulate (Dec 2025). *Researcher uncovers 30+ flaws in AI coding tools enabling data theft and RCE.* CVE-2025-61260 — OpenAI Codex CLI auto-executes MCP server entries from local config without approval; patched in Codex CLI 0.23.0.
 - *Companion volume:* Brown, N. B. *Prompt Engineering for CLI AI Coding Agents* (Claude Code, Codex CLI, Cursor, Aider, Cowork) — the depth treatment behind this overview chapter.
 
 ---

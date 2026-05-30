@@ -1,0 +1,49 @@
+<!-- Negative Constraints Remove Probability Mass | Book: Prompt Engineering | Chapter: 05-the-architect-mindset | Figure: 03 | Generated: 2026-05-29 | Source: pantry/05-the-architect-mindset-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-03 fig-desc-03"><title id="fig-title-03">Negative Constraints Remove Probability Mass</title><desc id="fig-desc-03">Three distributions over the same output-space axis. Baseline: broad high-entropy spread. Positive constraint: one region built up taller while mass remains everywhere. Negative constraint: two regions zeroed out and crossed by a blocking bar, with the surviving mass renormalized taller — lower entropy, narrower admissible set.</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="05-the-architect-mindset" figure-number="03" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="32" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">Deletion Concentrates Mass More Than Reweighting</text>
+<text x="350" y="52" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">Same output-space axis; a negative constraint lowers entropy decisively</text>
+
+<!-- ============ PANEL 1: baseline ============ -->
+<g>
+<rect x="40" y="90" width="200" height="210" fill="#F5F5F5"/>
+<line x1="40" y1="300" x2="240" y2="300" stroke="#2a1a0e" stroke-width="1.2"/>
+<line x1="40" y1="90" x2="40" y2="300" stroke="#2a1a0e" stroke-width="1.2"/>
+<!-- broad high-entropy spread -->
+<path d="M40,300 L40,250 Q80,222 100,228 Q140,236 160,224 Q200,212 240,236 L240,300 Z" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<text x="140" y="84" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Baseline</text>
+<text x="140" y="318" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">broad, high entropy</text>
+</g>
+
+<!-- ============ PANEL 2: positive constraint ============ -->
+<g>
+<rect x="250" y="90" width="200" height="210" fill="#F5F5F5"/>
+<line x1="250" y1="300" x2="450" y2="300" stroke="#2a1a0e" stroke-width="1.2"/>
+<line x1="250" y1="90" x2="250" y2="300" stroke="#2a1a0e" stroke-width="1.2"/>
+<!-- still-populated remainder -->
+<path d="M250,300 L250,256 Q290,232 310,236 Q360,244 390,238 Q420,232 450,250 L450,300 Z" fill="#D4D4D4" stroke="#545454" stroke-width="1"/>
+<!-- raised good region (blue secondary = ink-blue substitute: use secondary #545454? must be data color. Use ink emphasis sparing; here build-up in ochre? no. use #2a1a0e fill region) -->
+<path d="M320,300 L320,150 Q340,130 360,150 L360,300 Z" fill="#545454" stroke="#2a1a0e" stroke-width="1"/>
+<text x="350" y="84" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Positive constraint</text>
+<text x="350" y="318" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">good region raised; rest remains</text>
+</g>
+
+<!-- ============ PANEL 3: negative constraint ============ -->
+<g>
+<rect x="460" y="90" width="200" height="210" fill="#F5F5F5"/>
+<line x1="460" y1="300" x2="660" y2="300" stroke="#2a1a0e" stroke-width="1.2"/>
+<line x1="460" y1="90" x2="460" y2="300" stroke="#2a1a0e" stroke-width="1.2"/>
+<!-- surviving concentrated mass, renormalized taller (center) -->
+<path d="M540,300 L540,128 Q560,104 580,128 L580,300 Z" fill="#2a1a0e" stroke="#2a1a0e" stroke-width="1"/>
+<!-- two zeroed regions with blocking bars (left and right) -->
+<line x1="476" y1="300" x2="520" y2="300" stroke="#C8102E" stroke-width="4"/>
+<line x1="476" y1="300" x2="520" y2="280" stroke="#C8102E" stroke-width="1.4"/>
+<line x1="600" y1="300" x2="644" y2="300" stroke="#C8102E" stroke-width="4"/>
+<line x1="600" y1="280" x2="644" y2="300" stroke="#C8102E" stroke-width="1.4"/>
+<text x="560" y="84" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Negative constraint</text>
+<text x="560" y="318" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">regions deleted; mass renormalized</text>
+</g>
+
+<text x="40" y="362" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Positive constraints pile mass on a good region but leave the rest populated; negative constraints zero nameable bad</text>
+<text x="40" y="378" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">regions entirely, lowering entropy and narrowing the admissible set.</text>
+</svg>

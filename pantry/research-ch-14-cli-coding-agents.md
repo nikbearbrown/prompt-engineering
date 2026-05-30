@@ -1,5 +1,5 @@
 # Research: Candidate Chapter §14 — Prompt Engineering for CLI Coding Agents
-## Prompt Engineering with LLMs (overview chapter; companion volume carries the depth)
+## Prompt Engineering (overview chapter; companion volume carries the depth)
 **Chapter one-line:** How prompting a stateful CLI coding agent differs from one-shot chat prompting, and the core context-engineering moves.
 **Research date:** 2026-05-29 · *Source: author-supplied synthesis "Prompt Engineering for CLI AI Coding Agents: Research Synthesis," May 2026. Practitioner-generated; mark [verify] on specific figures before print.*
 

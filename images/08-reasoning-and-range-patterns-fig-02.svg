@@ -1,0 +1,52 @@
+<!-- Three routes to the same step-shaped trajectory | Book: Prompt Engineering | Chapter: 08-reasoning-and-range-patterns | Figure: 02 | Generated: 2026-05-29 | Source: pantry/08-reasoning-and-range-patterns-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-02 fig-desc-02">
+<title id="fig-title-02">Three routes to the same step-shaped trajectory</title>
+<desc id="fig-desc-02">One model and query reach outcomes by three routes. Direct greedy decode misses and lands on a wrong answer. A step-by-step prompt cue, and top-k first-token inspection with no prompt change, both reach the same correct trajectory, proving reasoning was latent in the distribution.</desc>
+<metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="08-reasoning-and-range-patterns" figure-number="02" date-generated="2026-05-29"/></metadata>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<defs>
+<marker id="arrow08f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#2a1a0e"/>
+</marker>
+</defs>
+
+<text x="350" y="36" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The reasoning was in the distribution, not the words</text>
+
+<!-- source -->
+<rect x="40" y="170" width="130" height="80" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="105" y="204" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="13" fill="#2a1a0e" font-weight="600">Model</text>
+<text x="105" y="222" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="13" fill="#2a1a0e" font-weight="600">+ query</text>
+
+<!-- route a: direct greedy -> wrong -->
+<line x1="170" y1="100" x2="480" y2="100" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow08f2)"/>
+<path d="M 105 170 L 105 100 L 170 100" fill="none" stroke="#2a1a0e" stroke-width="1"/>
+<text x="290" y="90" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(a) direct greedy decode</text>
+<rect x="490" y="78" width="170" height="44" fill="#C8102E" stroke="#2a1a0e" stroke-width="1"/>
+<text x="575" y="105" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#FFFFFF" font-weight="600">Wrong answer</text>
+
+<!-- route b: step-by-step cue -> correct -->
+<line x1="170" y1="210" x2="248" y2="210" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow08f2)"/>
+<rect x="258" y="186" width="120" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="318" y="206" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">appended cue</text>
+<text x="318" y="222" text-anchor="middle" font-family="'JetBrains Mono','Fira Code',monospace" font-size="10" fill="#545454">"step by step"</text>
+<text x="318" y="178" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(b) prompt cue</text>
+<line x1="378" y1="210" x2="488" y2="210" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow08f2)"/>
+
+<!-- route c: top-k inspection -> correct -->
+<path d="M 105 250 L 105 320 L 170 320" fill="none" stroke="#2a1a0e" stroke-width="1"/>
+<line x1="170" y1="320" x2="248" y2="320" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow08f2)"/>
+<rect x="258" y="296" width="120" height="48" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1"/>
+<text x="318" y="316" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">top-k first-token</text>
+<!-- tiny fan of three branch ticks -->
+<line x1="300" y1="330" x2="290" y2="338" stroke="#545454" stroke-width="1"/>
+<line x1="318" y1="330" x2="318" y2="340" stroke="#545454" stroke-width="1"/>
+<line x1="336" y1="330" x2="346" y2="338" stroke="#545454" stroke-width="1"/>
+<text x="318" y="288" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">(c) CoT-decoding, no prompt change</text>
+<path d="M 378 320 L 440 320 L 440 232" fill="none" stroke="#2a1a0e" stroke-width="1" marker-end="url(#arrow08f2)"/>
+
+<!-- shared correct outcome -->
+<rect x="490" y="186" width="170" height="48" fill="#FFFFFF" stroke="#2a1a0e" stroke-width="2"/>
+<rect x="490" y="186" width="6" height="48" fill="#C8102E"/>
+<text x="578" y="206" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e" font-weight="600">Correct trajectory</text>
+<text x="578" y="223" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">same step-shaped answer</text>
+</svg>
