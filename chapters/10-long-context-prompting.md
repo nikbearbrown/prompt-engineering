@@ -29,7 +29,8 @@ $$a(0) \approx a(1) > a(0.5)$$
 
 with the gap between the edges and the middle reaching tens of percentage points on hard configurations. This is not a quirk to memorize. It is a consequence of how the model was trained and how it allocates attention. The two halves of the curve have different mechanisms and different fixability, and collapsing them into one story is the most common way to get the engineering wrong.
 
-<!-- → [FIGURE: The U-shaped position-accuracy curve. X-axis: relative position of the target fact from 0 (start) to 1 (end). Y-axis: accuracy on the retrieval task. The curve is high at both edges and sags in the middle. Annotate the "lost in the middle" trough. Caption: accuracy is not uniform across positions — the middle is where facts go to be ignored.] -->
+![Lost in the middle: accuracy by position of the relevant fact follows a U-shaped curve — high when the fact sits at the start or end of the context and sagging sharply in the middle, even for long-context models.](../images/10-long-context-prompting-fig-01.png)
+*Figure 10.1 — Lost in the middle: accuracy by position of the relevant fact*
 
 ### Why recency: the autoregressive artifact
 
@@ -38,6 +39,9 @@ Here is the load-bearing mechanism. A model is trained by predicting each token 
 $$t_i \sim P(t_i \mid t_0, t_1, \ldots, t_{i-1})$$
 
 During pretraining the objective rewards getting the next token right given the immediately preceding ones. In ordinary text, the strongest predictor of the next word is usually the words right before it — local context dominates. A model that learns to weight recent tokens heavily is a model that minimizes its training loss. So the autoregressive objective itself builds in a bias toward the most recent context.
+
+![Each token is predicted from the ones immediately before it: because local context dominates next-token prediction during pretraining, the model learns to weight recent tokens heavily — recency bias is the training objective showing through.](../images/10-long-context-prompting-fig-02.png)
+*Figure 10.2 — Each token is predicted from the ones immediately before it*
 
 That is why recency is stable: it persists even near the window limit and even in long-context models, because it is baked into what the model was optimized to do. It is not a bug that a bigger window fixes. It is the training objective showing through. The thing practitioners call "recency bias" is the autoregressive next-token objective viewed from the prompt-design side.
 
@@ -66,6 +70,9 @@ One misconception to defuse explicitly: "a bigger context window means the model
 Single-needle retrieval — find the one out-of-place sentence in this haystack — is largely solved on frontier models. Numbers near 95 to 96 percent are routine for one fact in one long document. If your evaluation stops there, you will conclude your long-context system works.
 
 It does not, and here is the gotcha. Ask for more than one fact at once and the floor drops out. Work on multilingual needle-in-a-haystack reports that the best models hit roughly 96 percent in English with a single target sentence, but three target sentences in English drops to roughly 40 percent. That is the empirical basis for "multi-needle collapse," and the figure matters: it is approximately 40 percent for three needles, not the rounder, more optimistic 60 percent that circulates in practitioner summaries.
+
+![Single-needle retrieval is solved; multi-needle synthesis is not: finding one fact in a long context runs near 96% in English, but holding three facts simultaneously salient while composing an answer drops to roughly 40%.](../images/10-long-context-prompting-fig-03.png)
+*Figure 10.3 — Single-needle retrieval is solved; multi-needle synthesis is not*
 
 Why does adding a second and third needle break things so much harder than the first? Two mechanisms compound. First, synthesis is not retrieval: pulling one fact to the front of generation is easy; holding three facts simultaneously salient while composing an answer competes for the same finite attention budget. Second, the U-curve applies to each needle separately — with three needles scattered through a long context, at least one of them is probably sitting in the middle, where the curve says it will be missed.
 
@@ -110,7 +117,8 @@ A schematic of the recommended layout:
 
 Recency makes the bottom of that block the most-attended region. That is where the load-bearing tokens go.
 
-<!-- → [DIAGRAM: The recommended prompt layout as a vertical stack. Three labeled zones: Top (low-priority context, filler), Middle (mid-relevance docs), End (high-priority instruction, safety rules, most-relevant facts, user question). Arrows on the right side show the attention gradient — high at top and bottom, low in the middle. Caption: position is a design variable; the high-attention zones are where load-bearing content goes.] -->
+![Engineer the layout to the attention curve: low-priority context and filler go in the middle trough, while the high-priority instruction, safety rules, most-relevant facts, and the user's question go at the end — the highest-attention zone.](../images/10-long-context-prompting-fig-05.png)
+*Figure 10.5 — Engineer the layout to the attention curve*
 
 ---
 
@@ -123,6 +131,9 @@ If the model attends most to the front and end of a long context, then an attack
 **Many-shot jailbreaking.** Anil et al. (2024), Anthropic, showed that stuffing hundreds of faux dialogue turns demonstrating an unwanted behavior into the context overrides alignment. Attack strength scales with shot count — near-zero at 5 shots and reliable around 256, following a power law in the log of the number of shots — and it works across GPT-3.5 and 4, Claude 2.0, Llama 2 70B, and Mistral 7B. Long context is not just a recall problem. It is an attack surface, and in-context demonstrations exploit the same positional and recency machinery that helps legitimate instructions.
 
 **NINJA — position-dependent safety.** The sharper result for this chapter is NINJA, "Jailbreaking in the Haystack" (2025). NINJA appends benign, thematically relevant filler to a harmful goal and varies the position of that goal in the context. On HarmBench, attack success rose from a 23.7% baseline to 58.8% for Llama-3.1-8B-Instruct — also from 23.7% to 42.5% for Qwen2.5-7B-Instruct, and roughly 23% to 29% for Gemini Flash. NINJA explicitly attributes the effect to the same U-shaped primacy and recency bias: putting the harmful goal at the beginning maximizes attack success, and putting it at the end mitigates.
+
+![Where the harmful goal sits changes how often the attack succeeds: on HarmBench, moving a goal to the high-attention front of a long context raised attack success from a 23.7% baseline to 58.8% on Llama-3.1-8B — the same positional machinery that helps legitimate instructions.](../images/10-long-context-prompting-fig-04.png)
+*Figure 10.4 — Where the harmful goal sits changes how often the attack succeeds*
 
 State that result precisely, because it is easy to mangle. 58.8% is the post-attack success rate for one specific model, up from a 23.7% baseline. "Up to 58.8% on Llama-3.1-8B, from a 23.7% baseline" is the honest phrasing. "Up to 58.8% attack success" stated bare implies a universal law the data does not support.
 
@@ -169,3 +180,51 @@ One honest caveat to carry forward: the U-shaped curve is robust and replicated,
 - Kamradt, G. (2023). Needle In A Haystack — Pressure Testing LLMs. https://github.com/gkamradt/LLMTest_NeedleInAHaystack
 - LangChain (2024). Multi Needle in a Haystack. https://blog.langchain.com/multi-needle-in-a-haystack/
 - Databricks (2024). Long Context RAG Performance of Large Language Models. arXiv:2411.03538.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 10.1 — Lost in the middle: accuracy by position of the relevant fact
+
+A line chart, single HTML file, inline CSS, D3 v7 from the CDN. X-axis: relative position of the target fact (0 = start → 1 = end); y-axis: retrieval accuracy, zero baseline. Plot a U-shaped curve, high at both edges and sagging in the middle; annotate the "lost in the middle" trough in red. Caption: accuracy is not uniform across positions.
+
+> Reference implementation: `d3/10-long-context-prompting-fig-01.html`
+
+---
+
+### Figure 10.2 — Each token is predicted from the ones immediately before it
+
+A short autoregressive-chain sketch, single HTML file, D3 v7 CDN. Show a token predicted from a window of immediately preceding tokens, with attention weight concentrated on the most recent ones (heavier in red). Caption: recency bias is the next-token objective viewed from the prompt-design side.
+
+> Reference implementation: `d3/10-long-context-prompting-fig-02.html`
+
+---
+
+### Figure 10.3 — Single-needle retrieval is solved; multi-needle synthesis is not
+
+A grouped bar chart, single HTML file, D3 v7 CDN, zero baseline. X: number of needles (1 vs 3, English); y: accuracy 0–100. Show ≈96% for one needle and ≈40% for three, the collapse bar in red. Caption: synthesis is not retrieval — holding three facts salient competes for one attention budget.
+
+> Reference implementation: `d3/10-long-context-prompting-fig-03.html`
+
+---
+
+### Figure 10.4 — Where the harmful goal sits changes how often the attack succeeds
+
+A bar or line chart of attack success by goal position, single HTML file, D3 v7 CDN, zero baseline. Show attack success rising from a 23.7% baseline toward 58.8% as the goal moves to the front of a long context (Llama-3.1-8B). Red marks the high-success front position. Caption: the same positional machinery that helps instructions helps an attacker.
+
+> Reference implementation: `d3/10-long-context-prompting-fig-04.html`
+
+---
+
+### Figure 10.5 — Engineer the layout to the attention curve
+
+A vertical prompt-layout stack, single HTML file, D3 v7 CDN. Three zones — top (low-priority context/filler), middle (mid-relevance docs), end (high-priority instruction, safety rules, most-relevant facts, user question). A right-side attention gradient is high at top and bottom, low in the middle (red marks the high-attention end zone). Caption: put load-bearing content where the model attends.
+
+> Reference implementation: `d3/10-long-context-prompting-fig-05.html`

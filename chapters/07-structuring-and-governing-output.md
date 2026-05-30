@@ -27,6 +27,11 @@ This is why supplying the scaffold beats asking for the content and hoping the f
 
 The four patterns in this chapter differ only in *what* structure they commit early and *how much* of the task that structure governs. The same mechanism, aimed at four different scopes.
 
+A note on names before we start. Template and Recipe come from the prompt-pattern catalog literature; Outline Expansion, Menu Actions, and the Semantic Filter later in this chapter are common practitioner patterns, named here for convenience. Treat all of them as rules of thumb — heuristics that exploit one mechanism — not as formal results. The value is the mechanism and the named failure mode, not the label.
+
+![The same mechanism, aimed at four scopes: Template commits the format, Recipe commits the procedure, Outline Expansion commits the hierarchy, and Menu Actions commits the action space — one early-commitment mechanism at four different scopes.](../images/07-structuring-and-governing-output-fig-02.png)
+*Figure 7.2 — The same mechanism, aimed at four scopes*
+
 ---
 
 ## Template Pattern: committing the format
@@ -53,7 +58,8 @@ The Template Pattern produces the most reliably machine-parseable output of any 
 
 There is a quieter cost too. A rigid template emits only its slots, so a genuinely important detail that has no slot — "the carrier mentioned the bridge on I-40 is closed" — is silently dropped, because the committed structure has no place to put it and the model's variance has been collapsed precisely to prevent off-template emission. The engineering response is to add a deliberate free-text channel: `NOTES: <anything else relevant>`. Structure exactly the part of the output whose variance hurts your consumer. Leave a channel for everything else.
 
-<!-- → [IMAGE: Two versions of the same carrier email processed through the logistics pipeline — left: ungoverned output showing chatty preamble and reordered fields; right: template output with exact field labels and UNKNOWN for a missing date. Caption: same email, same model, different structural commitment.] -->
+![Committing a structural token narrows what comes next: once a field label like ORIGIN: is emitted, the high-probability continuations collapse from a chatty paragraph to exactly the value that label names, in the order the template fixes.](../images/07-structuring-and-governing-output-fig-01.png)
+*Figure 7.1 — Committing a structural token narrows what comes next*
 
 ---
 
@@ -105,7 +111,15 @@ When the model's output triggers real operations, an unbounded action space is a
 
 The failure mode is **forced misclassification**: an input that maps to no menu item still has to become some output, and without an escape the model will jam it into the nearest action — routing a billing question to `SUMMARIZE` because the menu offered nothing better. The mitigation is the explicit escape: `UNSUPPORTED: <reason>` is to the Menu pattern what `UNKNOWN` is to the Template — a legal, low-entropy output for the genuinely out-of-scope input.
 
-<!-- → [TABLE: The shared failure mode across all four patterns. Columns: Pattern / Structure committed / Empty-slot confabulation form / Escape hatch. Four rows: Template (labeled fields / invented field values / UNKNOWN), Recipe (ordered steps / fabricated steps / conditional labels), Outline Expansion (hierarchy / over-expanded filler / shallow-node permission), Menu Actions (closed action set / forced misclassification / UNSUPPORTED).] -->
+![Every pattern's empty slot, made safe by an escape value: when committed structure outruns the available content the model confabulates to fill it, and an explicit escape value gives it a legal low-entropy completion instead.](../images/07-structuring-and-governing-output-fig-03.png)
+*Figure 7.3 — Every pattern's empty slot, made safe by an escape value*
+
+| Pattern | Structure committed | Empty-slot confabulation | Escape hatch |
+|---|---|---|---|
+| Template | Labeled fields | Invented field values | `UNKNOWN` |
+| Recipe | Ordered steps | Fabricated steps | Conditional-step labels |
+| Outline Expansion | Hierarchy | Over-expanded filler | Permission for shallow nodes |
+| Menu Actions | Closed action set | Forced misclassification | `UNSUPPORTED: <reason>` |
 
 ---
 
@@ -143,7 +157,8 @@ There are two ways to implement a Semantic Filter, and the difference is the loa
 
 This is the identical failure mode Chapter 4 named as calibration drift. A dissenter who shares the defendant's context looks like governance and provides little. The Semantic Filter has the same failure: an in-prompt filter is a dissenter sharing the generator's context. A separately invoked filter with a clean context is the real check — and it degrades the same way if you "helpfully" pass it the original prompt for context.
 
-<!-- → [DIAGRAM: Two versions of the filter architecture. Left (in-prompt): Generator call produces output; same call also runs the filter; both share one context window including user pressure. Right (separate classifier): Generator call produces output; output passed to a second call with clean context (criteria only, no original prompt); second call returns pass/fail. Caption: context isolation is what makes the separate-classifier version the real check.] -->
+![In-prompt self-filter versus separate classifier: an in-prompt filter shares the generator's context and pressure and can be talked past, while a separately invoked filter with a clean context — criteria only — is the real check.](../images/07-structuring-and-governing-output-fig-04.png)
+*Figure 7.4 — In-prompt self-filter versus separate classifier*
 
 ### The two-sided error budget
 
@@ -158,6 +173,9 @@ One honest limit, stated before you trust the filter: it governs admissibility, 
 ## A decision procedure
 
 The patterns are not interchangeable and the choice is not aesthetic. Match the pattern to where your uncertainty lives.
+
+![Where does the variance that hurts live? Format variance points to Template, procedural variance to Recipe, long-range structural variance to Outline Expansion, action-space variance to Menu Actions, and admissibility to the Semantic Filter — and if the risk is correctness, none of them helps.](../images/07-structuring-and-governing-output-fig-05.png)
+*Figure 7.5 — Match the pattern to where the variance that hurts lives*
 
 Does a downstream consumer require a specific format? If a parser, schema, API, or rigid workflow consumes the output, the variance that hurts you is format variance. Use the **Template Pattern** and make the template the consumer's grammar. Always include an escape value for missing fields and a free-text notes slot.
 
@@ -197,5 +215,53 @@ Output structure is not decoration applied after the fact. It is conditioning ap
 
 ## References
 
-- White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, H., Elnashar, A., Spencer-Smith, J., & Schmidt, D. C. (2023). A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT. arXiv:2302.11382. *(Source for the Template, Recipe, Outline Expansion, Menu Actions, and Semantic Filter patterns.)*
+- White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, H., Elnashar, A., Spencer-Smith, J., & Schmidt, D. C. (2023). A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT. arXiv:2302.11382. *(Source for the Template and Recipe patterns. Outline Expansion, Menu Actions, and the Semantic Filter are common practitioner patterns — rules of thumb, not formal results from any single paper.)*
 - Shannon, C. E. (1948). A Mathematical Theory of Communication. *Bell System Technical Journal*, 27(3), 379–423. *(Source of the entropy definition underlying the "structure reduces output entropy" claim.)*
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 7.1 — Committing a structural token narrows what comes next
+
+A before/after distribution diagram, single HTML file, inline CSS, D3 v7 from the CDN. Left: a wide distribution over many plausible continuations after "extract the key details." Right: after emitting a field label (`ORIGIN:`), a sharply narrowed distribution concentrated on the value that label names. Red marks the collapsed nucleus; ink for the wide prior. Caption: a committed structural token spends a little budget to collapse downstream variance.
+
+> Reference implementation: `d3/07-structuring-and-governing-output-fig-01.html`
+
+---
+
+### Figure 7.2 — The same mechanism, aimed at four scopes
+
+A four-panel scope diagram, single HTML file, D3 v7 CDN. One row, four panels — Template (format), Recipe (procedure), Outline Expansion (hierarchy), Menu Actions (action space) — each showing the same "commit structure early" mechanism applied at a different scope. Red marks the committed structure in each. Caption: one mechanism, four scopes.
+
+> Reference implementation: `d3/07-structuring-and-governing-output-fig-02.html`
+
+---
+
+### Figure 7.3 — Every pattern's empty slot, made safe by an escape value
+
+A 4-row reference diagram, single HTML file, D3 v7 CDN. Rows: Template/Recipe/Outline Expansion/Menu Actions; columns: structure committed, empty-slot confabulation, escape value (UNKNOWN / conditional labels / shallow-node permission / UNSUPPORTED). Red marks the escape value that converts a trap into a scaffold. Caption: an escape value gives the model a legal low-entropy completion.
+
+> Reference implementation: `d3/07-structuring-and-governing-output-fig-03.html`
+
+---
+
+### Figure 7.4 — In-prompt self-filter versus separate classifier
+
+A two-architecture comparison, single HTML file, D3 v7 CDN. Left: generator and filter share one context window (including user pressure) — drawn as one box. Right: generator output passed to a second call with a clean context (criteria only), returning pass/fail — drawn as two isolated boxes, the isolated check in red. Caption: context isolation makes the separate-classifier version the real check.
+
+> Reference implementation: `d3/07-structuring-and-governing-output-fig-04.html`
+
+---
+
+### Figure 7.5 — Match the pattern to where the variance that hurts lives
+
+A decision tree, single HTML file, D3 v7 CDN. Root: "where does your uncertainty live?" Branches to format → Template, procedure → Recipe, long-range structure → Outline Expansion, action space → Menu Actions, admissibility → Semantic Filter, and correctness → "none of these helps" (in red). Caption: structure reduces entropy; it does not add knowledge.
+
+> Reference implementation: `d3/07-structuring-and-governing-output-fig-05.html`

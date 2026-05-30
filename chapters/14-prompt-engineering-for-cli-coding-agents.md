@@ -33,6 +33,9 @@ $$u(t) < 0.8\,C$$
 
 The trouble is that $u(t)$ is monotonically increasing — the loop only ever adds. Every file read, every tool result, every error message, every prior turn stays in the window unless you explicitly remove it. So the engineering question is not "how do I make the model smarter" but "how do I keep $u(t)$ below the degradation threshold while still giving the agent what it needs." Two levers: put less in (be selective about reads, prefer pointers to copies) and take stale material out (compaction, fresh sessions). Both are context engineering, not prompt wording.
 
+![The stateful loop and the monotonic token budget: each read, tool result, and prior turn only adds to the window, so consumption rises monotonically toward the ~80% degradation line — the levers are putting less in and taking stale material out.](../images/14-prompt-engineering-for-cli-coding-agents-fig-01.png)
+*Figure 14.1 — The stateful loop and the monotonic token budget*
+
 This connects directly to Chapter 10. Long-context models do not attend uniformly across the window; instructions placed early lose salience as later tokens accumulate, and a window stuffed with near-duplicate or contradictory material produces the multi-needle collapse measured there. Context rot is the agentic, accumulating version of that effect: the renderer fix was still in the window when the agent re-broke it, but buried under an hour of superseded material, competing for attention with everything that came after.
 
 The common belief is that a bigger context window solves this — that a million-token window means you never have to manage context. It does not. A bigger window raises $C$, which buys more iterations before the 80% line, but does nothing about the quality of attention over a polluted window. A window full of stale reads and failed attempts is a worse working context at one million tokens than a clean window at one hundred thousand. Capacity is not the same as signal.
@@ -56,6 +59,9 @@ There is a second, harder limit. A model can only follow so many distinct instru
 The dangerous consequence: past the threshold, models are reported to ignore instructions roughly uniformly, not selectively. It is not that your 201st instruction gets dropped while the first 200 hold. All of them start to slip. A bloated instruction file is worse than a short one even for the rules it shares with the short version: the bloat degrades adherence to everything, including the rules you cared about most. The mechanism rhymes with the long-context dilution of Chapter 10 — too many competing directives flatten the salience of each.
 
 The practical ceiling: roughly 80 to 120 lines, and under 100 is better. The file is an onboarding map, not a manual.
+
+![The instruction-capacity budget: a model can follow only so many distinct instructions before adherence degrades across the board — the agent's own system prompt consumes part of the budget before your CLAUDE.md ever loads, so a bloated file hurts even the rules you cared about.](../images/14-prompt-engineering-for-cli-coding-agents-fig-02.png)
+*Figure 14.2 — The instruction-capacity budget*
 
 ### What belongs, what does not
 
@@ -82,7 +88,14 @@ Prefer pointers to copies. A path or a file-plus-line-number reference stays cor
 
 One cheap trick that exploits Chapter 10's recency effect directly: restate your most critical rules at the end of the file as well as the top. Claude Code's own system prompt repeats its hardest constraints at the bottom for exactly this reason — the most recent tokens carry disproportionate salience.
 
-<!-- → [TABLE: What belongs in CLAUDE.md versus what does not. Columns: Category / Belongs (with reason) / Does not belong (with reason). Rows: Project structure and stack (belongs — WHAT), Test and build commands (belongs — HOW), Design intent (belongs — WHY), Code style rules (does not — linter owns these), Hotfix notes (does not — task-specific, belongs in agent_docs/), Pasted schema/interfaces (does not — belongs as pointer to agent_docs/).] -->
+| Category | Belongs? | Why |
+|---|---|---|
+| Project structure & stack | Yes — **WHAT** | Where things live; the onboarding map |
+| Test & build commands | Yes — **HOW** | The literal verification command strings |
+| Design intent | Yes — **WHY** | Lets the agent make judgment calls the rules don't cover |
+| Code-style rules | No | A linter enforces these far more reliably |
+| Hotfix / task-specific notes | No | Ignored off-task, costly when wrongly applied — put in `agent_docs/` |
+| Pasted schema / interfaces | No | Goes stale the moment the source changes — use a pointer to `agent_docs/` |
 
 ---
 
@@ -125,7 +138,8 @@ For repeated workflows, capture them as reusable slash commands (`.claude/comman
 
 When an execution attempt fails, the temptation is to correct it in place. After one or two corrections, stop. Each correction layers more superseded reasoning into the window — you are correcting your way into context rot. The practical rule: after two failed corrections, `/clear` and write a fresh prompt that folds in what you learned. Do not correct out of a polluted session; start a clean one with better instructions. This is the plan→execute split applied at small scale, mid-task.
 
-<!-- → [DIAGRAM: The plan→execute split as a two-session cycle. Session A (left): agent explores, reads widely, rejects approaches, produces plan.md. Arrow labeled "/clear — discard polluted context." Session B (right): fresh window, loads only plan.md, executes with scope + stopping condition + verification. Caption: the dead ends stay in session A's window; the execution session never sees them.] -->
+![The plan-then-execute split: Session A explores freely, rejects approaches, and writes plan.md; then `/clear` discards the polluted context so Session B executes from a clean window and the plan alone — the dead ends never reach the execution session.](../images/14-prompt-engineering-for-cli-coding-agents-fig-03.png)
+*Figure 14.3 — The plan-then-execute split*
 
 ---
 
@@ -143,6 +157,9 @@ Now the hard part. A chat model reads what you send it. A CLI coding agent reads
 
 The framing that organizes this comes from Simon Willison: the **lethal trifecta**. An agent is exploitable, regardless of how well the model is hardened, when all three of the following are true: it has access to private data (your repo, your secrets, your environment); it is exposed to untrusted content (file contents, dependencies, web results it did not author); and it can communicate externally (network calls, writing files, opening PRs, running shell commands). A default CLI coding agent has all three.
 
+![The lethal trifecta: an agent is exploitable when it has access to private data, is exposed to untrusted content, and can communicate externally — the danger is the structural combination, which prompting cannot remove.](../images/14-prompt-engineering-for-cli-coding-agents-fig-04.png)
+*Figure 14.4 — The lethal trifecta*
+
 The danger is not a clever individual exploit but the structural combination. If an attacker can get text in front of the agent while the agent can read your secrets and make a network call, the attacker can in principle read and exfiltrate. Documented patterns include file-content injection that reads and exfiltrates secrets, poisoned editor config achieving code execution, and malicious MCP server entries reaching arbitrary command execution. A single 2025 disclosure reported 30+ vulnerabilities across six tools (Cursor, Roo Code, JetBrains Junie, Copilot, Kiro.dev, Claude Code). OWASP's 2025 Top-10 for LLM Applications lists prompt injection at number one, and notes there is no foolproof model-layer prevention.
 
 **What prompting can do.** You can reduce blast radius. Instruct the agent to treat repository text as untrusted data, never to follow instructions embedded in files, to make conservative writes, to require confirmation before destructive operations, never to print secrets, and to stay within an explicit scope. These are real mitigations.
@@ -159,7 +176,14 @@ A misconception to retire: "a better, more aligned model will solve prompt injec
 
 The three failure modes this chapter teaches look similar from the outside — the agent does something wrong, confidently — but they have different causes and different fixes.
 
-<!-- → [TABLE: Three failure modes and their diagnostics. Columns: Symptom / Likely cause / The diagnostic test / The fix. Row 1: Was clean early, degrades as session runs long; re-breaks fixed code; cites stale commands — Context rot (dynamic) — Does it work cleanly in a fresh session? — /clear, plan→execute split, compaction. Row 2: Ignores rules from turn one, unpredictably, even on short tasks; adherence slips across the board — Instruction overflow (static) — Is the instruction file over ~100 lines? — Cut to an onboarding map, agent_docs/. Row 3: Takes an action no one asked for after reading an unfamiliar file; touches secrets or network — Prompt injection — Did it just read untrusted content while holding the trifecta? — Sandbox, revoke auto-approve, scope tools.] -->
+![The three-failure diagnostic router: a single question — "does it work in a fresh session?" — separates context rot and injection (state-dependent) from instruction overflow (fix the file, not the session).](../images/14-prompt-engineering-for-cli-coding-agents-fig-05.png)
+*Figure 14.5 — The three-failure diagnostic router*
+
+| Symptom | Likely cause | Diagnostic test | Fix |
+|---|---|---|---|
+| Clean early, degrades as the session runs long; re-breaks fixed code; cites stale commands | Context rot (dynamic) | Does it work cleanly in a fresh session? | `/clear`, plan→execute split, compaction |
+| Ignores rules from turn one, unpredictably, even on short tasks | Instruction overflow (static) | Is the instruction file over ~100 lines? | Cut to an onboarding map; move detail to `agent_docs/` |
+| Takes an unasked action after reading an unfamiliar file; touches secrets or the network | Prompt injection | Did it just read untrusted content while holding the trifecta? | Sandbox, revoke auto-approve, scope the tools |
 
 The single question that routes you: **does it work in a fresh session?** If yes, you have context rot or injection — state-dependent failure. If it fails even fresh and clean, you have an instruction problem or a task-beyond-scope: fix the file, not the session. Run that test first. It is the agentic analog of Chapter 6's single-turn isolation test and Chapter 9's insistence on controlled comparison.
 
@@ -187,3 +211,51 @@ The single question that routes you: **does it work in a fresh session?** If yes
 - Zhan, Q., et al. (2024). InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents. ACL 2024.
 - OWASP (2025). Top 10 for Large Language Model Applications — prompt injection ranked LLM01. https://genai.owasp.org/llmrisk/llm01-prompt-injection/
 - VILA-Lab. Dive into Claude Code: The Design Space of Today's and Future AI Agent Systems. arXiv:2604.14228.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 14.1 — The stateful loop and the monotonic token budget
+
+A loop + budget diagram, single HTML file, inline CSS, D3 v7 from the CDN. Left: a read → reason → act → observe loop that appends to context each pass. Right: a rising line u(t) of token consumption approaching a dashed "~80% degradation" threshold in red, zero baseline. Caption: the loop only ever adds — manage the budget, not the model.
+
+> Reference implementation: `d3/14-prompt-engineering-for-cli-coding-agents-fig-01.html`
+
+---
+
+### Figure 14.2 — The instruction-capacity budget
+
+A stacked-budget bar, single HTML file, D3 v7 CDN. A horizontal capacity bar (~150–200 instruction "slots") with one segment consumed by the system prompt (~50) and the remainder available for your CLAUDE.md. Mark an overflow zone in red where adherence degrades across the board. Caption: past the ceiling, all instructions start to slip — not just the last one.
+
+> Reference implementation: `d3/14-prompt-engineering-for-cli-coding-agents-fig-02.html`
+
+---
+
+### Figure 14.3 — The plan-then-execute split
+
+A two-session cycle, single HTML file, D3 v7 CDN. Session A (explore widely, reject approaches, write plan.md) → an arrow labeled "/clear — discard polluted context" (in red) → Session B (fresh window, load only plan.md, execute with scope + stopping condition + verification). Caption: the dead ends stay in Session A; the execution session never sees them.
+
+> Reference implementation: `d3/14-prompt-engineering-for-cli-coding-agents-fig-03.html`
+
+---
+
+### Figure 14.4 — The lethal trifecta
+
+A three-circle Venn diagram, single HTML file, D3 v7 CDN. Circles: "private data," "untrusted content," "external communication." The central intersection, in red, is labeled "exploitable." Caption: the exposure is the structural combination, not any single leg — prompting cannot remove it.
+
+> Reference implementation: `d3/14-prompt-engineering-for-cli-coding-agents-fig-04.html`
+
+---
+
+### Figure 14.5 — The three-failure diagnostic router
+
+A decision flow, single HTML file, D3 v7 CDN. Root question "does it work in a fresh session?": yes → context rot or injection (state-dependent); no → instruction overflow / out-of-scope task (fix the file). Branch to the three fixes. Red marks the root routing test. Caption: run the fresh-session test first.
+
+> Reference implementation: `d3/14-prompt-engineering-for-cli-coding-agents-fig-05.html`

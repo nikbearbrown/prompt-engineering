@@ -3,7 +3,8 @@
 
 ---
 
-In spring 2023, a team of computational linguists gave a frontier model a short narrative. A man walks into a restaurant, orders a meal, realizes he has left his wallet at home, and quietly slips out the back door. Then they asked: *Did the man pay for his meal?*
+In spring 2023, a team of computational linguists gave a frontier model a short narrative. A man walks into a restaurant, orders a meal, realizes he has left his wallet at home, and quietly slips out the back door.
+<!-- FACT-CHECK FLAG: UNVERIFIED — see factchecks/03-the-limits-of-syntax-assertions.md (no source/researcher/publication named; label as illustrative or cite the study) --> Then they asked: *Did the man pay for his meal?*
 
 The model answered correctly — no — and offered a plausible explanation about embarrassment and oversight. Then the researchers changed one detail. In the new version, the man discovers he has no wallet, and the waiter smiles and says, *"Don't worry — it's on the house tonight."* Again: *Did the man pay?* The model again said no, again correct. Then the follow-up: *Did the man do anything wrong?*
 
@@ -31,7 +32,8 @@ Modern language models are the most sophisticated Chinese Rooms ever built. They
 
 The consequence for you: **prompt engineering is not the art of communicating with an understanding agent. It is the art of constraining a statistical process to produce outputs useful to you, the understanding agent in the system.**
 
-<!-- → [DIAGRAM: The Chinese Room adapted for LLMs. Left side: user prompt enters through a slot. Inside the room: transformer layers shown as stacked rule-application blocks, with the self-attention equation written on the wall. Right side: a fluent output exits through a slot. No connection between the inside machinery and "the world." Caption: the room can get arbitrarily more sophisticated and remain a room.] -->
+![The Chinese Room as a symbol pipeline: a prompt enters through a slot, stacked rule-application blocks transform symbols by formal rule with no connection to the world, and a fluent output exits — the room can grow arbitrarily more sophisticated and remain a room.](../images/03-the-limits-of-syntax-fig-01.png)
+*Figure 3.1 — The Chinese Room as a symbol pipeline*
 
 ---
 
@@ -48,6 +50,9 @@ where $Q$, $K$, $V$ are query, key, and value matrices derived from the input an
 Read this equation as Searle would: a rule for transforming one set of numerical symbols into another. The query asks, for each token, "what am I looking for?"; the key answers "what do I offer?"; the dot product measures compatibility; the softmax normalizes into a distribution; the output is a weighted combination of values — a new representation incorporating context. Repeat across dozens of layers, project to a distribution over the vocabulary, sample the next token.
 
 At no point in this pipeline does anything happen that is not a mathematical operation on numerical arrays. There is no step where the model considers what a word means. No lookup table connecting tokens to real-world objects. No internal model of the world like the one that tells you the kitchen is to your left when you are not looking at it. The transformer builds a compressed statistical echo of training-data patterns and exploits it to predict what comes next. This is syntax — immensely powerful syntax, but syntax.
+
+![The transformer pipeline is syntax all the way down: embeddings, self-attention, and projection to a vocabulary distribution are mathematical operations on numerical arrays — nowhere does the model consult what a word means.](../images/03-the-limits-of-syntax-fig-02.png)
+*Figure 3.2 — The transformer pipeline is syntax all the way down*
 
 ---
 
@@ -69,6 +74,9 @@ These are not trivial objections. Examine them.
 
 **Where benchmark saturation misleads.** The Winograd schema did not stop working because models grew commonsense. It stopped working because specific statistical co-occurrence signatures — linking *"trophy"* with *"big,"* *"suitcase"* with *"container"* — got absorbed into the training distribution. The proof is the adversarial variant: replace familiar nouns with nonsense words and performance drops dramatically. A 95% to 90% drop could be noise. A 95% to 60% drop means the competence mechanism was fundamentally different — the model exploited distributional signatures of familiar words, not spatial-containment reasoning.
 
+![Accuracy collapses when the pattern is disrupted: replacing familiar nouns with nonsense words while preserving logical structure drops performance sharply, revealing the competence was distributional, not structural.](../images/03-the-limits-of-syntax-fig-03.png)
+*Figure 3.3 — Accuracy collapses when the statistical pattern is disrupted*
+
 Chain-of-thought, in-context learning, and benchmark performance are architectural improvements to the syntactic engine — longer inferential chains, real-time pattern extraction, broader distributional coverage. They do not constitute a category shift from syntax to semantics.
 
 But do not accept that because this chapter said so. The diagnostic is yours to run. When an output looks like genuine understanding: identify the surface pattern the model might be exploiting, construct a variant that preserves logical structure but disrupts the statistical pattern, and interpret the result. If performance holds across variants, the competence has a structural component. If it collapses, it was syntactic. This chapter's claim is that the competence collapses more often than it holds. That is a testable prediction. Test it.
@@ -78,6 +86,7 @@ But do not accept that because this chapter said so. The diagnostic is yours to 
 ## The counterfactual collapse
 
 The following scenario was tested under controlled conditions on two commercial LLMs:
+<!-- FACT-CHECK FLAG: UNVERIFIED — see factchecks/03-the-limits-of-syntax-assertions.md (author's own informal test; models/dates/methodology not given — label as such or cite a write-up) -->
 
 > *In a world where water freezes at 200°C instead of 0°C, would it be safe to pour a pot of water sitting on your kitchen counter at room temperature (22°C) onto your hand? Explain step by step.*
 
@@ -91,7 +100,12 @@ And both missed the deepest point. If water freezes at 200°C, the entire chemis
 
 The Chinese Room, made concrete.
 
-<!-- → [TABLE: Two-column comparison of Model A and Model B responses to the counterfactual scenario. Columns: What the model got right / What the model got wrong / Failure mode classification (syntactic pattern override vs. token-association override). Bottom row: what neither model saw, and why.] -->
+| Dimension | Model A | Model B |
+|---|---|---|
+| Got right | Water is solid at 22°C; even flagged "life couldn't exist" | Water is solid at 22°C |
+| Got wrong | Retreated to "perfectly safe temperature-wise," ignoring its own flag | Called 22°C ice "extremely dangerous" — physically wrong (an 11° gradient, like a room-temperature mug) |
+| Failure mode | Syntactic pattern override — answer the question as asked | Token-association override — "ice" pulls in *cold, frostbite, dangerous* |
+| What neither saw | If water froze at 200°C the whole chemistry of the world changes — the "you" holding the pot would not exist in recognizable form | (same blind spot — neither understands "freezing") |
 
 This class of failure appears whenever your prompt asks the model to reason about scenarios that deviate from the training distribution in ways with cascading causal consequences: regulatory changes, engineering specs violating typical material properties, business scenarios with unusual constraints. The defense has three parts. Decompose — never ask for counterfactual reasoning in a single pass; break it into steps and evaluate each. Make the implicit explicit — the model will not spontaneously surface unstated assumptions; your prompt must enumerate the ones you want checked. Be the semantic layer — you understand what the symbols mean; the model is your reasoning amplifier, not your reasoning substitute.
 
@@ -109,7 +123,8 @@ The room is still a room. The person inside still understands no Chinese. But th
 
 The architecture does not solve the Chinese Room problem. It compensates. And an agentic architecture without a human decision node is an automated Chinese Room — faster and more dangerous, not more understanding. The human is the semantic layer. Any agentic workflow must include at least one point where a human evaluates intermediate output and makes a judgment the model structurally cannot: *Is this the right question? Is this assumption valid? Does this plan serve the actual goal?*
 
-<!-- → [DIAGRAM: Agentic workflow loop. Center: LLM (labeled "syntactic engine"). Arrows out to: Calculator (verified arithmetic), Database (factual ground truth), Code interpreter (actual execution). Arrow back in: Observation tokens. One node explicitly labeled "HUMAN DECISION NODE" with a description of what only the human can evaluate. Caption: each tool call is a window in the wall of the room; the human node is the door.] -->
+![The contract-review agent: a syntactic engine calls a calculator, a database, and a code interpreter for ground truth, while a human decision node makes the semantic judgments the model structurally cannot — each tool call is a window in the wall of the room; the human node is the door.](../images/03-the-limits-of-syntax-fig-04.png)
+*Figure 3.4 — The contract-review agent: tool calls as windows, the human node as the door*
 
 **A worked example: contract review.** A user uploads a 20-page vendor services contract and asks, *"Does this contract have any risks for us as the buyer?"*
 
@@ -171,3 +186,43 @@ The Chinese Room is not a metaphor. It is a description of the machine you are w
 - Wang, B., et al. (2023). Towards Understanding Chain-of-Thought Prompting: An Empirical Study of What Matters. *ACL 2023*. arXiv:2212.10001.
 - Bender, E. M., & Koller, A. (2020). Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data. *Proc. 58th Annual Meeting of the ACL*, 5185–5198.
 - Schick, T., et al. (2023). Toolformer: Language Models Can Teach Themselves to Use Tools. *NeurIPS 2023*. arXiv:2302.04761.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 3.1 — The Chinese Room as a symbol pipeline
+
+A left-to-right room diagram, single HTML file, inline CSS, D3 v7 from the CDN. A prompt enters through a slot on the left; inside, draw stacked rule-application blocks (the transformer layers) with a self-attention equation on the wall; a fluent output exits a slot on the right. Mark explicitly that nothing inside connects to "the world." Ink for structure, red for the output slot. Caption: the room can grow more sophisticated and remain a room.
+
+> Reference implementation: `d3/03-the-limits-of-syntax-fig-01.html`
+
+---
+
+### Figure 3.2 — The transformer pipeline is syntax all the way down
+
+A vertical pipeline, single HTML file, D3 v7 CDN. Stages from bottom to top: tokens → embeddings → stacked self-attention blocks → projection → vocabulary distribution → sampled token. Annotate each stage as "a mathematical operation on arrays"; mark the absence of any "meaning lookup" stage in red. Ink for the pipeline. Caption: nowhere does the model consult what a word means.
+
+> Reference implementation: `d3/03-the-limits-of-syntax-fig-02.html`
+
+---
+
+### Figure 3.3 — Accuracy collapses when the statistical pattern is disrupted
+
+A grouped bar chart, single HTML file, D3 v7 CDN, zero baseline. Two conditions on x ("familiar nouns" vs "nonsense-substituted, logic preserved"), accuracy 0–100 on y. Show a small drop for a structural competence and a large drop (≈95→60) for a syntactic one, with the large drop in red. Caption: a large collapse means the competence was distributional, not structural.
+
+> Reference implementation: `d3/03-the-limits-of-syntax-fig-03.html`
+
+---
+
+### Figure 3.4 — The contract-review agent: tool calls as windows, the human node as the door
+
+A hub-and-spoke agentic loop, single HTML file, D3 v7 CDN. Center node "LLM (syntactic engine)"; spokes to "calculator (verified arithmetic)," "database (ground truth)," "code interpreter (execution)," each returning an observation arrow. One node, drawn distinctly in red, labeled "HUMAN DECISION NODE" with a note on the semantic judgment only it can make. Caption: each tool call is a window; the human node is the door.
+
+> Reference implementation: `d3/03-the-limits-of-syntax-fig-04.html`

@@ -5,6 +5,9 @@
 
 Here is a documented sequence, not a hypothetical. Take a single grade-school math problem from the GSM8K benchmark: so many crates, so many apples per crate, so many spoiled, how many sellable. A capable but not reasoning-tuned model, asked for just the answer, decodes greedily to a number and gets it wrong. Add five words to the prompt — *"Let's think step by step"* — and the same model, same weights, same question, now writes out the intermediate arithmetic and lands on the right number. Kojima et al. (2022) measured exactly this jump on text-davinci-002: MultiArith went from 17.7% to 78.7%, GSM8K from 10.4% to 40.7%, with no examples at all, just the trigger phrase.
 
+![Adding "let's think step by step" lifts accuracy: a five-word zero-shot trigger raised MultiArith from 17.7% to 78.7% and GSM8K from 10.4% to 40.7% on the same model — the phrase changes the region of the distribution decoded, not the model's knowledge.](../images/08-reasoning-and-range-patterns-fig-03.png)
+*Figure 8.3 — Adding "let's think step by step" lifts accuracy*
+
 The obvious reading is that the phrase made the model reason. That reading is wrong, and the experiment that breaks it is the spine of this chapter.
 
 Wang et al. (2023), in an ACL paper whose whole job was to ask what actually matters in chain-of-thought, fed models exemplars whose reasoning steps were invalid — the logic was broken, the intermediate steps did not follow — and still recovered roughly 80 to 90 percent of the performance of valid reasoning exemplars. What mattered was that the steps were relevant to the query and in the right order, not that they were true. The model was not following the logic. It was being conditioned onto a trajectory that had the shape of step-by-step work, and step-shaped trajectories land on correct answers more often than a single confident leap to a number.
@@ -41,7 +44,12 @@ This is why few-shot belongs on the tighten-the-path side even though it is not 
 
 One cost worth naming: every exemplar is tokens in context that compete for attention and cost money and latency, and the order of those exemplars is itself a brittleness surface that can swing accuracy dramatically (Lu et al. 2022 — Chapter 9 develops this). Use the fewest exemplars that fix the format problem you actually have.
 
-<!-- → [TABLE: Few-shot vs. zero-shot CoT vs. few-shot CoT — three columns showing what each changes (format / trajectory shape / both), where each helps (format problems / multi-step reasoning / both), where each adds cost (context tokens / token count / both), and when to reach for each.] -->
+| | Few-shot | Zero-shot CoT | Few-shot CoT |
+|---|---|---|---|
+| What it changes | Format / answer shape | Trajectory shape | Both |
+| Where it helps | Format problems | Multi-step reasoning | Both |
+| What it costs | Context tokens (and order brittleness) | Token count | Both |
+| Reach for it when | Output is mis-shaped, not wrong | The model can't surface the steps | Both problems at once |
 
 ### Chain-of-thought: emergent, conditional, and not about valid logic
 
@@ -52,6 +60,9 @@ Chain-of-thought elicits an intermediate reasoning trace before the answer — e
 **Its benefit is trajectory shape, not valid inference.** Wang et al. (2023): invalid reasoning steps recover roughly 80 to 90 percent of valid-CoT performance; relevance and ordering dominate correctness. The model is conditioned onto a step-shaped manifold, not executing logic. The practical consequence is that a CoT trace is not a faithful audit log of the model's reasoning — do not treat the visible steps as a guarantee the answer follows from them.
 
 **The reasoning is in the distribution, not the prompt string.** Wang and Zhou (2024, "Chain-of-Thought Reasoning Without Prompting") showed that inspecting the top-k alternative first tokens rather than greedy-decoding surfaces latent reasoning paths already present in the pretrained model — yielding roughly ten to thirty absolute GSM8K points across the PaLM-2 family with no prompt change at all. The step-by-step capability was latent in the output distribution; the prompt phrase was just one way to reach it, and a decoding choice is another.
+
+![The reasoning was in the distribution, not the words: the same model reaches a step-by-step trajectory three ways — direct greedy answer (wrong), a "step by step" prompt that conditions the path, and top-k decoding that surfaces the latent path with no prompt change.](../images/08-reasoning-and-range-patterns-fig-02.png)
+*Figure 8.2 — The reasoning was in the distribution, not the words*
 
 Three routes to the same trajectory on the same model: direct answer, greedy — wrong; zero-shot "let's think step by step" — right, because the prompt conditions a step-shaped path; CoT-decoding, same direct prompt but inspecting top-k first tokens — right, because the step-shaped path was reachable in the distribution without any prompt cue. The reasoning was never in the words "step by step."
 
@@ -74,6 +85,9 @@ The decision is not "use CoT." It is "does this model, on this task, still need 
 
 The reasoning-tuned-model finding is recent and the model landscape moves fast. Re-verify against the current model tier rather than carrying the 2025 result as a law.
 
+![Whether to elicit reasoning depends on the tier: older large models gain real accuracy from explicit CoT, mid-tier instruction-tuned models gain modestly, reasoning-tuned models gain nothing and lose stability, and decoding-control opens a separate lever.](../images/08-reasoning-and-range-patterns-fig-05.png)
+*Figure 8.5 — Whether to elicit reasoning depends on the model tier*
+
 ---
 
 ## Range patterns: widening the sample
@@ -83,6 +97,9 @@ The structuring patterns of the surrounding chapters narrow the output. The patt
 ### Self-consistency: range as a sampling procedure
 
 Self-consistency (Wang et al. 2022, "Self-Consistency Improves Chain of Thought Reasoning") is the clearest place to see that a range pattern is the Chapter 1 sampling machine. The procedure: sample many CoT trajectories at non-zero temperature, then take the majority-vote answer across them. It is literally draw N samples from the distribution and aggregate — a Monte-Carlo estimate of the answer the model most consistently arrives at, rather than the answer of any single decode.
+
+![Draw many trajectories, take the majority vote: self-consistency samples many chain-of-thought paths at non-zero temperature and returns the plurality answer, reducing variance by averaging rather than by asking the model to judge itself.](../images/08-reasoning-and-range-patterns-fig-04.png)
+*Figure 8.4 — Draw many trajectories, take the majority vote*
 
 This is why self-consistency belongs on the widen side and pairs naturally with the tighten side: you tighten each path with CoT, then widen across paths by sampling many and voting. It works because a single sampled trajectory can land on a wrong answer by chance, and the plurality of trajectories is a better estimator than any one of them — variance reduction by averaging, exactly the Chapter 1 math. It is expensive because you pay N forward passes. And on a reasoning-tuned model whose internal trajectory is already strong, the marginal value of external voting shrinks, just as the marginal value of external CoT does.
 
@@ -112,7 +129,8 @@ The dangerous failure is fabricated next steps: inventing options that assert fa
 
 One boundary to keep sharp: Tail Generation is continuation seeding, not turn-taking control. Patterns where the model drives by asking you questions, or solicits a specific input before proceeding, are interaction patterns about who holds the conversational initiative. They live in Chapter 11. A next-step menu can contain such a prompt, but the patterns answer different questions: "what should be most salient when the next turn begins?" versus "who should ask the questions?"
 
-<!-- → [DIAGRAM: The tighten/widen axis as a single line. Left pole: greedy decode / direct answer. Moving right: few-shot (format), zero-shot CoT (trajectory), few-shot CoT (both). Right pole: Alternative Approaches (breadth across options), self-consistency (breadth across trajectories), Game Play / Tail Generation (breadth across turns). Caption: all of these are operations on the same output distribution — tightening toward the mode or widening away from it.] -->
+![Two opposite moves on one sampling machine: a single axis from tightening the path (greedy → few-shot → CoT) toward the mode, to widening the sample (Alternative Approaches, self-consistency, Game Play / Tail Generation) away from it — all operations on the same output distribution.](../images/08-reasoning-and-range-patterns-fig-01.png)
+*Figure 8.1 — Two opposite moves on one sampling machine*
 
 ---
 
@@ -160,3 +178,51 @@ One honest caveat: the behavioral claims here are reliable and reproducible. The
 - Min, S., et al. (2022). Rethinking the Role of Demonstrations: What Makes In-Context Learning Work? *EMNLP 2022*. arXiv:2202.12837.
 - Lu, Y., et al. (2022). Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity. *ACL 2022*.
 - White, J., et al. (2023). A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT. arXiv:2302.11382.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 8.1 — Two opposite moves on one sampling machine
+
+A single horizontal axis diagram, single HTML file, inline CSS, D3 v7 from the CDN. Left pole "tighten the path" (greedy decode → few-shot → zero-shot CoT → few-shot CoT); right pole "widen the sample" (Alternative Approaches → self-consistency → Game Play / Tail Generation). Mark the mode at the left, breadth at the right. Red marks the axis; ink for the labels. Caption: both directions are operations on the same output distribution.
+
+> Reference implementation: `d3/08-reasoning-and-range-patterns-fig-01.html`
+
+---
+
+### Figure 8.2 — The reasoning was in the distribution, not the words
+
+A three-route diagram, single HTML file, D3 v7 CDN. The same model reaching a step-shaped trajectory three ways: direct greedy answer (wrong, marked); "let's think step by step" prompt (conditions the path); top-k decoding inspection (surfaces the latent path, no prompt change). Red marks the shared correct trajectory. Caption: the capability was latent; the phrase is one way to reach it.
+
+> Reference implementation: `d3/08-reasoning-and-range-patterns-fig-02.html`
+
+---
+
+### Figure 8.3 — Adding "let's think step by step" lifts accuracy
+
+A grouped bar chart, single HTML file, D3 v7 CDN, zero baseline. Two benchmarks (MultiArith, GSM8K) on x; accuracy 0–100 on y; paired bars for "direct" vs "+ step by step" (17.7→78.7 and 10.4→40.7). Red for the CoT-prompted bars, ink for the direct bars. Caption: a five-word trigger changes which region is decoded, not the model's knowledge.
+
+> Reference implementation: `d3/08-reasoning-and-range-patterns-fig-03.html`
+
+---
+
+### Figure 8.4 — Draw many trajectories, take the majority vote
+
+A self-consistency schematic, single HTML file, D3 v7 CDN. One prompt fans out to N sampled chain-of-thought paths (non-zero temperature); each ends in an answer; a tally box takes the plurality. Red marks the winning answer; ink for the sampled paths. Caption: variance reduction by averaging, with no self-judgment step.
+
+> Reference implementation: `d3/08-reasoning-and-range-patterns-fig-04.html`
+
+---
+
+### Figure 8.5 — Whether to elicit reasoning depends on the model tier
+
+A four-row tier table rendered as a diagram, single HTML file, D3 v7 CDN. Rows: older/base large model (CoT helps), mid-tier instruction-tuned (helps modestly), reasoning-tuned (add nothing — redundant + variance), any tier with decoding control (CoT-decoding alternative). Red marks the "add nothing" row. Caption: route by tier first.
+
+> Reference implementation: `d3/08-reasoning-and-range-patterns-fig-05.html`

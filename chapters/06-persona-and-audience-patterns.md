@@ -31,6 +31,9 @@ Why this happens, in mechanistic terms, is a hypothesis rather than a confirmed 
 
 The practical upshot: the Persona Pattern is a behavioral steering tool, not a knowledge amplification tool. It shifts vocabulary, style, and domain focus reliably. It does not transfer to factual recall, and in narrow domains with confident communication styles, it can actively degrade accuracy by activating fluency without activating knowledge.
 
+![The Persona Pattern: assigning the model an identity ("you are X") reliably shifts vocabulary, register, and domain focus and can improve structured reasoning, but does not improve factual recall and can degrade it.](../images/06-persona-and-audience-patterns-fig-01.png)
+*Figure 6.1 — The Persona Pattern steers behavior, not knowledge*
+
 ### The Audience Persona Pattern
 
 *"Assume I am Persona Y."* The user is given an identity. The model retains its full knowledge base but filters and adapts its output for the specified reader.
@@ -53,7 +56,13 @@ Swapping one for the other — through ignorance of the distinction or through c
 
 The common misconception is that *"You are an expert X"* and *"explain this to an expert X"* are interchangeable ways of getting expert-grade output. They are not. The first changes the speaker. The second changes the listener. The first borrows an undergraduate's limitations when you address it at a novice. The second keeps the model's full competence and re-aims its delivery. The whole chapter turns on refusing to treat these as synonyms.
 
-<!-- → [TABLE: Side-by-side comparison of Persona Pattern vs. Audience Persona Pattern. Columns: Dimension / Persona Pattern / Audience Persona Pattern. Rows: What changes (model's identity / model's inferred reader), Effect on vocabulary (activates speaker's domain register / simplifies for reader's level), Effect on knowledge (may reduce factual accuracy / retains model's full knowledge base), Risk (hallucination + jargon wall / information filtering / silent omission), When to use (steering reasoning style / adapting delivery to a real reader).] -->
+| Dimension | Persona Pattern ("You are X") | Audience Persona Pattern ("Assume I am Y") |
+|---|---|---|
+| What changes | The model's identity — the speaker | The model's inferred reader — the listener |
+| Effect on vocabulary | Activates the speaker's domain register | Simplifies toward the reader's level |
+| Effect on knowledge | May reduce factual accuracy | Retains the model's full knowledge base |
+| Risk | Hallucination + jargon wall | Information filtering — silent omission of detail |
+| When to use | Steering reasoning style | Adapting delivery to a real reader |
 
 ---
 
@@ -89,7 +98,8 @@ Mechanically, the audience clause adds a second conditioning signal that compete
 
 This is the same architect's-eye move Chapter 5 made for negative constraints: a prompt is a set of composable constraints, and the leverage comes from adding the right constraint, not from rewording the wish.
 
-<!-- → [DIAGRAM: Two overlapping probability regions. Left region: "Expert persona activates" — high probability for domain jargon, technical vocabulary, confident register. Right region: "Audience clause constrains" — low probability for tokens a non-expert reader cannot parse. Overlap (intersection): where the output is sampled — expert content, accessible register. Caption: the combined pattern samples from the intersection; the audience clause is a bound on the persona, not a separate instruction.] -->
+![Two conditioning signals bound one output: the expert persona raises the probability of domain jargon while the audience clause lowers the probability of tokens a non-expert cannot parse, so the output is sampled from the intersection — expert content in an accessible register.](../images/06-persona-and-audience-patterns-fig-02.png)
+*Figure 6.2 — Two conditioning signals bound one output*
 
 ---
 
@@ -97,7 +107,11 @@ This is the same architect's-eye move Chapter 5 made for negative constraints: a
 
 The empirical literature documents four distinct failure modes. Each traces to a specific design decision and manifests through predictable symptoms.
 
+![Four ways a persona-based system fails: persona drift, persona-audience mismatch, persona hallucination, and persona bleeding — each with a distinct mechanism and a predictable symptom.](../images/06-persona-and-audience-patterns-fig-03.png)
+*Figure 6.3 — Four ways a persona-based system fails*
+
 **Persona drift.** The model progressively abandons its assigned persona over the course of a multi-turn conversation, reverting to generic assistant behavior. The mechanism is attention dilution: transformer self-attention allocates weights across all tokens in the context window. As conversation history grows, the system prompt — where persona is typically defined — receives proportionally less attention. The persona directive that dominated at turn two is competing with thousands of tokens of conversation history by turn twelve. Measured quantitatively using persona-consistency metrics, self-consistency degrades by more than 30% after eight to twelve dialogue turns, even with context intact.
+<!-- FACT-CHECK FLAG: UNVERIFIED — see factchecks/06-persona-and-audience-patterns-assertions.md (source paper arXiv:2511.00222 is real and on-topic, but the exact ">30% / 8–12 turns" figure is not in its abstract; verify against the paper body) -->
 
 Drift manifests in two forms. The easy case is explicit frame-breaking — the model says "As an AI language model, I don't actually have personal experiences." The harder case is semantic drift without syntactic signals: the model never announces its AI-ness, but its responses become increasingly generic. Specific vocabulary drains out; the voice converges toward default helpful-assistant register wearing a thin persona costume.
 
@@ -107,13 +121,21 @@ Drift manifests in two forms. The easy case is explicit frame-breaking — the m
 
 **Persona bleeding.** In multi-agent systems, personas contaminate each other through inter-agent communication, or agents abandon their assigned personas under conversational pressure from other agents. Three contamination pathways: *conformity* — an agent abandons its persona under pressure from another agent's confident assertions; *confabulation* — an agent presents opinions invented through cross-agent dynamics, neither in its persona definition nor in conversation history; *impersonation* — an agent explicitly claims a different identity than assigned. This connects directly to Chapter 4's context-isolation argument: the same pressure that drives sycophantic capitulation in a single-agent system drives persona abandonment in a multi-agent one.
 
-<!-- → [TABLE: Four failure modes reference table. Columns: Failure Mode / Mechanism / Symptom / Mitigation. Four rows covering drift, mismatch, hallucination, bleeding. Gives students a compact diagnostic reference.] -->
+| Failure mode | Mechanism | Symptom | Mitigation |
+|---|---|---|---|
+| Persona drift | Attention dilution — system-prompt tokens lose salience as history grows | Voice reverts to the generic assistant over long conversations | Restate the persona each turn; shorten history; compact |
+| Persona-audience mismatch | No audience specified — the model infers it from the persona | Expert output unreadable to the actual reader | Specify the audience and the decision context |
+| Persona hallucination | The persona activates confident expert prose without the knowledge | Fabricated expertise, citations, and domain claims | External verification; caution in narrow/sparse domains |
+| Persona bleeding | Cross-agent pressure in multi-agent systems | Agents abandon or swap personas; invent opinions | Context isolation between agents |
 
 ---
 
 ## Diagnostic protocol
 
 When a persona-based system produces degraded output, five steps in order.
+
+![Diagnosing a degraded persona system: a five-step protocol — single-turn isolation, prompt-level diagnosis, drift characterization, agent isolation, and compound-failure check — that routes a symptom to its most likely cause.](../images/06-persona-and-audience-patterns-fig-04.png)
+*Figure 6.4 — Diagnosing a degraded persona system*
 
 **Step 1 — Single-turn isolation test.** Run the exact input that is producing bad output as a fresh single-turn query with no history. If single-turn output is also bad, drift is ruled out — drift requires accumulated conversation. If single-turn is good but multi-turn is bad, drift is the primary suspect.
 
@@ -163,3 +185,43 @@ Architecture is the leverage point. Two prompts, differing by a single clause of
 - Xu, B., et al. (2023). ExpertPrompting: Instructing Large Language Models to be Distinguished Experts. arXiv:2305.14688.
 - PRISM (2026). Expert Personas Improve LLM Alignment but Damage Accuracy. arXiv:2603.18507.
 - Consistently Simulating Human Personas with Multi-Turn Reinforcement Learning (2025). arXiv:2511.00222. *(Source of the >30% persona-consistency degradation over 8–12 turns.)*
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 6.1 — The Persona Pattern steers behavior, not knowledge
+
+A two-axis effect chart, single HTML file, inline CSS, D3 v7 from the CDN. Show what assigning a persona reliably changes (vocabulary, register, domain focus, structured-reasoning accuracy) versus what it does not (factual recall — flat or negative). Use bars from a zero baseline; red marks the structured-reasoning gain, ink for the flat/negative factual bar. Caption: a behavioral steering tool, not a knowledge amplifier.
+
+> Reference implementation: `d3/06-persona-and-audience-patterns-fig-01.html`
+
+---
+
+### Figure 6.2 — Two conditioning signals bound one output
+
+A two-overlapping-regions (Venn-style) diagram, single HTML file, D3 v7 CDN. Left region "expert persona activates" (high-probability jargon); right region "audience clause constrains" (low-probability for un-parseable tokens); the intersection, in red, is where output is sampled — expert content, accessible register. Ink for the two regions. Caption: the audience clause is a bound on the persona, not a separate instruction.
+
+> Reference implementation: `d3/06-persona-and-audience-patterns-fig-02.html`
+
+---
+
+### Figure 6.3 — Four ways a persona-based system fails
+
+A 2×2 reference grid, single HTML file, D3 v7 CDN. Four cells — persona drift, persona-audience mismatch, persona hallucination, persona bleeding — each with a one-line mechanism and symptom. Red marks the most production-dangerous cell (hallucination). Ink for the grid. Caption: each failure traces to a specific design decision.
+
+> Reference implementation: `d3/06-persona-and-audience-patterns-fig-03.html`
+
+---
+
+### Figure 6.4 — Diagnosing a degraded persona system
+
+A five-step decision flow, single HTML file, D3 v7 CDN. Nodes: single-turn isolation test → prompt-level diagnosis → drift characterization → agent-isolation test (multi-agent) → compound-failure check. Branches route a symptom to its likely cause. Red marks the first routing test ("does it work in a fresh single turn?"). Caption: identify the candidate failure mode, fix, re-test.
+
+> Reference implementation: `d3/06-persona-and-audience-patterns-fig-04.html`

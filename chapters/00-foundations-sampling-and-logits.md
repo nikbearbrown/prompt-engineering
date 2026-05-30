@@ -9,7 +9,8 @@ What actually happened is this. The model read your words, ran them through its 
 
 The model did not retrieve "Paris." It sampled it. The answer felt certain because the distribution was sharply peaked — nearly all the probability mass sat on one token — but the machinery underneath was probabilistic the whole time. Change the shape of that distribution and the same prompt yields different text. That is the mechanism this chapter makes precise.
 
-<!-- → [IMAGE: A simple visual — on the left, the folk model of an LLM as a lookup table (row: "capital of France", cell: "Paris"); on the right, the actual model as a probability distribution over a vocabulary with mass concentrated on "Paris" but nonzero tails. Caption: the difference between retrieval and sampling.] -->
+![From raw logits to a sampled token: the model converts a score vector over the whole vocabulary into a probability distribution and draws one token, rather than reading a stored answer.](../images/00-foundations-sampling-and-logits-fig-01.png)
+*Figure 0.1 — From raw logits to a sampled token*
 
 ---
 
@@ -35,7 +36,12 @@ Check: $0.659 + 0.242 + 0.099 = 1.000$. A small logit gap — the difference bet
 
 There is a misconception worth clearing up immediately: logits are not "probabilities that just need to be normalized." They live on an additive scale; probabilities live on a multiplicative one, after the exponential. Adding the same constant $c$ to every logit changes nothing about the resulting distribution — the constant factors out of numerator and denominator identically and cancels. But *multiplying* every logit by a constant changes everything, because multiplication inside the exponential becomes an exponent change outside it. This distinction matters because one of our three controls acts exactly on that multiplication.
 
-<!-- → [TABLE: Side-by-side showing logits z = (2.0, 1.0, 0.1), exponentiated values, sum, and final probabilities — three columns (logit, e^z, probability) with a check row for the sum. Illustrates the softmax arithmetic step by step.] -->
+| Token | Logit $z_i$ | $e^{z_i}$ | Probability $p_i$ |
+|---|---|---|---|
+| A | 2.0 | 7.389 | 0.659 |
+| B | 1.0 | 2.718 | 0.242 |
+| C | 0.1 | 1.105 | 0.099 |
+| **Sum** | — | **11.212** | **1.000** |
 
 ---
 
@@ -86,7 +92,8 @@ As $T \to \infty$, every $z_i / T \to 0$, every $e^{z_i/T} \to 1$, and the distr
   argmax            (default)        pure noise
 ```
 
-<!-- → [INFOGRAPHIC: The same three-panel distribution shape diagram as the ASCII art above, rendered as a proper bar chart — three panels side by side showing the probability mass over a small vocabulary under low temperature, T=1, and high temperature. Caption should note that these are the same logits; only T changes.] -->
+![Temperature reshapes the distribution: the same logits produce a sharply peaked distribution at low temperature, a neutral one at T=1, and a near-uniform one at high temperature.](../images/00-foundations-sampling-and-logits-fig-02.png)
+*Figure 0.2 — Temperature reshapes the distribution*
 
 There is a folk rule in practitioner culture that says "set temperature to zero for reliability — it removes randomness." The rule is not wrong about the mechanism: it does remove sampling randomness. But removing sampling randomness is not the same as removing error. Greedy decoding always picks the locally highest-probability token, which can trap the model in a globally worse continuation. On some models it triggers pathological **looping** — the model selects a high-probability token that re-licenses itself as high-probability in the next step, and repeats indefinitely. Google's developer guidance for Gemini 3 explicitly recommends keeping temperature at the default 1.0 on complex reasoning tasks because lowering it can induce exactly this degradation. "Temperature zero" is a tunable parameter that reaches its extreme; it is not a safety setting.
 
@@ -114,7 +121,14 @@ That is the design of top-p: the size of the candidate set tracks the model's un
 
 One misconception to clear up. "Top-p of 0.9 means I keep 90% of the tokens." No — it means you keep the smallest *set of tokens* whose combined *probability mass* sums to at least 0.9. On a peaked distribution that can be a single token; on a flat one it can be hundreds. The threshold is on cumulative probability, not on token count. Token count is what top-k controls. Conflating the two is the most common decoding bug in practitioner code.
 
-<!-- → [TABLE: Comparison of top-k and top-p behavior on three distribution shapes — needle (one dominant token), plateau (roughly uniform), and bimodal (two clusters). Columns: distribution type, top-k result (k=3), top-p result (p=0.80), which method produces the more sensible nucleus and why. Helps readers see when to prefer one over the other.] -->
+![A fixed cut versus an adaptive cut: top-k always keeps the same number of tokens, while top-p keeps the smallest set whose cumulative probability reaches the threshold, so its nucleus grows and shrinks with the model's uncertainty.](../images/00-foundations-sampling-and-logits-fig-03.png)
+*Figure 0.3 — A fixed cut versus an adaptive cut*
+
+| Distribution shape | Top-k (k = 3) | Top-p (p = 0.80) | More sensible nucleus |
+|---|---|---|---|
+| Needle (one token ≈ 0.95) | keeps 3 — drags in two near-zero tokens | keeps 1 — collapses to near-greedy | Top-p |
+| Plateau (≈ uniform) | keeps exactly 3 — cuts two reasonable tokens | keeps 4 — nucleus grows with the uncertainty | Top-p |
+| Bimodal (two clusters) | keeps 3 — may sever a cluster | accumulates to 0.80 — may span the dead zone | Neither (both walk the sorted tail; no mode awareness) |
 
 ---
 
@@ -144,7 +158,8 @@ $$
 
 This single equation is why prompt engineering is engineering. The prompt is the conditioning context $x_{<t}$ at the first generated step. Changing the prompt changes every conditional distribution downstream. You are not asking the model a question; you are setting the conditions under which a sequence of samples is drawn. And because each output token feeds back in as conditioning for the next token — $x_t$ becomes part of the context for $x_{t+1}$ — a single early sampling accident reshapes every distribution that follows. One low-probability token drawn at step three can push the model into a region of its distribution from which the "intended" answer is now unlikely. This is why two runs of identical prompts can diverge into entirely different answers, a phenomenon the next chapter opens on.
 
-<!-- → [DIAGRAM: A horizontal chain showing the autoregressive generation process — prompt tokens on the left feeding into a distribution block, which emits x_1, which feeds back into the next distribution block, which emits x_2, and so on. An arrow from each x_t into the conditioning context for x_{t+1} makes the feedback loop visible. Caption: each token drawn becomes part of the conditioning for every subsequent token.] -->
+![Each token re-enters as context for the next: the autoregressive loop feeds every sampled token back into the conditioning context, so one early draw reshapes every distribution that follows.](../images/00-foundations-sampling-and-logits-fig-04.png)
+*Figure 0.4 — Each token re-enters as context for the next*
 
 It is also why fluent text carries no guarantee of truth. The chain rule measures the probability of *plausible-looking sequences* — sequences that resemble the training distribution — not true ones. Plausibility and truth are produced by exactly the same machinery. Nothing in $\prod_t P(x_t \mid x_{<t})$ references a fact; it references a learned conditional distribution over tokens. When the distribution peaks sharply on the correct token (capital of France), sampling reliably lands right and looks like knowledge. When the distribution peaks on a plausible-but-wrong token, the same machinery produces a confident error. The mechanism cannot distinguish the two cases from the inside. This is the uncomfortable foundation the rest of the book builds on.
 
@@ -186,3 +201,43 @@ How much of "temperature zero is deterministic" survives real infrastructure? Fl
 - Ackley, D. H., Hinton, G. E., & Sejnowski, T. J. (1985). A Learning Algorithm for Boltzmann Machines. *Cognitive Science*, 9(1), 147–169 — statistical-physics origin of the temperature parameter.
 - Fan, A., Lewis, M., & Dauphin, Y. (2018). Hierarchical Neural Story Generation. *ACL 2018*. arXiv:1805.04833 — early top-k sampling.
 - Google. Gemini 3 Developer Guide (generateContent API). https://ai.google.dev/gemini-api/docs/gemini-3 — temperature and looping guidance cited in the temperature section.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 0.1 — From raw logits to a sampled token
+
+Build a left-to-right pipeline diagram, single HTML file, inline CSS, D3 v7 from the CDN. Three stages connected by arrows: (1) a vertical list of vocabulary tokens with raw logit values (arbitrary reals, some negative); (2) a softmax block; (3) a bar chart of the resulting probabilities over the same tokens, summing to 1, zero baseline, mass concentrated on one token with small nonzero tails. Use Northeastern red for the winning token's bar, ink for the rest. Label the stages "logits," "softmax," "probabilities." Caption: retrieval reads a row; a model draws a sample.
+
+> Reference implementation: `d3/00-foundations-sampling-and-logits-fig-01.html`
+
+---
+
+### Figure 0.2 — Temperature reshapes the distribution
+
+Three small multiples side by side, single HTML file, D3 v7 CDN. Each is a bar chart of probability over the same ~6-token vocabulary, zero baseline, computed from one fixed logit vector at three temperatures: low (T≈0.5, sharply peaked), neutral (T=1), high (T≈2, near-uniform). Red encodes the modal token in each panel; ink for the rest. Panel titles show the temperature. Caption: same logits, only T changes.
+
+> Reference implementation: `d3/00-foundations-sampling-and-logits-fig-02.html`
+
+---
+
+### Figure 0.3 — A fixed cut versus an adaptive cut
+
+Two stacked rows, single HTML file, D3 v7 CDN. Each row shows the same three sorted probability distributions (a needle, a plateau, a bimodal pair) as horizontal bar groups. Top row marks the top-k (k=3) selection; bottom row marks the top-p (p=0.80) nucleus. Use red fill for kept tokens, light gray for discarded; annotate how many tokens each method keeps per shape. Zero baseline. Caption: top-p's nucleus grows and shrinks with uncertainty; top-k's does not.
+
+> Reference implementation: `d3/00-foundations-sampling-and-logits-fig-03.html`
+
+---
+
+### Figure 0.4 — Each token re-enters as context for the next
+
+Horizontal autoregressive chain, single HTML file, D3 v7 CDN. Prompt tokens on the left feed a distribution block that emits x₁; x₁ feeds the next block emitting x₂, and so on for ~4 steps. Draw a curved feedback arrow from each emitted token back into the conditioning context of the next block. Ink for structure and arrows, red for the most recent emitted token. Caption: every token drawn becomes conditioning for every token after it.
+
+> Reference implementation: `d3/00-foundations-sampling-and-logits-fig-04.html`

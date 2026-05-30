@@ -68,7 +68,8 @@ Two decision variables deserve isolating because they are the ones practitioners
 
 **Verifiable reward — the Gate 3 precondition.** RL needs a reward function that can score an output automatically and correctly: math answers you can check, code that passes tests, formats you can validate. If "good" requires human judgment you cannot automate, you do not have a verifiable reward, and reaching for RL is reaching for a tool whose precondition you have not met.
 
-<!-- → [DIAGRAM: The three-gate escalation ladder as a vertical flowchart. Step 0 at top (define eval set and target metric). Gate 1: prompt optimization → ship if ceiling met, else fall through. Gate 2: stable labeled set → SFT; volatile knowledge → RAG; else fall through. Gate 3: verifiable reward exists and ceiling still too low → RL; else stop. Arrows labeled with the decision variable that drives each branch.] -->
+![The escalation ladder with three gates: define the eval set and target metric, then climb only when the cheaper rung is provably insufficient — Gate 1 prompt optimization, Gate 2 SFT or RAG by knowledge volatility, Gate 3 RL only with a verifiable reward.](../images/13-beyond-prompting-the-fine-tuning-stack-fig-01.png)
+*Figure 13.1 — The escalation ladder with three gates*
 
 ### The four decision-level failure modes
 
@@ -96,7 +97,13 @@ The forward pass becomes:
 
 $$h = W_0 x + \frac{\alpha}{r}\, BAx$$
 
-with $W_0$ frozen and only $B$ and $A$ trained. The trainable parameter count drops from $dk$ to $r(d + k)$. For $r = 8$, $d = k = 4096$: from 16,777,216 down to 65,536 — a roughly 256× reduction. The scaling factor $\alpha/r$ decouples the learning rate from the rank, so you can change $r$ without retuning the optimizer.
+with $W_0$ frozen and only $B$ and $A$ trained.
+
+![LoRA low-rank decomposition: instead of learning a full-shape update ΔW, LoRA parameterizes it as the product of two thin matrices B and A of rank r, leaving the base weights frozen.](../images/13-beyond-prompting-the-fine-tuning-stack-fig-02.png)
+*Figure 13.2 — LoRA low-rank decomposition* The trainable parameter count drops from $dk$ to $r(d + k)$. For $r = 8$, $d = k = 4096$: from 16,777,216 down to 65,536 — a roughly 256× reduction. The scaling factor $\alpha/r$ decouples the learning rate from the rank, so you can change $r$ without retuning the optimizer.
+
+![LoRA trainable-parameter reduction: for a 4096×4096 matrix at rank 8, the trainable parameter count drops from about 16.8 million to about 65,000 — a roughly 256× reduction.](../images/13-beyond-prompting-the-fine-tuning-stack-fig-03.png)
+*Figure 13.3 — LoRA trainable-parameter reduction*
 
 The rank $r$ is a hard capacity floor: a rank-$r$ adapter can only express a rank-$r$ change to behavior. If the task needs more directions than $r$ provides, the adapter starves. Diagnose by rank ablation, not intuition.
 
@@ -116,6 +123,9 @@ $$\hat{A}_i = \frac{r_i - \text{mean}(\{r_1,\ldots,r_G\})}{\text{std}(\{r_1,\ldo
 
 An output that beats its group's average gets a positive advantage and is reinforced; one below average is suppressed. Cutting the critic cuts the cost of RL post-training roughly in half — which is why GRPO became the practical default for reasoning post-training.
 
+![GRPO group-relative baseline (critic removed): instead of training a separate critic network, GRPO samples a group of outputs per prompt, scores them with the verifiable reward, and uses the group's standardized reward as the baseline.](../images/13-beyond-prompting-the-fine-tuning-stack-fig-04.png)
+*Figure 13.4 — GRPO group-relative baseline (critic removed)*
+
 GRPO's home turf is single-model math and code reasoning with a clean automatic reward — the answer is right or wrong; the code passes tests or does not. That is precisely not the regime where Finding A's GEPA beat it. The two results are not in conflict because they tested different things. Which is exactly why the ladder routes by regime.
 
 ---
@@ -132,7 +142,14 @@ A decision chapter is only as good as the discipline with which it reads its own
 
 The reason to belabor this: the decision rule rests on these anchors. If you carry around "prompting beats RL, full stop" or "fine-tuning is 1,100% better," you will route tasks to the wrong rung. The precise reading — prompting wins on compound and agentic tasks at lower sample cost; fine-tuning wins on narrow, high-accuracy tasks with a stable labeled set; the composed stack can beat any single rung — is what makes the ladder usable.
 
-<!-- → [TABLE: The three anchor results, precisely stated. Columns: Finding / What it actually shows / The most common misquotation / The scope condition that limits generalization. Three rows: GEPA vs. GRPO, BetterTogether, Monash code review. Each cell is one crisp sentence.] -->
+![GEPA vs GRPO: per-benchmark accuracy deltas: prompt evolution beats a GRPO setup on compound, agentic tasks (HotpotQA +19.0, HoVer +13.7, PUPA +5.2, IFBench +2.7) while using up to 35× fewer rollouts.](../images/13-beyond-prompting-the-fine-tuning-stack-fig-05.png)
+*Figure 13.5 — GEPA vs GRPO: per-benchmark accuracy deltas*
+
+| Finding | What it actually shows | Common misquotation | Scope condition |
+|---|---|---|---|
+| GEPA vs GRPO | Prompt evolution beats a GRPO setup using up to **35× fewer rollouts**; deltas ~6 avg, up to +19 | "35× less compute" (it's rollouts); a flat "6–19" | One paper, four compound/agentic benchmarks — an existence proof |
+| BetterTogether | Joint optimization beats fine-tuning-alone by ~60%, and prompt-optimization-alone by only ~6% | "60% over either alone" | DSPy pipelines; gains are pipeline-specific |
+| Monash code review | Fine-tuned GPT-3.5 beats prompting; the zero-shot variant beats a prior approach by ~73–74% EM | "1,100% better"; "University of Australia" | Narrow task, brittle Exact Match, a dated model |
 
 ---
 
@@ -167,3 +184,51 @@ The thesis connection is exact. This is the book's "engineering, not vibes" argu
 - Shao, Z., et al. (2024). DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models. arXiv:2402.03300. *(Introduces GRPO.)*
 - Hu, E. J., et al. (2021). LoRA: Low-Rank Adaptation of Large Language Models. arXiv:2106.09685.
 - Dettmers, T., et al. (2023). QLoRA: Efficient Finetuning of Quantized LLMs. arXiv:2305.14314.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 13.1 — The escalation ladder with three gates
+
+A vertical flowchart, single HTML file, inline CSS, D3 v7 from the CDN. Step 0 (define eval set + target metric) at top, then Gate 1 (prompt optimization → ship if ceiling met), Gate 2 (stable labeled set → SFT; volatile knowledge → RAG), Gate 3 (verifiable reward + ceiling too low → RL; else stop). Label each branch with its decision variable; red marks the "ship" exits. Caption: climb only when the cheaper rung is provably insufficient.
+
+> Reference implementation: `d3/13-beyond-prompting-the-fine-tuning-stack-fig-01.html`
+
+---
+
+### Figure 13.2 — LoRA low-rank decomposition
+
+A matrix-decomposition diagram, single HTML file, D3 v7 CDN. Show a frozen base weight W₀ (d×k) plus a low-rank update ΔW = B·A, with B (d×r) and A (r×k) drawn as thin matrices, r ≪ d,k. Red marks the trainable B and A; ink (gray) marks the frozen W₀. Caption: task adaptations live in a low-dimensional subspace.
+
+> Reference implementation: `d3/13-beyond-prompting-the-fine-tuning-stack-fig-02.html`
+
+---
+
+### Figure 13.3 — LoRA trainable-parameter reduction
+
+A two-bar comparison, single HTML file, D3 v7 CDN, zero baseline, log or broken scale. Full update ≈16,777,216 parameters vs LoRA (r=8) ≈65,536 — a ~256× reduction. Red marks the small LoRA bar; ink for the full bar. Annotate the ratio. Caption: trainable count drops from dk to r(d+k).
+
+> Reference implementation: `d3/13-beyond-prompting-the-fine-tuning-stack-fig-03.html`
+
+---
+
+### Figure 13.4 — GRPO group-relative baseline (critic removed)
+
+A schematic, single HTML file, D3 v7 CDN. One prompt → a group of G sampled outputs → each scored by a verifiable reward → group mean/std used as the baseline → advantages (above-average reinforced, below-average suppressed). Red marks the removed critic network (struck out) and the group baseline. Caption: cutting the critic roughly halves RL post-training cost.
+
+> Reference implementation: `d3/13-beyond-prompting-the-fine-tuning-stack-fig-04.html`
+
+---
+
+### Figure 13.5 — GEPA vs GRPO: per-benchmark accuracy deltas
+
+A horizontal bar chart, single HTML file, D3 v7 CDN, zero baseline. Four benchmarks on y (HotpotQA, HoVer, PUPA, IFBench); accuracy-delta in points on x (+19.0, +13.7, +5.2, +2.7). Red for the largest delta; ink for the rest. Annotate "up to 35× fewer rollouts." Caption: an existence proof on compound, agentic tasks — not a universal law.
+
+> Reference implementation: `d3/13-beyond-prompting-the-fine-tuning-stack-fig-05.html`

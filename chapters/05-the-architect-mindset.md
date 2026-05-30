@@ -13,7 +13,8 @@ Nothing was wrong with the model. The prompt under-specified the task so complet
 
 By the end of this chapter the Wordsville prompt will be a system with named parts, and we will be able to point at the specific layer that fixes the *"trial"* failure and the specific layer that fixes the *"shoot"* failure. They are not the same layer. That pointing-ability is the whole return on the architect mindset.
 
-<!-- → [IMAGE: Two side-by-side outputs for the word "trial" — left: the ungoverned Tuesday-style output with courtroom content; right: the fully architected output with child-appropriate word sense, constrained definition, and safe illustration brief. Caption: same model, same word, different specification.] -->
+![The four layers of a prompt: root, constraints, persona, and format are separable concerns, each conditioning the output distribution differently, so each can be debugged without disturbing the others.](../images/05-the-architect-mindset-fig-01.png)
+*Figure 5.1 — The four layers of a prompt*
 
 ---
 
@@ -49,7 +50,12 @@ PAST is a scaffold for the thing you hand the model. It forces the root and part
 
 PAST is not magic words. It is a checklist that converts an under-specified request into a specified one by refusing to let you leave a slot empty. The Tuesday prompt had an Action and a thin Task and nothing else. Filling Problem and Steps is what closes the ambiguity the sampler was exploiting.
 
-<!-- → [TABLE: PAST slot breakdown for Wordsville — four rows (Problem, Action, Steps, Task), three columns (Slot / What it specifies / Which failure it prevents). Gives students a reference format for applying PAST to new tasks.] -->
+| Slot | What it specifies | Which failure it prevents |
+|---|---|---|
+| **P**roblem | The situation and its stakes — why the task exists | Wrong word sense (no stated purpose to resolve ambiguity against) |
+| **A**ction | The one high-level verb; bounds the scope | Task expansion (the model inventing what "a lesson" entails) |
+| **S**teps | The ordered method/decomposition | Skipped method — e.g., not choosing the child-familiar sense first |
+| **T**ask | The precise deliverable + acceptance condition | The "did something" vs. "did the thing" gap |
 
 ---
 
@@ -66,6 +72,9 @@ PAST structures the input. PLFR structures the pipeline — the path from a prom
 **Result** — the validated output, and the explicit recognition that generation and validation are different steps. This is the PLFR move that PAST alone does not make: PLFR insists that something checks the Result against the format contract and the Task's acceptance condition before it ships. For Wordsville: a schema validator confirms the four fields exist and the definition is under 15 words; a safety classifier — a *separate* call, following Chapter 4's context-isolation logic — screens the illustration brief. The *"shoot"* failure is fixed here, at the Result layer, by an external check the generating model cannot talk its way past. Not by a better-worded prompt.
 
 The relationship between the scaffolds: PAST builds the Prompt slot of PLFR. PAST is the zoom-in on input authoring; PLFR is the zoom-out to the whole input→output→validation pipeline. A small task may need only PAST. Any task whose wrong outputs are costly needs the Result discipline that PLFR makes explicit.
+
+![PAST nests inside the Prompt stage of PLFR: PAST structures the authored input, which is the first stage of the larger Prompt → Logic → Format → Result pipeline that ends in an external validation step.](../images/05-the-architect-mindset-fig-02.png)
+*Figure 5.2 — PAST nests inside the Prompt stage of PLFR*
 
 There is a misconception worth defusing: "If the prompt is good enough, I don't need a validation step." This is the Chapter 4 error in new packaging. The model that wrote the output is the worst judge of the output — same distribution, same blind spots. PLFR's Result layer exists precisely because no prompt makes the generator a reliable self-validator.
 
@@ -93,7 +102,8 @@ Each line removes a nameable failure region. Together they collapse the admissib
 
 One honest limit. Constraints are conditioning, not hard guarantees. The model can violate a stated negative constraint, exactly as it can ignore any other instruction. The entropy argument says negative constraints strongly reshape the distribution. It does not say they bound it to zero. That residual is why the PLFR Result layer exists — the negative constraints make violations rare, the external validator catches the rest. The two layers are complementary: constraints lower the rate; validation catches the remainder.
 
-<!-- → [INFOGRAPHIC: Two panels showing the "soil" intuition. Left panel (positive constraint): a probability-mass landscape with most mass on a good region and diffuse mass elsewhere — a positive constraint adds height to the good region but the rest remains populated. Right panel (negative constraint): the same landscape with the failure regions fenced off and removed — mass concentrates on what remains. Caption: deleting a failure region is a stronger operation than reweighting toward a good one.] -->
+![Deletion concentrates mass more than reweighting: a positive constraint piles more probability on the good region while the rest stays populated, whereas a negative constraint removes the failure regions entirely, forcing the surviving mass onto what remains.](../images/05-the-architect-mindset-fig-03.png)
+*Figure 5.3 — Deletion concentrates mass more than reweighting*
 
 ---
 
@@ -140,6 +150,9 @@ And the PLFR pipeline around it: Prompt is the block above. Logic is a single ca
 
 Trace the two original failures through the finished system. The *"trial"* failure — wrong word sense — is fixed at **PAST-Step 1 plus the negative constraint** on law and courts: the model is told to pick the child-familiar sense and forbidden the courtroom region of output space. The *"shoot"* failure — a genuinely unsafe completion — is reduced by the negative constraint on violence and weapons, then caught at the **PLFR Result layer** by the external classifier if the constraint is ever violated. Two failures, two different layers, each pointable.
 
+![Two failures pinned to two different layers: the "trial" wrong-sense failure is fixed at the Steps slot plus the negative constraint, while the "shoot" unsafe-completion failure is caught at the PLFR Result layer by an external classifier.](../images/05-the-architect-mindset-fig-04.png)
+*Figure 5.4 — Two failures pinned to two different layers*
+
 That pointing-ability is the whole return on the architect mindset.
 
 ---
@@ -170,3 +183,43 @@ One layer we named and deferred: persona. We slotted "You are a warm primary-sch
 
 - White, J., Fu, Q., Hays, S., Sandborn, M., Olea, C., Gilbert, H., Elnashar, A., Spencer-Smith, J., & Schmidt, D. C. (2023). A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT. arXiv:2302.11382.
 - Shannon, C. E. (1948). A Mathematical Theory of Communication. *Bell System Technical Journal*, 27(3), 379–423. *(Source of the entropy definition used in the negative-constraints section.)*
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 5.1 — The four layers of a prompt
+
+A stacked-layer diagram, single HTML file, inline CSS, D3 v7 from the CDN. Four labeled bands — Root, Constraints, Persona, Format — each annotated with how it conditions the output distribution (selects the region / carves mass out / reweights toward a sub-region / collapses onto a structure). Red highlights the Constraints layer; ink for the rest. Caption: separable layers can be debugged independently.
+
+> Reference implementation: `d3/05-the-architect-mindset-fig-01.html`
+
+---
+
+### Figure 5.2 — PAST nests inside the Prompt stage of PLFR
+
+A nested-pipeline diagram, single HTML file, D3 v7 CDN. Outer pipeline: Prompt → Logic → Format → Result (with Result drawn as an external validation step, in red). Inside the Prompt stage, draw the PAST sub-structure (Problem, Action, Steps, Task). Ink for the outer pipeline. Caption: PAST authors the input; PLFR governs the whole input→output→validation path.
+
+> Reference implementation: `d3/05-the-architect-mindset-fig-02.html`
+
+---
+
+### Figure 5.3 — Deletion concentrates mass more than reweighting
+
+Two probability-landscape panels, single HTML file, D3 v7 CDN, shared zero baseline. Left "positive constraint": mass added to a good region, the rest still populated. Right "negative constraint": failure regions fenced off and removed, surviving mass concentrated on what remains (in red). Ink for the landscape. Caption: deleting a nameable failure region is a stronger operation than nudging toward a vague good.
+
+> Reference implementation: `d3/05-the-architect-mindset-fig-03.html`
+
+---
+
+### Figure 5.4 — Two failures pinned to two different layers
+
+A two-column mapping diagram, single HTML file, D3 v7 CDN. Left column: the "trial" wrong-sense failure → fixed at PAST-Step 1 + the negative constraint on law/courts. Right column: the "shoot" unsafe-completion failure → caught at the PLFR Result layer by an external classifier. Red marks the layer that fixes each. Caption: two failures, two different layers, each pointable.
+
+> Reference implementation: `d3/05-the-architect-mindset-fig-04.html`

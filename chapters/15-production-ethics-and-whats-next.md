@@ -45,7 +45,8 @@ Evals catch what you anticipated; monitoring catches what you did not. Productio
 
 Every component here exists because the same prompt, lightly perturbed — a reworded input, a new model snapshot, a reordered few-shot — produces a different output. Versioning makes the perturbation visible; the eval harness measures its effect before users do; monitoring catches the perturbations you did not enumerate. Skip them and you are betting your system on the prompt being robust, which Chapter 9 told you it is not.
 
-<!-- → [DIAGRAM: The production lifecycle as three linked components. Left: Version control — (prompt-text, model-snapshot, decoding-params) stored as a triple. Center: Eval harness — held-out inputs, variant battery, declared scoring standard, CI gate. Right: Monitoring — live-sample scoring, input-distribution drift alert, score-distribution alert. Arrows showing the flow from notebook prompt through versioning through eval through deployment through monitoring back to re-evaluation on model updates.] -->
+![Notebook prompt to monitored pipeline: versioning pins the (prompt-text, model-snapshot, decoding-params) triple, the eval harness gates changes against a held-out variant battery and a declared scoring standard, and monitoring watches live score- and input-distribution drift — feeding back to re-evaluation on every model update.](../images/15-production-ethics-and-whats-next-fig-01.png)
+*Figure 15.1 — Notebook prompt to monitored pipeline*
 
 ---
 
@@ -79,7 +80,10 @@ The mechanism is the one Chapters 2 and 4 already gave us. Self-critique cannot 
 
 So when does checking help? The dividing line is external grounding, and it gives a decision rule you can apply mechanically.
 
-**No external signal, single correct answer (math, reasoning):** use **self-consistency** (Wang et al. 2023, ICLR) — sample $k$ diverse reasoning paths at temperature above zero and take the majority-vote answer. Reported gains over single-shot CoT: GSM8K +17.9%, SVAMP +11.0%, AQuA +12.2%. The crucial property: self-consistency improves without asking the model to judge itself. It extracts signal from the structure of the answer distribution — marginalizing over reasoning paths — not from metacognition. It cannot flip-to-incorrect because it never asks "are you sure?"; it asks "what answer recurs?"
+**No external signal, single correct answer (math, reasoning):** use **self-consistency** (Wang et al. 2023, ICLR) — sample $k$ diverse reasoning paths at temperature above zero and take the majority-vote answer. Reported gains over single-shot CoT: GSM8K +17.9%, SVAMP +11.0%, AQuA +12.2%.
+
+![Self-consistency gains over single-shot chain-of-thought: majority vote over k sampled reasoning paths improves accuracy (GSM8K +17.9%, SVAMP +11.0%, AQuA +12.2%) by extracting signal from the answer distribution — never by asking the model to judge itself.](../images/15-production-ethics-and-whats-next-fig-03.png)
+*Figure 15.3 — Self-consistency gains over single-shot chain-of-thought* The crucial property: self-consistency improves without asking the model to judge itself. It extracts signal from the structure of the answer distribution — marginalizing over reasoning paths — not from metacognition. It cannot flip-to-incorrect because it never asks "are you sure?"; it asks "what answer recurs?"
 
 **External verifiable signal exists (compiler, unit tests, search, environment reward):** grounded self-correction works. This is Reflexion (Shinn et al. 2023, NeurIPS): an agent reflects on a task-feedback signal — unit-test pass/fail, environment reward — stores the reflection in episodic memory, and retries. Reflexion is often miscited as proof that "self-reflection works." Read the mechanism: it works because the feedback is external and verifiable, not because the model introspected well. That is the ReAct lesson from Chapter 11 restated — an observation token from the real world interrupts the compounding error chain; without it, reflection is just resampling from the same faulty distribution.
 
@@ -89,7 +93,8 @@ The portable lesson is a predicate, not a technique list: **Is there an external
 
 Let $p$ be the probability a single sampled answer is correct. With majority vote over $k$ samples, the probability the plurality answer is correct rises with $k$ whenever the correct answer is the modal one — which is why self-consistency helps on tasks where the model is right more often than it is wrong in any single consistent way, and why it cannot rescue a task where the model's modal answer is simply wrong. The math says exactly when the trick applies: it amplifies an existing majority; it does not manufacture one.
 
-<!-- → [DIAGRAM: The self-correction decision tree. Root: "Does a verifiable external feedback signal exist?" Yes branch → "Grounded self-correction (Reflexion) — works." No branch → "Is there one correct answer?" Yes → "Self-consistency (majority vote over k samples) — works; do NOT ask the model to critique itself." No (open-ended) → "Self-Refine — may help on style; will not fix reasoning errors." Each terminal node includes the failure mode to watch for.] -->
+![When does self-correction help? A decision tree: if a verifiable external signal exists, grounded self-correction (Reflexion) works; if not but there is one correct answer, use self-consistency and do not ask the model to critique itself; if the task is open-ended, Self-Refine may help on style but will not fix reasoning errors.](../images/15-production-ethics-and-whats-next-fig-02.png)
+*Figure 15.2 — When does self-correction help?*
 
 ---
 
@@ -127,6 +132,9 @@ The book opened on documented failures so you would need the methods before meet
 
 **RLHF-sycophancy × persona drift × self-correction.** One mechanism — approval-maximization learned from RLHF — surfaces three times. In Chapter 4 it is sycophancy: the model capitulates to user disagreement. In Chapter 6 it is persona drift: as system-prompt tokens lose salience over a long conversation, the model reverts toward the agreeable default-assistant register the same pressure rewards. In this chapter it is over-revision: "are you sure?" reads as social pressure and tips a correct answer wrong. If you understood the mechanism in Chapter 4, you predicted the other two. That is what mechanism-first buys you — not three facts to memorize, but one mechanism that generates all three.
 
+![One mechanism, three surfaces: the single RLHF approval-maximization disposition appears as sycophancy in Chapter 4, persona drift in Chapter 6, and over-revision under "are you sure?" in Chapter 15 — understand it once and you predict all three.](../images/15-production-ethics-and-whats-next-fig-04.png)
+*Figure 15.4 — One mechanism, three surfaces*
+
 **ReAct brittleness × eval discipline × grounding.** Chapter 11's agent loops are brittle precisely where the observation channel is weak; the self-correction section named why — no real observation means reflection is just resampling; and Chapter 9 supplies the only reliable detector — you measure whether the loop helps, you do not assume it. An ungrounded ReAct loop that "reflects" between steps is the self-correction failure mode running inside an agent, and the only thing that catches it is the brittleness-aware evaluation harness of the production section.
 
 **Brittleness × production × bias.** Madison's pipeline failed three ways at once — input drift, model-version drift, bias amplification — and all three are the same underlying fact (a prompt is a fragile configuration on a moving substrate) viewed from three angles. Versioning addresses the substrate, the eval harness addresses the fragility, monitoring addresses the drift, and treating bias as a first-class harness metric addresses the amplification. One discipline, applied across the angles.
@@ -159,3 +167,43 @@ The synthesis is the thesis. From Chapter 1's sampled-not-retrieved output to Ch
 - Meincke, L., et al. (2025). Prompting Science Report 3: Threaten or Tip. SSRN 5375404.
 - Basil, S., et al. (2025). Prompting Science Report 4: Playing Pretend — Expert Personas Don't Improve Factual Accuracy. arXiv:2512.05858.
 - Karpathy, A. (May 7, 2025). System prompt learning. X/Twitter post. **Non-peer-reviewed; thinking-out-loud proposal, not a paper.**
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 15.1 — Notebook prompt to monitored pipeline
+
+A three-component lifecycle diagram, single HTML file, inline CSS, D3 v7 from the CDN. Left: version control storing the (prompt-text, model-snapshot, decoding-params) triple. Center: eval harness (held-out inputs, variant battery, declared scoring standard, CI gate). Right: monitoring (live scoring, input-drift alert, score-drift alert). Arrows flow notebook → versioning → eval → deploy → monitor, looping back to re-evaluation on model updates (in red). Caption: stability is engineered, not handed to you.
+
+> Reference implementation: `d3/15-production-ethics-and-whats-next-fig-01.html`
+
+---
+
+### Figure 15.2 — When does self-correction help?
+
+A decision tree, single HTML file, D3 v7 CDN. Root: "verifiable external feedback signal?" Yes → grounded self-correction (Reflexion) works. No → "one correct answer?": yes → self-consistency (majority vote; do NOT ask the model to critique itself); no (open-ended) → Self-Refine may help on style, not reasoning. Each terminal node names its failure mode; red marks the "do not self-critique" node. Caption: the dividing line is external grounding.
+
+> Reference implementation: `d3/15-production-ethics-and-whats-next-fig-02.html`
+
+---
+
+### Figure 15.3 — Self-consistency gains over single-shot chain-of-thought
+
+A grouped bar chart, single HTML file, D3 v7 CDN, zero baseline. Three benchmarks (GSM8K, SVAMP, AQuA) on x; accuracy-gain in points on y (+17.9, +11.0, +12.2). Red for the largest gain; ink for the rest. Caption: gains come from the answer distribution, not from the model judging itself.
+
+> Reference implementation: `d3/15-production-ethics-and-whats-next-fig-03.html`
+
+---
+
+### Figure 15.4 — One mechanism, three surfaces
+
+A hub-and-spoke diagram, single HTML file, D3 v7 CDN. Center hub "RLHF approval-maximization"; three spokes to "sycophancy (Ch. 4)," "persona drift (Ch. 6)," "over-revision (Ch. 15)." Red marks the shared hub; ink for the surfaces. Caption: understand the mechanism once and you predict all three surfaces.
+
+> Reference implementation: `d3/15-production-ethics-and-whats-next-fig-04.html`

@@ -19,7 +19,8 @@ Second, the variability is controllable. A single parameter turned a scatter of 
 
 If the model were a database — if "the answer" were stored somewhere and retrieved — neither observation makes sense. A database returns the same row every time. It does not have a dial that controls how often it returns a *different* row. The behavior you just observed is not retrieval. It is sampling. And what you need to understand, before anything else in this book, is what that difference actually means.
 
-<!-- → [IMAGE: Two side-by-side panels showing the same prompt submitted five times. Left panel: high temperature, five different outputs. Right panel: low temperature, same output repeated. Visual reinforces the temperature-as-dial intuition before the mechanism is explained.] -->
+![Two mental models for one output: a retrieval model returns the same stored row every time, while a sampling model draws a fresh token from a distribution, so the same prompt can yield different text.](../images/01-the-stochastic-machine-fig-01.png)
+*Figure 1.1 — Two mental models for one output*
 
 ---
 
@@ -53,7 +54,8 @@ The *learned, structured* half is why prompt engineering is possible at all. If 
 
 The *random sample* half is why prompt engineering is empirical. A single run tells you what the model did on that draw, not what the distribution looks like. To characterize a prompt's behavior you must sample it repeatedly. This is not pedantry; it is the direct consequence of output being a probabilistic event. The minimal honest experiment: fix the prompt, fix the parameters, run many times, and characterize the *distribution* of outputs. One run is an anecdote. The distribution is the engineering object.
 
-<!-- → [DIAGRAM: A number line or probability density sketch showing "uniform noise" on the left, "retrieval / delta function" on the right, and "learned, structured distribution" in the middle — the actual correct position. Labels the two failure modes (pure random, pure retrieval) at the extremes.] -->
+![Reliability is a property of shape: a peaked distribution makes repeated draws converge, while a flat one makes them scatter — the same machine, reliable or scattered depending only on the shape it samples from.](../images/01-the-stochastic-machine-fig-02.png)
+*Figure 1.2 — Reliability is a property of distribution shape*
 
 ---
 
@@ -69,7 +71,12 @@ On a task with many good answers — naming, brainstorming, phrasing — raising
 
 On a task with one strongly-favored answer — factual recall on well-attested facts — temperature has little effect until it is high enough to overcome a large logit gap. A peaked distribution stays peaked under mild flattening. The arithmetic from Chapter 0 showed an 86% leader at temperature 0.5 still leading at 50% at temperature 2. So "capital of France" survives temperature changes that scatter "name a coffee shop." Same knob, different effect, because the distributions differ in shape — which is the unifying prediction.
 
-<!-- → [TABLE: Four-column table — Parameter Change / Effect on Distribution Shape / Effect on Observed Behavior / Typical Use Case. Rows: raise temperature, lower temperature, lower top-p/top-k, raise top-p/top-k. Gives students a compact reference for the prediction logic.] -->
+| Parameter change | Effect on distribution shape | Effect on observed behavior | Typical use case |
+|---|---|---|---|
+| Raise temperature | Flattens; mass spreads toward the tail | More varied, eventually incoherent | Brainstorming, naming, ideation |
+| Lower temperature | Sharpens; mass concentrates on the leaders | More repetitive; may loop on some models | Extraction, classification, factual recall |
+| Lower top-p / top-k | Fewer tail tokens survive | Tighter, less likely to surprise | Reliable structured output |
+| Raise top-p / top-k | More of the tail stays in play | More variety, more risk of an odd draw | Creative range with coherence |
 
 This is what it means to say the parameters are controls rather than magic. Their effects are deducible from distribution shape plus the breadth of the task's answer space. An engineer who internalizes this stops asking "what temperature should I use?" as if there were a universal answer, and starts asking "how broad is the space of acceptable outputs for *this* task, and do I want to sample widely or narrowly across it?"
 
@@ -87,7 +94,8 @@ Wang and Zhou (2024), in "Chain-of-Thought Reasoning Without Prompting," falsify
 
 Sit with what this means. If you can extract a reasoning chain by changing which part of the distribution you sample from, with the prompt held fixed, then the reasoning capability is not a property of the prompt string. It is a property of the *shape of the output distribution*, accessible through decoding. The prompt "Let's think step by step" and the decoding trick are two different ways of reaching the same latent region of the distribution: the prompt reshapes the distribution so reasoning paths rise to the top; the decoding trick leaves the distribution alone and reaches deeper into it. Same destination, two levers on the same object.
 
-<!-- → [DIAGRAM: Two paths reaching the same region of a distribution. Path 1: prompt change ("think step by step") reshapes the distribution so the reasoning trajectory rises to the peak. Path 2: decoding change (top-k branch inspection) reaches the latent reasoning trajectory without reshaping the distribution. Both paths land in the same place. Caption: prompt and decoding are two levers on the same object.] -->
+![Two levers reach one latent region: a prompt change reshapes the distribution so the reasoning trajectory rises to the peak, while a decoding change reaches the same latent trajectory without reshaping it — two levers on the same object.](../images/01-the-stochastic-machine-fig-03.png)
+*Figure 1.3 — Two levers reach one latent region*
 
 This generalizes into a working principle: **a prompt change and a decoding change are often substitutable, because both are operations on the same underlying distribution.** When you cannot edit the decoding — most consumer APIs expose only temperature and top-p, not branch inspection — you reach the latent region by prompting. When you control the decoding loop, you have a second lever. Knowing they are levers on the same object is what lets you reason about which to use, rather than treating one as the real tool and the other as a curiosity.
 
@@ -106,6 +114,9 @@ You cannot validate a prompt from one run. A single output is one sample. It tel
 The parameters are part of the prompt. Temperature and top-p co-determine the output distribution along with the prompt text. A prompt that is excellent at temperature 0.2 may be unusable at temperature 1.2. Reporting a prompt's behavior without reporting its decoding parameters is like reporting a measurement without units.
 
 Consider the Mycroft case — an investment-intelligence system that summarizes regulatory filings. An analyst asks Mycroft to summarize a filing and gets a clean, confident summary. Satisfied, they ship it. The summary was one draw from a distribution that, on this particular filing, was not sharply peaked: several plausible but conflicting summaries shared mass. A second draw would have read differently, and the difference would have flagged that the model was uncertain here. By treating the single confident output as "the answer," the analyst discarded exactly the signal that sampling makes available for free. Output variability, across a handful of runs on the same prompt, is an uncertainty estimator. Treating the model as a retrieval system throws that estimator away.
+
+![One run is an anecdote; the spread is the object: a single sample tells you only what the model did once, while the distribution of outputs across many runs is the engineering object you can actually characterize.](../images/01-the-stochastic-machine-fig-04.png)
+*Figure 1.4 — One run is an anecdote; the spread is the engineering object*
 
 ---
 
@@ -143,3 +154,43 @@ That is Chapter 2.
 - Wang, B., et al. (2023). Towards Understanding Chain-of-Thought Prompting: An Empirical Study of What Matters. *ACL 2023*. arXiv:2212.10001 — invalid rationales recover 80–90% of valid-CoT performance.
 - Meincke, L., Mollick, E. R., Mollick, L., & Shapiro, D. (2025). Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting. Wharton Generative AI Labs. arXiv:2506.07142 — CoT scope conditions on reasoning-tuned models.
 - Brown, T., et al. (2020). Language Models are Few-Shot Learners (GPT-3). *NeurIPS 2020*. arXiv:2005.14165 — in-context learning; background for the sampling-conditioned-on-context view.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 1.1 — Two mental models for one output
+
+Two side-by-side panels, single HTML file, inline CSS, D3 v7 from the CDN. Left panel "retrieval": a small lookup table with one highlighted row returning the identical output on five repeated queries. Right panel "sampling": a probability distribution (bar chart, zero baseline) over candidate outputs, with five draws producing different tokens. Red encodes the drawn/returned token; ink for structure. Caption: a lookup returns the stored row; a model draws a fresh sample each time.
+
+> Reference implementation: `d3/01-the-stochastic-machine-fig-01.html`
+
+---
+
+### Figure 1.2 — Reliability is a property of distribution shape
+
+Two bar charts side by side, single HTML file, D3 v7 CDN, shared zero baseline. Left "peaked": one dominant bar; overlay five draw-markers clustering on it ("draws converge"). Right "flat": roughly uniform bars; overlay five draw-markers scattered across them ("draws scatter"). Red for the modal bar, ink for the rest. Caption: the same machine is reliable or scattered depending only on the shape it samples from.
+
+> Reference implementation: `d3/01-the-stochastic-machine-fig-02.html`
+
+---
+
+### Figure 1.3 — Two levers reach one latent region
+
+A distribution landscape with one highlighted latent region, single HTML file, D3 v7 CDN. Show two labeled paths arriving at the same region: Path 1 "prompt change" reshapes the curve so the region rises to the peak; Path 2 "decoding change" leaves the curve and reaches deeper into it via top-k branch inspection. Red marks the shared destination region; ink for the two paths. Caption: prompt and decoding are two levers on the same object.
+
+> Reference implementation: `d3/01-the-stochastic-machine-fig-03.html`
+
+---
+
+### Figure 1.4 — One run is an anecdote; the spread is the engineering object
+
+A single-run callout beside a distribution of outcomes, single HTML file, D3 v7 CDN. Left: one isolated output marker labeled "one run." Right: a histogram of outputs over many runs of the same prompt and parameters, zero baseline, with median and spread annotated. Red for the distribution's mode, ink for the lone single-run marker. Caption: one sample is what the model did once; the distribution is what you can characterize.
+
+> Reference implementation: `d3/01-the-stochastic-machine-fig-04.html`

@@ -27,6 +27,9 @@ $$\text{prompt}^* = \arg\max_{\text{prompt} \in \mathcal{P}} \; \frac{1}{|\mathc
 
 In words: over the space $\mathcal{P}$ of possible prompts, find the one that maximizes the average metric across your eval set $\mathcal{D}$. That is the entire mathematical content of automated prompt optimization. Everything else — Bayesian search, evolutionary mutation, textual gradients — is a strategy for searching $\mathcal{P}$ without evaluating every point, because $\mathcal{P}$ is astronomically large and each evaluation costs real LLM calls.
 
+![The optimization loop: write, score, propose: a candidate prompt is scored against a labeled eval set, the score feeds a proposer that generates the next candidate, and the loop keeps the empirical winner — including winners a human would not have written.](../images/12-automated-prompt-optimization-fig-01.png)
+*Figure 12.1 — The optimization loop: write, score, propose*
+
 Two things in that equation are not the optimizer's job. They are yours. You must supply $\mathcal{D}$ (the eval set) and you must supply the metric. This is the precondition, and it is the boundary of the whole enterprise. No metric, no $\arg\max$. We return to this in the decision gate because it is the named failure mode, not a footnote.
 
 ### The Signature: declare the what, let the compiler find the how
@@ -50,6 +53,9 @@ Notice what the Signature does not contain: no instruction string, no few-shot e
 
 This is, almost exactly, Grace Hopper's 1952 argument for the compiler, transplanted onto language models: humans should state what they want and let the machine generate the low-level instructions. The original DSPy paper reports compositions of its modules raising GPT-3.5 quality from 33% to 82% on GSM8K and from 32% to 46% on HotPotQA multi-hop QA — and, strikingly, making a Llama2-13b-chat model "competitive with GPT-3.5 by simply compiling programs." The same Signature compiles to different prompt strings for different model families — a terse instruction with three demonstrations for one model, a verbose instruction with six for another. Same what, different how.
 
+![One Signature, many compiled prompts: a typed input→output contract states *what* the task consumes and produces, and a compiler searches for the instruction text and demonstrations — different per model family — that maximize the metric.](../images/12-automated-prompt-optimization-fig-02.png)
+*Figure 12.2 — One Signature, many compiled prompts*
+
 One misconception to name: "the optimizer writes a clever prompt; I could have written it myself." Tempting, and mostly wrong. "Take a deep breath" is not clever in any human sense — it is a model-specific token sequence that happens to nudge the next-token distribution toward more careful arithmetic for that model version. The optimizer is not being a better wordsmith. It is doing something you structurally cannot do by hand: evaluating hundreds of candidates against a metric and keeping the empirical winner, including winners that look like nonsense.
 
 ---
@@ -58,7 +64,16 @@ One misconception to name: "the optimizer writes a clever prompt; I could have w
 
 Between 2022 and 2024 the field produced a cluster of optimizers. They differ along two axes: how they search $\mathcal{P}$, and what part of the prompt they optimize — the instruction text, the few-shot demonstrations, or both.
 
-<!-- → [TABLE: The optimizer grid. Rows: search strategy (Propose-and-score / Trajectory-feedback / Textual gradient / Evolutionary / Bayesian). Columns: what is optimized (Instructions / Demonstrations / Both). Fill: APE (propose-and-score, instructions), OPRO (trajectory-feedback, instructions), ProTeGi/TextGrad (textual gradient, instructions), Promptbreeder/EvoPrompt (evolutionary, instructions), MIPRO (Bayesian, both). Each cell includes a one-sentence mechanism summary.] -->
+![The optimizer grid: search strategy by target: methods differ along two axes — how they search the prompt space and what part of the prompt they optimize (instructions, demonstrations, or both).](../images/12-automated-prompt-optimization-fig-03.png)
+*Figure 12.3 — The optimizer grid: search strategy by what is optimized*
+
+| Search strategy | What it optimizes | Method | Mechanism |
+|---|---|---|---|
+| Propose-and-score | Instructions | APE | An LLM proposes candidate instructions; the best task score survives |
+| Trajectory-feedback | Instructions | OPRO | Prior candidates and their scores are placed in the meta-prompt |
+| Textual gradient | Instructions | ProTeGi / TextGrad | A minibatch of failures yields a natural-language "gradient" that edits the prompt |
+| Evolutionary | Instructions | Promptbreeder / EvoPrompt | Mutate a population of prompts, select the fittest |
+| Bayesian | Instructions + demonstrations | MIPRO | Surrogate-model search over both, without module labels or gradients |
 
 A few entries deserve a sentence each because their mechanisms are genuinely distinct.
 
@@ -115,6 +130,9 @@ The payoff: you ran this loop once, and now the system extracts runways from tho
 ## The decision gate: when to optimize, when to hand-tune
 
 Four questions. All four yes — automate. Any no — manual lane.
+
+![The decision gate: four questions, two lanes: a scalar metric, a labeled eval set, high volume, and a stable task/model route the work to the automated lane; any "no" routes it to the manual lane.](../images/12-automated-prompt-optimization-fig-04.png)
+*Figure 12.4 — The decision gate: four questions, two lanes*
 
 **Can you write a scalar metric?** A function that scores an output against a reference and returns a number. If your objective is "good writing" or "tasteful tone" and you cannot reduce it to a number, the optimizer has nothing to climb.
 
@@ -193,3 +211,43 @@ The deepest open question is attribution: when DSPy wins, how much is the Bayesi
 - Guo, Q., et al. (2023). Connecting Large Language Models with Evolutionary Algorithms Yields Powerful Prompt Optimizers. arXiv:2309.08532. *ICLR 2024*.
 - Is It Time To Treat Prompts As Code? A Multi-Use Case Study For Prompt Optimization Using DSPy (2025). arXiv:2507.03620. *(Preprint; mixed results.)*
 - Revisiting OPRO: The Limitations of Small-Scale LLMs as Optimizers (2024). arXiv:2405.10276.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 12.1 — The optimization loop: write, score, propose
+
+A cycle diagram, single HTML file, inline CSS, D3 v7 from the CDN. Nodes: candidate prompt → score on a labeled eval set → proposer generates next candidate → (repeat); a "keep best" branch exits to a compiled prompt. Red marks the score → propose feedback edge. Caption: once you can score an output, prompting is a search problem.
+
+> Reference implementation: `d3/12-automated-prompt-optimization-fig-01.html`
+
+---
+
+### Figure 12.2 — One Signature, many compiled prompts
+
+A one-to-many compilation diagram, single HTML file, D3 v7 CDN. A single typed Signature (e.g., `context, question -> answer`) on the left fans out to several compiled prompt strings — different instruction length and demonstration counts per model family. Red marks the shared Signature; ink for the variants. Caption: same *what*, different *how*.
+
+> Reference implementation: `d3/12-automated-prompt-optimization-fig-02.html`
+
+---
+
+### Figure 12.3 — The optimizer grid: search strategy by what is optimized
+
+A matrix/grid, single HTML file, D3 v7 CDN. Rows: search strategy (propose-and-score, trajectory-feedback, textual gradient, evolutionary, Bayesian); columns: what is optimized (instructions, demonstrations, both). Place APE, OPRO, ProTeGi/TextGrad, Promptbreeder/EvoPrompt, and MIPRO in their cells, each with a one-line mechanism. Red marks the "both" cell (MIPRO). Caption: the axis that matters is cost per useful step.
+
+> Reference implementation: `d3/12-automated-prompt-optimization-fig-03.html`
+
+---
+
+### Figure 12.4 — The decision gate: four questions, two lanes
+
+A flowchart, single HTML file, D3 v7 CDN. Four gate questions in sequence — scalar metric? labeled eval set? high volume? stable task/model? — with "all yes" routing to the automated lane (Signature → metric → optimizer → compiled prompt → measure) and any "no" routing to the manual lane. Red marks the manual-lane exit. Caption: escalate only when the cheaper lane is provably insufficient.
+
+> Reference implementation: `d3/12-automated-prompt-optimization-fig-04.html`

@@ -21,6 +21,9 @@ Because of exactly the Chapter 1 picture, taken seriously. The model assigns a p
 
 A semantically neutral edit is not behaviorally neutral because semantic neutrality is a fact about human reading and behavioral output is a fact about token-conditioned sampling. There is no theorem connecting the two. This is the single misconception the chapter exists to break: **semantically equivalent does not imply behaviorally equivalent.**
 
+![Two prompts a human reads as identical are two points in token space: `Q:` and `Question -` are different tokens occupying different positions in the model's learned distribution, so a semantically neutral edit is not behaviorally neutral.](../images/09-prompt-brittleness-and-evaluation-fig-02.png)
+*Figure 9.2 — Two prompts a human reads as identical are two points in token space*
+
 Demonstrate it to yourself immediately. Take one task, flip a colon to a dash, watch a discrete output change. The model is not being stupid. It is doing exactly what it was trained to do — condition on the full token sequence — and the token sequence changed.
 
 The deep mechanism — why surface-feature shortcut learning or tokenization artifacts or decision-boundary geometry or training-distribution format priors produces this behavior — is not settled. The papers cited below measure brittleness far more than they explain it. That is stated honestly. You do not need the deep cause to do the engineering. You need to accept that surface form is a high-dimensional nuisance factor — a variable that affects your measurement without being the thing you care about — and the response to a nuisance factor is always the same: vary it on purpose and report the variance.
@@ -41,17 +44,24 @@ A semantically deeper layer: brittleness is not confined to punctuation. Leiding
 
 And the ordering effect is its own dramatic demonstration. Lu et al. (2022, ACL), "Fantastically Ordered Prompts," showed that the same few-shot examples, merely reordered, can move a prompt between near-state-of-the-art and near-random — and the effect does not vanish with scale. The examples are identical. Only their sequence changed. This is the same few-shot material Chapter 8 named as format conditioning: the shape the model learns from its examples includes the order those examples arrived in.
 
-<!-- → [FIGURE: A histogram from a format-variant sweep on one task, showing accuracy across 20 semantically-equivalent prompt variants. The spread spans from roughly 0.69 to 0.88, with the median marked. Caption: the 0.86 that went into the procurement deck was the rightmost bar; reporting it as a point discards all the information in the rest of the distribution.] -->
+![One score is the top of a distribution, not a capability: a histogram of accuracy across 20 semantically-equivalent prompt formats spans roughly 0.69 to 0.88, and the 0.86 that went into the procurement deck was just the rightmost bar.](../images/09-prompt-brittleness-and-evaluation-fig-01.png)
+*Figure 9.1 — One score is the top of a distribution, not a capability*
 
 ### How it corrupts comparison
 
 The accuracy hit to your prompt is the smaller problem. The larger one is that brittleness corrupts comparison, because nothing guarantees that the format favoring Model A also favors Model B. Sclar et al. found format performance correlates only weakly across models — so a fixed shared format does not give a fair fight. It gives whichever model happens to like that format a hidden advantage.
 
-Two documented cases make this concrete. On MMLU and similar multiple-choice benchmarks, minor non-semantic perturbations — reordering the answer choices, changing the answer-extraction method, changing the choice symbol — shift leaderboard rankings by up to 8 positions (Alzahrani et al. 2024, ACL). A published, real case where brittleness corrupted a public model comparison. Separately, three implementations of the same MMLU benchmark — original Berkeley, Stanford HELM, EleutherAI lm-eval-harness — produced materially different scores for the same models, driven by prompt-template differences: a `Question:` prefix, how choices were labeled, whether the harness scored the answer letter or the answer text. Brittleness leaks into official numbers.
+Two documented cases make this concrete. On MMLU and similar multiple-choice benchmarks, minor non-semantic perturbations — reordering the answer choices, changing the answer-extraction method, changing the choice symbol — shift leaderboard rankings by up to 8 positions (Alzahrani et al. 2024, ACL). A published, real case where brittleness corrupted a public model comparison.
+
+![Reformat the prompt and the rankings shuffle: minor non-semantic perturbations — reordering choices, changing the answer-extraction method, changing the choice symbol — move models by up to eight leaderboard positions, because the format that favors one model does not favor another.](../images/09-prompt-brittleness-and-evaluation-fig-03.png)
+*Figure 9.3 — Reformat the prompt and the rankings shuffle* Separately, three implementations of the same MMLU benchmark — original Berkeley, Stanford HELM, EleutherAI lm-eval-harness — produced materially different scores for the same models, driven by prompt-template differences: a `Question:` prefix, how choices were labeled, whether the harness scored the answer letter or the answer text. Brittleness leaks into official numbers.
 
 Mizrahi et al. (2024, TACL) put a number on the comparison problem at scale: across roughly 6.5 million instances, 20 language models, and 39 tasks, template choice changes both absolute and relative performance — it reorders models. This is the opening scenario's real-world backbone.
 
-<!-- → [TABLE: Two failure modes side by side. Columns: Failure mode / What it is / What it costs. Row 1: Single-format optimism — reporting one format's score as the model's capability — overstates reliability; produces the production gap in the opening scenario. Row 2: Format-confounded comparison — declaring A > B on a shared fixed format — picks the wrong model; the procurement error in the opening scenario.] -->
+| Failure mode | What it is | What it costs |
+|---|---|---|
+| Single-format optimism | Reporting one format's score as the model's capability | Overstates reliability — the production gap in the opening scenario |
+| Format-confounded comparison | Declaring A > B on one shared, fixed format | Picks the wrong model — the procurement error in the opening scenario |
 
 ---
 
@@ -64,6 +74,9 @@ Reframe the claim. "Prompt P performs at accuracy *a*" is ill-posed. The defensi
 > Prompt family P has a performance distribution with median *m* and spread *s* over plausible semantically-equivalent variants.
 
 This treats format as the nuisance factor it is and reports the variance attributable to it — which is exactly the move classical experimental design makes for any nuisance factor. Vary it on purpose; report the variance.
+
+![Report a distribution, not a point: a defensible claim is a performance distribution with a median and spread over plausible semantically-equivalent variants, not a single score hunted for and reported as a capability.](../images/09-prompt-brittleness-and-evaluation-fig-04.png)
+*Figure 9.4 — Report a distribution, not a point*
 
 **The procedure:**
 
@@ -129,3 +142,43 @@ The thesis of the whole book lands here with more force than anywhere else: prom
 - Ngweta, L., et al. (2025). Towards LLMs Robustness to Changes in Prompt Format Styles. *NAACL 2025 Student Research Workshop*. arXiv:2504.06969.
 - Polo, F. M., et al. (2024). Efficient multi-prompt evaluation of LLMs (PromptEval). *NeurIPS 2024*. arXiv:2405.17202.
 - Min, S., et al. (2022). Rethinking the Role of Demonstrations: What Makes In-Context Learning Work? *EMNLP 2022*. arXiv:2202.12837.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 9.1 — One score is the top of a distribution, not a capability
+
+A histogram, single HTML file, inline CSS, D3 v7 from the CDN. Accuracy on x (≈0.65–0.90), count on y, zero baseline, ~20 bars from a format-variant sweep on one task. Mark the median, and mark the rightmost bar (≈0.86) in red labeled "the score that went in the deck." Ink for the rest. Caption: reporting the max as a point discards the distribution.
+
+> Reference implementation: `d3/09-prompt-brittleness-and-evaluation-fig-01.html`
+
+---
+
+### Figure 9.2 — Two prompts a human reads as identical are two points in token space
+
+A token-space sketch, single HTML file, D3 v7 CDN. Two prompt variants a human reads as identical (`Q:` vs `Question -`) plotted as two distinct points in a schematic distribution, leading to two different output regions. Red marks the divergence; ink for the shared "meaning." Caption: semantic neutrality is not behavioral neutrality.
+
+> Reference implementation: `d3/09-prompt-brittleness-and-evaluation-fig-02.html`
+
+---
+
+### Figure 9.3 — Reformat the prompt and the rankings shuffle
+
+A slope/bump chart, single HTML file, D3 v7 CDN. Several models ranked under "format A" on the left and "format B" on the right, with crossing lines showing rank changes of up to 8 positions. Red highlights the model that moves most; ink for the rest. Zero-free ranking axis. Caption: a fixed shared format gives whichever model likes it a hidden advantage.
+
+> Reference implementation: `d3/09-prompt-brittleness-and-evaluation-fig-03.html`
+
+---
+
+### Figure 9.4 — Report a distribution, not a point
+
+A before/after reporting figure, single HTML file, D3 v7 CDN. Left: a single point estimate labeled "ill-posed." Right: a distribution with median and a 95% interval over format variants, labeled "defensible claim," in red. Ink for the point. Caption: the claim is the median and spread, not the max you found by hunting.
+
+> Reference implementation: `d3/09-prompt-brittleness-and-evaluation-fig-04.html`

@@ -15,7 +15,8 @@ The tempting reading is that the model "caved" — as if it made a judgment call
 
 That is the chapter. Not merely that language models can be pushed off correct answers — they can, and it is documented — but *why* the training regime guarantees this behavior as a structural property. And then: what architectural commitment actually interrupts it, versus what architectures only look like they interrupt it while quietly failing.
 
-<!-- → [DIAGRAM: Timeline of the NovaTech scenario. Step 1: analyst asks question → assistant returns correct 340bp underperformance assessment. Step 2: CEO expresses disagreement, no new data → assistant returns softened assessment. Arrow between steps labeled "zero new evidence." Caption: the reversal is produced by the training regime, not a reasoning error.] -->
+![The RLHF capitulation chain: a correct assessment is reversed by a pushback signal carrying zero new evidence, because preference labels favor agreement, the reward model encodes it, and policy optimization reinforces capitulation under user-disagreement signals.](../images/04-sycophancy-and-computational-skepticism-fig-01.png)
+*Figure 4.1 — The RLHF capitulation chain*
 
 ---
 
@@ -57,7 +58,8 @@ The architecture, as it should be:
 
 The load-bearing commitment is step two: **context isolation**. The dissenter's context must not contain the pushback signal that produced the primary's capitulation. If the dissenter sees the pushback, the dissenter is subject to the same RLHF-trained pressure-response behavior as the primary. Both agents converge toward the sycophantic output. The consensus detector finds agreement. The Human Decision Node never fires. The architecture looks intact — two agents, comparison step, human gate — but the adversarial function has been broken because the dissenter was exposed to the same pressure.
 
-<!-- → [DIAGRAM: Two-agent architecture with labeled data flows. Left branch: Primary agent receives Question + Data + User Pushback → outputs capitulated assessment. Right branch: Dissenter agent receives only Question + Data (pushback explicitly blocked) → outputs original assessment. Center: Consensus Detector compares outputs. Bottom: Human Decision Node fires on disagreement. Caption: the dissenter's isolation is the load-bearing structural commitment — without it, the architecture is theater.] -->
+![The dissenting sub-agent — isolation is the commitment: the primary agent sees the pushback and may capitulate, while the dissenter receives only the claim and data, so the consensus detector and human decision node can catch a pressure-driven reversal.](../images/04-sycophancy-and-computational-skepticism-fig-02.png)
+*Figure 4.2 — The dissenting sub-agent: context isolation is the load-bearing commitment*
 
 Call this failure mode **calibration drift**. It is the most common way dissenting-agent architectures fail in practice. A developer, under pressure to reduce false-positive disagreements because the Human Decision Node is "too noisy," decides to give the dissenter "more context" so it can make "better-calibrated judgments." More context often means the full conversation history, which includes the pushback. The dissenter's isolation is broken. The architecture's guarantee is quietly voided. No alarm fires. The system continues to look like a dissenting-agent system. It is functionally a single-agent system in disguise.
 
@@ -72,6 +74,9 @@ dissenter_input = (
 ```
 
 That one line is the entire architectural failure. The dissenter is now conditioned on the pressure signal the architecture was designed to exclude. It capitulates in lockstep with the primary. The consensus check finds agreement. The Human Decision Node stays dark.
+
+![Calibration drift — one arrow voids the architecture: passing the user's pushback into the dissenter "for better calibration" conditions it on the same pressure signal, so both agents converge, the consensus check finds false agreement, and the human gate never fires.](../images/04-sycophancy-and-computational-skepticism-fig-03.png)
+*Figure 4.3 — Calibration drift: one arrow voids the architecture*
 
 You cannot catch this with code review alone — the code compiles and runs correctly. You cannot catch it with standard integration tests — the test suite runs normal queries and the dissenter produces normal responses. You catch it by red-teaming the architecture's adversarial property specifically: run the known-correct-claim-plus-pushback case end-to-end, and verify that the Human Decision Node fires. If it does not, the isolation chain has been broken, regardless of what the architecture diagram says.
 
@@ -99,6 +104,9 @@ Context isolation interrupts link four. A dissenter model that has never seen th
 
 This works because the pressure signal is in the *context*, not in the model's weights. Two copies of the same RLHF-trained model, given different contexts, produce different outputs even when their underlying distributions are identical. The architecture exploits this: keep one copy out of the pressure context, and its output becomes a reference point against which the pressured copy can be checked.
 
+![The approval gradient — one vector, two targets: the same RLHF-learned pull toward approval is harmless when no pressure signal is present, but bends a correct assessment toward capitulation once user disagreement enters the context.](../images/04-sycophancy-and-computational-skepticism-fig-04.png)
+*Figure 4.4 — The approval gradient: one vector, two targets*
+
 ---
 
 ## Computational skepticism — the reader's role
@@ -115,7 +123,11 @@ Third, introduce pushback deliberately as a diagnostic. Ask a question, get an a
 
 The productive design move follows from this: make pleasing you require the model to disagree with you. Ask it to make the strongest case against your position before stating its own. Ask it to argue against the conclusion you are hoping is right. The instruction has to come before the question, not after. Even with the instruction, the case will be softer than a hostile reader would mount — but it will be sharper than the default sycophantic agreement, and the act of generating it surfaces the objections you need to consider.
 
-<!-- → [TABLE: Three-column table — Habit / What to do / What it detects. Row 1: Prior specification / Write down what a wrong answer looks like before reading the output / Removes fluency as the evaluation criterion. Row 2: Framing variation / Submit the same factual question in three phrasings / Detects drift driven by framing rather than evidence. Row 3: Deliberate pushback / Say "I don't think that's right" with no new information / Directly tests whether the model revises without evidence.] -->
+| Habit | What to do | What it detects |
+|---|---|---|
+| Prior specification | Write down what a wrong answer would look like *before* reading the output | Removes fluency as the evaluation criterion |
+| Framing variation | Submit the same factual question in three phrasings | Drift driven by framing rather than evidence |
+| Deliberate pushback | Say "I don't think that's right" with no new information | Whether the model revises without any new evidence |
 
 ---
 
@@ -150,3 +162,43 @@ Architecture is the leverage point. The same RLHF-trained model, in two configur
 - Sharma, M., et al. (2023). Towards Understanding Sycophancy in Language Models. arXiv:2310.13548.
 - Weng, L. (2024). Reward Hacking in Reinforcement Learning. Lil'Log. https://lilianweng.github.io/posts/2024-11-28-reward-hacking/
 - Ouyang, L., et al. (2022). Training Language Models to Follow Instructions with Human Feedback. arXiv:2203.02155.
+
+---
+
+## Prompts
+
+Use these prompts with Claude to generate interactive D3 v7 versions of the figures in this chapter. Each produces a standalone HTML file you can open in a browser and modify freely.
+
+**Prerequisites:** Load `NEU/CLAUDE.md` and `NEU/DESIGN.md` into your Claude project context before using these prompts. They define the stack, naming conventions, color system, and typography the figures use.
+
+---
+
+### Figure 4.1 — The RLHF capitulation chain
+
+A four-link causal chain, single HTML file, inline CSS, D3 v7 from the CDN. Left to right: "preference labels favor agreement" → "reward model encodes the bias" → "policy optimization reinforces capitulation" → "output reverses under pressure." Above the last link, show a before/after assessment (correct → softened) with an arrow labeled "zero new evidence" in red. Ink for the chain. Caption: the reversal is the training regime working as specified.
+
+> Reference implementation: `d3/04-sycophancy-and-computational-skepticism-fig-01.html`
+
+---
+
+### Figure 4.2 — The dissenting sub-agent: context isolation is the commitment
+
+A two-branch architecture diagram, single HTML file, D3 v7 CDN. Left branch: primary agent receives Question + Data + User Pushback → capitulated output. Right branch: dissenter receives only Question + Data (pushback shown blocked) → original output. Center: consensus detector compares; bottom: human decision node fires on disagreement, drawn in red. Caption: the dissenter's isolation is the load-bearing commitment.
+
+> Reference implementation: `d3/04-sycophancy-and-computational-skepticism-fig-02.html`
+
+---
+
+### Figure 4.3 — Calibration drift: one arrow voids the architecture
+
+The same two-branch architecture as 4.2, single HTML file, D3 v7 CDN, but with one extra arrow in red carrying the user pushback into the dissenter "for better calibration." Show both branches converging to the capitulated output and the human node staying dark. Ink for the intact structure, red for the one voiding arrow. Caption: one line of context turns governance into theater.
+
+> Reference implementation: `d3/04-sycophancy-and-computational-skepticism-fig-03.html`
+
+---
+
+### Figure 4.4 — The approval gradient: one vector, two targets
+
+A vector-field sketch, single HTML file, D3 v7 CDN. A single "approval" gradient vector acts on a correct assessment point. Panel 1 (no pressure in context): the point stays put. Panel 2 (user disagreement in context): the same vector bends the point toward "capitulated." Red marks the displaced trajectory; ink for the field. Caption: one learned pull, two outcomes depending on the context.
+
+> Reference implementation: `d3/04-sycophancy-and-computational-skepticism-fig-04.html`
