@@ -1,69 +1,29 @@
-> **Voice status:** `voice-unanchored`. Both root `style/` and `books/prompt-engineering/style/` empty as of this draft.
-
----
-
 # Chapter 0 — Foundations: Sampling, Logits, and the Shape of a Distribution
-
-*The optional front-load: what an LLM is actually emitting when it emits a token*
-
-**Author:** Nik Bear Brown
-**Editor:** Nik Bear Brown
+*The number behind the word — what a language model is actually doing before it says anything.*
 
 ---
 
-## Suggested titles
+Start with a question that looks like it should be simple. You type *"The capital of France is"* into a chat model, and it says *"Paris."* Every person who has done this assumes the model looked something up — that somewhere inside is a table, and the row for France has "Paris" in the capital column, and the model read it. This is the wrong picture entirely. Understanding why it is wrong, and what the right picture actually is, is the whole foundation for everything else in this book.
 
-1. **Foundations: Sampling, Logits, and the Shape of a Distribution**
-2. **Before the First Token: Softmax, Temperature, and the Truncated Tail**
-3. **The Number Behind the Word: Reading an LLM as a Probability Engine**
+What actually happened is this. The model read your words, ran them through its layers, and at the final step produced a list of numbers — one number for every token in its vocabulary. Modern vocabularies run to roughly 100,000 entries (GPT-4's tokenizer sits near there; Llama 3 uses 128,256; GPT-4o's tokenizer reaches about 200,000), so this list is a vector with tens of thousands of components. The entry for ` Paris` was high. The entry for ` Lyon` was lower but not zero. The entry for ` Tokyo` was lower still. The entry for ` banana` was very low — but, and this is the load-bearing fact, *not zero*. Every token in the vocabulary received a score. The model then converted those scores into probabilities and drew a sample. It happened to draw ` Paris` because ` Paris` held most of the probability mass. On a different draw, with the dial set differently, it might have drawn ` Lyon`.
 
----
+The model did not retrieve "Paris." It sampled it. The answer felt certain because the distribution was sharply peaked — nearly all the probability mass sat on one token — but the machinery underneath was probabilistic the whole time. Change the shape of that distribution and the same prompt yields different text. That is the mechanism this chapter makes precise.
 
-## TL;DR
-
-Every token a language model emits is a draw from a probability distribution the model computes fresh at each step. The model produces a vector of raw scores called *logits* — one per vocabulary item — and a function called *softmax* converts that vector into a proper probability distribution that sums to one. Three knobs reshape that distribution before a token is drawn: **temperature** rescales the logits (flattening or sharpening the distribution by dividing every score by a constant $T$ before softmax), and **top-k** and **top-p (nucleus)** sampling *truncate* it (discarding the long tail of low-probability tokens before drawing). Understanding these three operations — one rescaling, two truncations — is the entire mechanical foundation for everything that follows: it is why identical prompts diverge (Ch. 1), why fluent text can be confidently wrong (Ch. 2), and why "set temperature to 0" is sometimes a bug rather than a safety measure. This chapter is the optional math front-load; if your course assumes softmax and decoding, skip to Ch. 1.
+<!-- → [IMAGE: A simple visual — on the left, the folk model of an LLM as a lookup table (row: "capital of France", cell: "Paris"); on the right, the actual model as a probability distribution over a vocabulary with mass concentrated on "Paris" but nonzero tails. Caption: the difference between retrieval and sampling.] -->
 
 ---
 
-## Learning objectives
+## The number is called a logit
 
-By the end of this chapter you should be able to:
+The raw score vector has a name: **logits**. One logit per vocabulary token. These are arbitrary real numbers — they can be negative, large, small, and they do not sum to anything in particular. They are the model's last word before it becomes a probability, and they are not yet a probability.
 
-1. **(Understand)** Describe an LLM's output at each step as a sample from a conditional probability distribution over the vocabulary, and state what the distribution is conditioned on.
-2. **(Understand)** Compute, by hand, the softmax of a small logit vector and verify it forms a valid probability distribution.
-3. **(Apply)** Predict the directional effect of changing temperature on a given logit vector — which tokens gain probability mass and which lose it — and explain why $T \to 0$ approaches greedy (argmax) decoding.
-4. **(Apply)** Distinguish top-k from top-p truncation mechanically, and identify a distribution shape where they select different candidate sets.
-5. **(Analyze)** Name one decoding configuration that produces a documented failure (e.g., low-temperature looping) and explain it in terms of distribution shape.
-
-## Prerequisites
-
-This is the foundational chapter. It assumes only the book's stated baseline: basic probability (a distribution sums to one; conditional probability), exponentials and logarithms, and comfort reading a vector. No transformer internals are required — we treat the network up to the final layer as a black box that emits a vector of scores. Chapters 1 onward build directly on this material; Ch. 1 (The Stochastic Machine) turns the mechanics here into behavioral consequences.
-
----
-
-## 0.1 The number behind the word
-
-Open any chat model. Type *"The capital of France is"* and watch it answer *"Paris."* It feels like a lookup — like the model reached into a table, found the row for France, and read off the cell. It is not a lookup. Something more peculiar happened, and the peculiarity is the whole subject of this book.
-
-Here is what actually happened. The model read your tokens, ran them through its layers, and at the final step produced a list of numbers — one number for *every* token in its vocabulary. Modern vocabularies run from roughly 100,000 entries (GPT-4's cl100k tokenizer; Llama 3 at 128,256) up to about 200,000 (GPT-4o's o200k tokenizer), so this list is a vector with tens of thousands of components. The entry for ` Paris` was high. The entry for ` Lyon` was lower but not zero. The entry for ` Tokyo` was lower still. The entry for ` banana` was very low — but, and this is the load-bearing fact, *not zero*. Every token in the vocabulary received a score. The model then converted those scores into probabilities and *drew a sample*. It happened to draw ` Paris` because ` Paris` had most of the probability mass. On a different draw, with the dial set differently, it might have drawn ` Lyon`.
-
-The model did not retrieve "Paris." It sampled it. The answer felt deterministic because the distribution was sharply peaked — almost all the mass sat on one token — but the machinery underneath was probabilistic the whole time. Change the shape of that distribution and the same prompt yields different text. That is the mechanism this chapter makes precise, before Ch. 1 turns it into a behavioral law.
-
-The name for the raw score vector is **logits**. The name for the function that turns logits into probabilities is **softmax**. We will earn both names by mechanism first.
-
----
-
-## 0.2 From scores to probabilities: the softmax
-
-We have a vector of raw scores, one per vocabulary token. Call them $z_1, z_2, \ldots, z_V$ where $V$ is the vocabulary size. These are the **logits**. They are arbitrary real numbers: they can be negative, they can be large, they do not sum to anything in particular. They are not yet probabilities.
-
-To draw a token we need a genuine probability distribution: every entry non-negative, the whole thing summing to one. The function that does this is the **softmax**:
+To draw a token we need a genuine probability distribution: every entry non-negative, all of them summing to one. The function that does this is called the **softmax**. It is worth doing the arithmetic once so the function is not a mystery.
 
 $$
 p_i = \frac{e^{z_i}}{\sum_{j=1}^{V} e^{z_j}}
 $$
 
-Read it mechanically. Exponentiate each logit ($e^{z_i}$) — this forces every term positive, since $e^x > 0$ for all real $x$, and it stretches gaps: a logit that is larger by a fixed amount becomes *multiplicatively* larger after exponentiation. Then divide each exponentiated score by the sum of all of them. Dividing by the total guarantees the results sum to one. So $p_i$ is non-negative and $\sum_i p_i = 1$: a valid distribution.
+Read it step by step. Exponentiate each logit: $e^{z_i}$. This forces every term positive, since $e^x > 0$ for all real $x$. And it stretches the gaps — a logit that is larger by a fixed amount becomes *multiplicatively* larger after exponentiation. Then divide each exponentiated score by the sum of all of them. Dividing by the total guarantees the results sum to one. The result, $p_i$, is non-negative and $\sum_i p_i = 1$: a valid probability distribution.
 
 Do it by hand on three tokens so the arithmetic is not abstract. Suppose three candidate tokens have logits $z = (2.0,\ 1.0,\ 0.1)$.
 
@@ -71,42 +31,49 @@ Do it by hand on three tokens so the arithmetic is not abstract. Suppose three c
 - Sum: $7.389 + 2.718 + 1.105 = 11.212$.
 - Divide: $p \approx (0.659,\ 0.242,\ 0.099)$.
 
-Check: $0.659 + 0.242 + 0.099 = 1.000$. The token with logit $2.0$ holds about 66% of the mass; the token with logit $0.1$ holds about 10%. A *small* logit gap (here, $2.0$ vs $1.0$, a gap of one) became a sizable probability gap (66% vs 24%) because of the exponential. This is why softmax is "soft": it does not hand all the mass to the winner the way a hard `argmax` would, but it does concentrate mass on the leaders. Hold onto that exponential — temperature acts on it directly.
+Check: $0.659 + 0.242 + 0.099 = 1.000$. A small logit gap — the difference between $2.0$ and $1.0$ is one unit — became a substantial probability gap: 66% versus 24%. That amplification is the exponential doing its job. This is why softmax is called "soft" rather than "hard": it concentrates mass on the leaders without giving everything to the winner outright, the way a simple `argmax` would. But the concentration is real, and it is the exponential that makes it so.
 
-**Common misconception.** *"Logits are probabilities, just unnormalized."* Not quite, and the difference matters. Logits live on an additive scale; probabilities live on a multiplicative one after exponentiation. Adding a constant $c$ to *every* logit changes nothing about the resulting distribution — the constant cancels top and bottom ($e^{z_i + c} = e^c e^{z_i}$, and $e^c$ factors out of both numerator and denominator). But *multiplying* every logit by a constant — which is exactly what temperature does — changes everything. The mistake of treating logits as "probabilities you just have to normalize" hides the one operation (scaling) that temperature exploits.
+There is a misconception worth clearing up immediately: logits are not "probabilities that just need to be normalized." They live on an additive scale; probabilities live on a multiplicative one, after the exponential. Adding the same constant $c$ to every logit changes nothing about the resulting distribution — the constant factors out of numerator and denominator identically and cancels. But *multiplying* every logit by a constant changes everything, because multiplication inside the exponential becomes an exponent change outside it. This distinction matters because one of our three controls acts exactly on that multiplication.
+
+<!-- → [TABLE: Side-by-side showing logits z = (2.0, 1.0, 0.1), exponentiated values, sum, and final probabilities — three columns (logit, e^z, probability) with a check row for the sum. Illustrates the softmax arithmetic step by step.] -->
 
 ---
 
-## 0.3 Temperature: one constant that reshapes the whole curve
+## Three knobs, one mechanism
 
-Now the first knob. **Temperature** is a single positive number $T$ that we divide every logit by *before* applying softmax:
+Between the logit vector and the drawn token there are three controls. One reshapes the distribution; two truncate its tail. They compose in a fixed order — reshape first, truncate second, sample last — and understanding them is the whole mechanical foundation for this book.
+
+### Temperature
+
+**Temperature** is a single positive number $T$ that we divide every logit by *before* applying softmax:
 
 $$
 p_i = \frac{e^{z_i / T}}{\sum_{j=1}^{V} e^{z_j / T}}
 $$
 
-That is the entire definition. One division, applied to every logit, inside the exponential. The name "temperature" is borrowed from statistical physics, where the Boltzmann distribution has exactly this form and $T$ is the physical temperature of a system — high temperature spreads a system across many states, low temperature pins it to the lowest-energy one. The borrowed intuition is exact here too, so the name is earned, not decorative. But you do not need the physics; you need the algebra of "divide before exponentiating."
+That is the complete definition. The name is borrowed from statistical physics: the Boltzmann distribution that governs which states a physical system occupies at thermal equilibrium has exactly this form, and $T$ is the system's temperature. High physical temperature spreads the system across many states; low temperature pins it to the lowest-energy configuration. The borrowed intuition is exact here, so the name earns itself. But you do not need the physics. You need the algebra of "divide before exponentiating."
 
 Watch what the division does to our three-token example, $z = (2.0,\ 1.0,\ 0.1)$.
 
-**At $T = 1$** (the neutral setting — dividing by one changes nothing) we recover the distribution from §0.2: $p \approx (0.659,\ 0.242,\ 0.099)$.
+**At $T = 1$** (dividing by one changes nothing) we recover the distribution from above: $p \approx (0.659,\ 0.242,\ 0.099)$.
 
-**At $T = 0.5$** (low temperature) we divide the logits by $0.5$, i.e. *multiply them by two*: $z/T = (4.0,\ 2.0,\ 0.2)$.
-- Exponentiate: $e^{4.0} \approx 54.60$, $e^{2.0} \approx 7.389$, $e^{0.2} \approx 1.221$.
-- Sum $\approx 63.21$; divide: $p \approx (0.864,\ 0.117,\ 0.019)$.
-- The leader's share jumped from 66% to 86%. The distribution got **sharper** — mass concentrated on the top token.
+**At $T = 0.5$** (low temperature), we divide by $0.5$, which is the same as multiplying by two: $z/T = (4.0,\ 2.0,\ 0.2)$.
+- Exponentiate: $e^{4.0} \approx 54.60$, $e^{2.0} \approx 7.389$, $e^{0.2} \approx 1.221$. Sum $\approx 63.21$.
+- Divide: $p \approx (0.864,\ 0.117,\ 0.019)$.
 
-**At $T = 2$** (high temperature) we divide by two: $z/T = (1.0,\ 0.5,\ 0.05)$.
-- Exponentiate: $e^{1.0} \approx 2.718$, $e^{0.5} \approx 1.649$, $e^{0.05} \approx 1.051$.
-- Sum $\approx 5.418$; divide: $p \approx (0.502,\ 0.304,\ 0.194)$.
-- The leader's share fell from 66% to 50%; the long-shot token climbed from 10% to 19%. The distribution got **flatter** — mass spread toward the tail.
+The leader's share jumped from 66% to 86%. The distribution got sharper — mass concentrated toward the top token.
 
-So the mechanism is clean. **Low $T$ sharpens** (concentrates mass on the leaders, output becomes more repetitive and "confident"). **High $T$ flattens** (spreads mass toward unlikely tokens, output becomes more varied and, eventually, more incoherent). The two limits make this precise:
+**At $T = 2$** (high temperature), we divide by two: $z/T = (1.0,\ 0.5,\ 0.05)$.
+- Exponentiate: $e^{1.0} \approx 2.718$, $e^{0.5} \approx 1.649$, $e^{0.05} \approx 1.051$. Sum $\approx 5.418$.
+- Divide: $p \approx (0.502,\ 0.304,\ 0.194)$.
 
-- As $T \to 0$, the division blows up the gaps without bound; in the limit, the top token's probability goes to one and everything else to zero. This is **greedy decoding** (also called argmax decoding): always take the single highest-logit token. So "temperature zero" is not a separate mechanism — it is the limiting case of temperature, and it is *deterministic* in the sense that the same logits always yield the same token. (Same logits — but floating-point nondeterminism, batching, and model updates mean "temperature 0" is not a guarantee of bit-identical output across runs in production. Ch. 1 returns to this.)
-- As $T \to \infty$, every $z_i/T \to 0$, so every $e^{z_i/T} \to 1$, and the distribution flattens to *uniform*: every token equally likely, the prompt's influence washed out entirely. Pure noise.
+The leader fell from 66% to 50%; the long-shot climbed from 10% to 19%. The distribution flattened — mass spread toward the tail.
 
-**The temperature scale, drawn on the page:**
+The two limits make the behavior precise:
+
+As $T \to 0$, dividing by a vanishing number blows up all the gaps without bound. In the limit, the top token's probability goes to one and everything else to zero. This is **greedy decoding**: always take the single highest-scoring token. It is not a separate mechanism — it is the limiting case of temperature, and it is deterministic in the sense that the same logits always yield the same token. (The same logits — floating-point nondeterminism, request batching, and silent model updates mean "temperature zero" does not guarantee bit-identical output across production runs. This book returns to that.)
+
+As $T \to \infty$, every $z_i / T \to 0$, every $e^{z_i/T} \to 1$, and the distribution flattens to uniform: every token equally likely, the prompt's influence washed out entirely. Pure noise.
 
 ```
  T → 0            T = 1            T → ∞
@@ -117,125 +84,105 @@ So the mechanism is clean. **Low $T$ sharpens** (concentrates mass on the leader
  └──────────┘     └──────────┘     └──────────┘
   greedy /          neutral          uniform /
   argmax            (default)        pure noise
-  deterministic     calibrated       prompt washed out
 ```
 
-**Common misconception.** *"Temperature 0 is the safe default — it removes randomness, so it removes errors."* It removes *sampling* randomness, not error. Greedy decoding always picks the locally highest-probability token, which can walk the model into a globally worse continuation, and on some models it triggers pathological **looping** — the model gets pinned on a high-probability token that re-licenses itself, and repeats. Google's own Gemini 3 developer guidance recommends keeping temperature at the default 1.0 because lowering it can cause looping and degradation on complex reasoning tasks (ai.google.dev/gemini-api/docs/gemini-3). So "always use temperature 0" is a folk rule with a documented, model-specific counterexample. Temperature is a tunable parameter, not a safety setting.
+<!-- → [INFOGRAPHIC: The same three-panel distribution shape diagram as the ASCII art above, rendered as a proper bar chart — three panels side by side showing the probability mass over a small vocabulary under low temperature, T=1, and high temperature. Caption should note that these are the same logits; only T changes.] -->
 
-A note for builders: APIs differ on whether they accept $T = 0$ literally (some clamp it to a tiny epsilon to avoid dividing by zero), and the *useful* range of $T$ is model-specific. There is no universal "correct" temperature; there is a temperature that, for *your* model and *your* task, produces the diversity-versus-determinism trade-off you want — a claim you settle empirically, which is the book's whole posture.
-
----
-
-## 0.4 Truncation: top-k and top-p
-
-Temperature *rescales* the distribution but leaves every token in play — even at low $T$, that ` banana` token from §0.1 retains a microscopic but nonzero probability, and across thousands of tokens those microscopic tails can sum to a meaningful chance of drawing something absurd. The other two knobs address this differently: instead of reshaping the curve, they **cut off its tail** before sampling. These are *truncation* methods.
+There is a folk rule in practitioner culture that says "set temperature to zero for reliability — it removes randomness." The rule is not wrong about the mechanism: it does remove sampling randomness. But removing sampling randomness is not the same as removing error. Greedy decoding always picks the locally highest-probability token, which can trap the model in a globally worse continuation. On some models it triggers pathological **looping** — the model selects a high-probability token that re-licenses itself as high-probability in the next step, and repeats indefinitely. Google's developer guidance for Gemini 3 explicitly recommends keeping temperature at the default 1.0 on complex reasoning tasks because lowering it can induce exactly this degradation. "Temperature zero" is a tunable parameter that reaches its extreme; it is not a safety setting.
 
 ### Top-k sampling
 
-**Top-k** is the blunter of the two. Mechanism: sort the tokens by probability, keep only the $k$ most probable, zero out everything else, and *renormalize* the survivors so they sum to one again. Then sample from those $k$.
+Temperature reshapes the distribution but leaves every token in the running. Even at low $T$, the ` banana` token from our opening example retains a microscopic but nonzero probability, and across thousands of sampled tokens, microscopic tails sum to a meaningful chance of something absurd. The next two controls address this differently: instead of reshaping the curve, they cut off its tail before sampling.
 
-Take a five-token example with post-softmax probabilities:
+**Top-k** is the blunter method. Mechanism: sort the vocabulary by probability. Keep the $k$ highest. Zero out everything else. Renormalize the survivors so they sum to one again. Then sample from those $k$.
 
-$$
-p = (\underbrace{0.40}_{A},\ \underbrace{0.25}_{B},\ \underbrace{0.20}_{C},\ \underbrace{0.10}_{D},\ \underbrace{0.05}_{E})
-$$
+A five-token example with probabilities $p = (0.40,\ 0.25,\ 0.20,\ 0.10,\ 0.05)$. With top-k at $k = 3$: keep the three largest, discard the bottom two. The survivors sum to $0.85$. Renormalize: $p' = (0.471,\ 0.294,\ 0.235,\ 0,\ 0)$. The model now samples among three candidates with the rescaled probabilities.
 
-With **top-k, $k = 3$**: keep $A, B, C$ (the three largest), discard $D, E$. The survivors sum to $0.40 + 0.25 + 0.20 = 0.85$, so renormalize by dividing each by $0.85$:
-
-$$
-p' = (0.471,\ 0.294,\ 0.235,\ 0,\ 0)
-$$
-
-Now $D$ and $E$ can never be drawn. The model samples among $A, B, C$ with the rescaled probabilities. The point of top-k is to keep the long, weird tail out of reach while preserving randomness among the plausible leaders.
-
-The weakness of top-k is that $k$ is *fixed* regardless of the distribution's shape. When the model is genuinely uncertain — mass spread across, say, fifteen reasonable tokens — a $k$ of 3 amputates twelve good candidates. When the model is nearly certain — one token at 0.97 — a $k$ of 3 drags two near-zero tokens into contention. The cut is the same size whether the distribution is a needle or a plateau. That mismatch is exactly what the next method fixes.
+The weakness of top-k is that $k$ is *fixed* regardless of how the probability mass is actually distributed. When the model is genuinely uncertain — mass spread across fifteen reasonable tokens — a $k$ of 3 amputates twelve good candidates. When the model is nearly certain — one token at 0.97 — a $k$ of 3 drags two near-zero tokens into contention anyway. The cut is always the same size, whether the distribution is a needle or a plateau. This is the mismatch the next method fixes.
 
 ### Top-p (nucleus) sampling
 
-**Top-p**, also called **nucleus sampling** and introduced by Holtzman et al. (2020, "The Curious Case of Neural Text Degeneration," arXiv:1904.09751), makes the cut *adaptive*. Mechanism: sort tokens by probability, then walk down the sorted list accumulating probability mass until the running total first reaches the threshold $p$; keep exactly that set (the "nucleus"), discard the rest, renormalize, and sample.
+**Top-p** sampling, also called nucleus sampling, was introduced by Holtzman et al. in their 2020 paper "The Curious Case of Neural Text Degeneration" (arXiv:1904.09751). It makes the cut *adaptive*. Mechanism: sort tokens by probability, then walk down the sorted list accumulating probability mass until the running total first reaches or exceeds the threshold $p$. Keep exactly that set — the "nucleus." Discard the rest. Renormalize. Sample.
 
-Same five-token example, $p = (0.40, 0.25, 0.20, 0.10, 0.05)$, with **top-p, $p = 0.80$**:
+Same five-token example, $p = (0.40,\ 0.25,\ 0.20,\ 0.10,\ 0.05)$, with top-p at $p = 0.80$. Accumulate: $A$ alone is $0.40$. $A + B = 0.65$. $A + B + C = 0.85$ — first time we reach or exceed $0.80$. Stop. Nucleus is $\{A, B, C\}$. Here top-p with $p = 0.80$ selected the same three tokens as top-k with $k = 3$. They diverge the moment the distribution changes shape.
 
-- Accumulate: $A$ alone is $0.40$ (below $0.80$). $A + B = 0.65$ (below). $A + B + C = 0.85$ (first time we reach or exceed $0.80$). Stop.
-- Nucleus = $\{A, B, C\}$. Discard $D, E$. Renormalize over $0.85$: $p' = (0.471, 0.294, 0.235, 0, 0)$.
+Consider a flat distribution: $q = (0.22,\ 0.21,\ 0.20,\ 0.19,\ 0.18)$. Top-k at $k = 3$ still keeps exactly three tokens, discarding two perfectly reasonable candidates. Top-p at $p = 0.80$ accumulates $0.22 + 0.21 + 0.20 + 0.19 = 0.82 \ge 0.80$ and keeps *four* — because the model was less certain, the nucleus grew.
 
-Here top-p with $p = 0.80$ happened to select the *same* three tokens as top-k with $k = 3$. They diverge the moment the distribution changes shape. Consider a flatter distribution, $q = (0.22, 0.21, 0.20, 0.19, 0.18)$:
+On a peaked distribution: $r = (0.95,\ 0.02,\ 0.01,\ 0.01,\ 0.01)$. Top-k at $k = 3$ keeps three tokens including two near-zero candidates. Top-p at $p = 0.80$ keeps *one* token — $0.95 \ge 0.80$ on the first step — correctly collapsing to near-greedy behavior when the model is highly confident.
 
-- **Top-k, $k = 3$** still keeps exactly three tokens ($0.22, 0.21, 0.20$), discarding two perfectly reasonable candidates at $0.19$ and $0.18$.
-- **Top-p, $p = 0.80$** accumulates $0.22 + 0.21 + 0.20 + 0.19 = 0.82 \ge 0.80$, keeping *four* tokens. The nucleus grew because the model was less certain.
+That is the design of top-p: the size of the candidate set tracks the model's uncertainty. Wide when the model is unsure; narrow when it is confident. This is the behavior you want from a truncation rule, and it is why top-p is usually preferred over top-k in practice.
 
-And on a peaked distribution, $r = (0.95, 0.02, 0.01, 0.01, 0.01)$:
+One misconception to clear up. "Top-p of 0.9 means I keep 90% of the tokens." No — it means you keep the smallest *set of tokens* whose combined *probability mass* sums to at least 0.9. On a peaked distribution that can be a single token; on a flat one it can be hundreds. The threshold is on cumulative probability, not on token count. Token count is what top-k controls. Conflating the two is the most common decoding bug in practitioner code.
 
-- **Top-k, $k = 3$** keeps three tokens — including two at 0.01 that contribute almost nothing but two units of noise.
-- **Top-p, $p = 0.80$** keeps *one* token ($0.95 \ge 0.80$), correctly collapsing to near-greedy behavior when the model is confident.
-
-That is the whole reason top-p is usually preferred: **the size of the candidate set tracks the model's uncertainty.** Wide when the model is unsure, narrow when it is confident — which is the behavior you actually want from a truncation rule.
-
-**Common misconception.** *"Top-p of 0.9 means I keep 90% of the tokens."* No — it means you keep the smallest *set of tokens* whose *probability mass* sums to at least 0.9. On a peaked distribution that can be a single token; on a flat one it can be hundreds. The threshold is on cumulative *probability*, not on token count. (Token count is what top-*k* controls; conflating the two is the most common decoding bug in practitioner code.)
-
-### The order of operations
-
-Temperature and truncation compose, and the order is conventionally: apply temperature to the logits, softmax to get probabilities, *then* truncate (top-k and/or top-p) on those probabilities, renormalize, and sample. So in a typical API call with `temperature=0.7, top_p=0.9` the model first sharpens the curve a little (T < 1), then keeps the nucleus, then draws. Setting `temperature=0` short-circuits the rest: there is nothing to truncate when one token holds all the mass. Knowing this order lets you reason about *why* two configurations that look similar behave differently — a skill Ch. 1 leans on hard.
+<!-- → [TABLE: Comparison of top-k and top-p behavior on three distribution shapes — needle (one dominant token), plateau (roughly uniform), and bimodal (two clusters). Columns: distribution type, top-k result (k=3), top-p result (p=0.80), which method produces the more sensible nucleus and why. Helps readers see when to prefer one over the other.] -->
 
 ---
 
-## 0.5 What the distribution is conditioned on (and why this is the whole book)
+## The order of operations
 
-One more precision, and it is the bridge to everything ahead. At every step the model does not produce *a* distribution — it produces a distribution *conditioned on the entire sequence so far*. Formally, if $x_1, \ldots, x_{t-1}$ are the tokens emitted up to now (your prompt plus whatever the model has already generated), the model defines
+Temperature and truncation compose, and the convention is: apply temperature to the logits first, then softmax to get probabilities, then truncate (top-k and/or top-p), renormalize, and sample. In a typical API call with `temperature=0.7, top_p=0.9` the model first sharpens the curve (T < 1), then keeps the nucleus, then draws. Setting `temperature=0` short-circuits the rest: there is nothing to truncate when one token holds essentially all the mass.
+
+Knowing the order lets you reason about configurations that look similar but behave differently — a skill the next chapter leans on throughout.
+
+---
+
+## What the distribution is conditioned on
+
+One precision remains, and it is the bridge to everything that follows.
+
+At every step the model does not produce *a* distribution — it produces a distribution *conditioned on the entire sequence so far*. If $x_1, \ldots, x_{t-1}$ are the tokens generated up to this point (your prompt plus whatever the model has already emitted), the model defines
 
 $$
 P(x_t \mid x_1, \ldots, x_{t-1})
 $$
 
-and samples $x_t$ from it; then it appends $x_t$ and computes $P(x_{t+1} \mid x_1, \ldots, x_t)$, and so on. The probability of a whole output is the product of these conditional steps, the **chain rule** of probability:
+and samples $x_t$ from it. Then it appends $x_t$ and computes $P(x_{t+1} \mid x_1, \ldots, x_t)$, and so on. The probability of a complete output is the product of these conditional steps — the **chain rule** of probability:
 
 $$
 P(x_1, \ldots, x_n) = \prod_{t=1}^{n} P(x_t \mid x_{<t})
 $$
 
-This single equation is why prompt engineering is engineering. The prompt is the conditioning context $x_{<t}$ at the first generated step. Changing the prompt changes every conditional distribution downstream of it. You are not "asking" the model a question; you are *setting the conditions* under which a sequence of samples is drawn. And because the output feeds back in as conditioning for the next token (each $x_t$ becomes part of the context for $x_{t+1}$), a single early sampling accident — one low-probability token drawn at step 3 — reshapes every distribution after it. That feedback is why two runs of the identical prompt can diverge into entirely different answers, the phenomenon Ch. 1 opens on.
+This single equation is why prompt engineering is engineering. The prompt is the conditioning context $x_{<t}$ at the first generated step. Changing the prompt changes every conditional distribution downstream. You are not asking the model a question; you are setting the conditions under which a sequence of samples is drawn. And because each output token feeds back in as conditioning for the next token — $x_t$ becomes part of the context for $x_{t+1}$ — a single early sampling accident reshapes every distribution that follows. One low-probability token drawn at step three can push the model into a region of its distribution from which the "intended" answer is now unlikely. This is why two runs of identical prompts can diverge into entirely different answers, a phenomenon the next chapter opens on.
 
-It is also why **a fluent sentence carries no guarantee of truth.** The chain rule maximizes the probability of *plausible-looking sequences* — sequences that resemble the training distribution — not true ones. Plausibility and truth are computed by the same machinery and are not the same quantity. That orthogonality is the subject of Ch. 2. The math is already on the page: nothing in $\prod_t P(x_t \mid x_{<t})$ references a fact, only a learned conditional distribution over tokens.
+<!-- → [DIAGRAM: A horizontal chain showing the autoregressive generation process — prompt tokens on the left feeding into a distribution block, which emits x_1, which feeds back into the next distribution block, which emits x_2, and so on. An arrow from each x_t into the conditioning context for x_{t+1} makes the feedback loop visible. Caption: each token drawn becomes part of the conditioning for every subsequent token.] -->
 
-**Common misconception.** *"The model knows the answer and is choosing how to phrase it."* There is no separate "answer" stored apart from the distribution. The answer *is* the sequence of samples. When the distribution is sharply peaked on the correct token (capital of France), the sampling reliably lands right and it looks like knowledge. When the distribution is diffuse or peaked on a plausible-but-wrong token, the same sampling machinery produces a confident error. Nothing in the mechanism distinguishes the two cases from the inside — which is the uncomfortable foundation the rest of the book is built to engineer around.
-
----
-
-## Exercises
-
-1. **(Understand)** Given logits $z = (3.0,\ 1.5,\ 0.5,\ -1.0)$, compute the softmax distribution at $T = 1$ by hand (you may approximate $e^x$). Verify it sums to approximately one. Then state, *without recomputing*, which direction each probability will move when you raise the temperature to $T = 2$, and justify your prediction from the mechanism.
-
-2. **(Apply)** Recompute the distribution from Exercise 1 at $T = 0.5$. By how many percentage points does the top token's probability change relative to $T = 1$? Write one sentence connecting the magnitude of that change to the size of the logit gaps.
-
-3. **(Apply)** You are given the post-softmax distribution $p = (0.50,\ 0.18,\ 0.12,\ 0.10,\ 0.06,\ 0.04)$. (a) Which tokens survive **top-k with $k = 4$**? (b) Which survive **top-p with $p = 0.85$**? (c) Construct a *different* six-token distribution on which top-k ($k=4$) and top-p ($p=0.85$) select different candidate sets, and explain in one sentence what feature of your distribution causes the divergence.
-
-4. **(Apply / Produce)** Write a 150–250 word "decoding configuration note" you could paste into a project README. It must (a) state a default temperature and top-p for a *named* task (e.g., extracting structured fields from invoices vs. brainstorming product names), (b) justify each value mechanically in terms of distribution shape, and (c) name one failure mode the configuration is chosen to avoid. Use the temperature and truncation mechanics from this chapter, not folk rules.
-
-5. **(Analyze)** Explain, in terms of distribution shape and the conditioning feedback loop of §0.5, why lowering temperature can *increase* the chance of repetition/looping on some models, even though low temperature is usually described as "more reliable." Identify what you would measure to confirm looping is the failure (rather than, say, the prompt itself).
+It is also why fluent text carries no guarantee of truth. The chain rule measures the probability of *plausible-looking sequences* — sequences that resemble the training distribution — not true ones. Plausibility and truth are produced by exactly the same machinery. Nothing in $\prod_t P(x_t \mid x_{<t})$ references a fact; it references a learned conditional distribution over tokens. When the distribution peaks sharply on the correct token (capital of France), sampling reliably lands right and looks like knowledge. When the distribution peaks on a plausible-but-wrong token, the same machinery produces a confident error. The mechanism cannot distinguish the two cases from the inside. This is the uncomfortable foundation the rest of the book builds on.
 
 ---
 
 ## What would change my mind
 
-The central claim of this chapter is mechanical and largely settled: an autoregressive LLM emits a sample from a softmax-normalized, temperature-scaled, optionally truncated distribution over its vocabulary, conditioned on the running sequence. What would force a substantive revision is a documented, reproducible class of production models whose token selection is *not* describable as sampling from such a distribution — for instance, a decoding architecture that selects tokens by a non-probabilistic search over full sequences (beyond beam search, which is still scoring sequences by these same conditional probabilities) and that is empirically shown to make the per-step softmax framing predictively wrong for its outputs. If a widely deployed model's observed output statistics could not be reproduced by *any* setting of temperature/top-k/top-p over its logits, the "read the output as a sample from this distribution" framing — and the rest of Part I that rests on it — would need rebuilding rather than refinement.
+The central claim of this chapter is mechanical and largely settled. An autoregressive language model emits a sample from a softmax-normalized, temperature-scaled, optionally truncated distribution over its vocabulary, conditioned on the running sequence. What would force a substantive revision is a documented, reproducible class of production models whose token selection cannot be described as sampling from such a distribution — for instance, a decoding architecture that selects tokens by a non-probabilistic search over full sequences and that is empirically shown to make the per-step softmax framing predictively wrong for its outputs. If a widely deployed model's observed output statistics could not be reproduced by any setting of temperature, top-k, or top-p over its logits, the "read the output as a sample from this distribution" framing — and everything in the next chapter that rests on it — would need rebuilding rather than refinement.
+
+---
 
 ## Still puzzling
 
-1. **Why these particular defaults?** Vendors converge on temperatures near 0.7–1.0 and top-p near 0.9–1.0, but the choice is largely empirical folklore tuned to perceived output quality. Is there a principled, task-independent argument for a default, or is it irreducibly model- and task-specific? `[TODO: survey current vendor defaults with citations]`
-2. **What is the right truncation when the distribution is genuinely bimodal** — two sharply separated good answers with a dead zone between? Neither top-k nor top-p has a notion of "modes"; both just walk the sorted tail. Do mode-aware decoders matter in practice, or does the chain-rule feedback wash the question out?
-3. **How much of "temperature 0 is deterministic" survives real infrastructure?** Floating-point non-associativity, request batching, and silent model updates all perturb logits. Is there a clean way to characterize the residual nondeterminism a user sees at $T = 0$? (Ch. 1 raises this; it is not resolved here.)
+Why these particular defaults? Vendors converge on temperatures near 0.7–1.0 and top-p near 0.9–1.0, but the choice is largely empirical, tuned to perceived output quality. Is there a principled, task-independent argument for a default, or is it irreducibly model- and task-specific?
+
+What is the right truncation when the distribution is genuinely bimodal — two sharply separated good answers with a dead zone between? Neither top-k nor top-p has a notion of modes; both just walk the sorted tail. Whether mode-aware decoders would matter in practice is an open question.
+
+How much of "temperature zero is deterministic" survives real infrastructure? Floating-point non-associativity, request batching, and silent model updates all perturb logits in ways that are hard to characterize. Chapter 1 raises this; it is not resolved here.
+
+---
+
+## LLM Exercises
+
+**Exercise 1 — Generate and examine.** Set temperature to 0.1, then to 1.5, and submit the prompt *"List three words that mean 'happy'."* Run each setting three times. Paste the six outputs side by side. What changes? What surprises you? Write two sentences describing the distribution behavior you think produced the difference.
+
+**Exercise 2 — Apply to known context.** You are building a model that extracts structured fields (date, amount, vendor name) from invoice text. A colleague suggests `temperature=0.9, top_p=0.95`. Using the mechanics of this chapter, explain in plain English whether you agree or disagree with that configuration, and propose an alternative with a mechanical justification.
+
+**Exercise 3 — Stress-test a claim.** The chapter claims that temperature zero can cause looping on some models. Design a test: what prompt would you use, what model, what temperature settings, and what would you measure to confirm looping is the failure mode rather than a bad prompt?
+
+**Exercise 4 — Draft a professional deliverable.** Write a 150–250 word "Decoding Configuration Note" suitable for a project README. It must name a specific task, specify temperature and top-p values, justify each mechanically in terms of distribution shape, and name one failure mode the configuration is chosen to avoid. Do not use folk rules ("lower is more reliable"); use the mechanics.
 
 ---
 
 ## References
 
-- Holtzman, A., Buys, J., Du, L., Forbes, M., & Choi, Y. (2020). The Curious Case of Neural Text Degeneration. *ICLR 2020*. arXiv:1904.09751 — origin of nucleus (top-p) sampling and the degeneration analysis motivating truncation.
-- Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention Is All You Need. *NeurIPS 2017*. arXiv:1706.03762 — the transformer; the softmax output layer over the vocabulary is standard here.
-- Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press. — standard reference for the softmax function and its properties (Ch. 6, "Deep Feedforward Networks," §6.2.2.3).
-- Ackley, D. H., Hinton, G. E., & Sejnowski, T. J. (1985). A Learning Algorithm for Boltzmann Machines. *Cognitive Science*, 9(1), 147–169 — the statistical-physics origin of the temperature parameter in the Boltzmann/Gibbs distribution form softmax-with-temperature mirrors.
-- Fan, A., Lewis, M., & Dauphin, Y. (2018). Hierarchical Neural Story Generation. *ACL 2018*. arXiv:1805.04833 — early use of top-k sampling for generation.
-- Google. Gemini 3 Developer Guide (generateContent API), temperature and looping guidance. https://ai.google.dev/gemini-api/docs/gemini-3 — documents the low-temperature looping caution referenced in §0.3.
-
----
-
-**Tags:** softmax, logits, temperature, top-k, top-p, nucleus-sampling, autoregressive-decoding, chain-rule, distribution-shape
+- Holtzman, A., Buys, J., Du, L., Forbes, M., & Choi, Y. (2020). The Curious Case of Neural Text Degeneration. *ICLR 2020*. arXiv:1904.09751 — origin of nucleus (top-p) sampling.
+- Vaswani, A., et al. (2017). Attention Is All You Need. *NeurIPS 2017*. arXiv:1706.03762 — the transformer; the softmax output layer over vocabulary is standard here.
+- Goodfellow, I., Bengio, Y., & Courville, A. (2016). *Deep Learning*. MIT Press. Ch. 6 §6.2.2.3 — softmax function and properties.
+- Ackley, D. H., Hinton, G. E., & Sejnowski, T. J. (1985). A Learning Algorithm for Boltzmann Machines. *Cognitive Science*, 9(1), 147–169 — statistical-physics origin of the temperature parameter.
+- Fan, A., Lewis, M., & Dauphin, Y. (2018). Hierarchical Neural Story Generation. *ACL 2018*. arXiv:1805.04833 — early top-k sampling.
+- Google. Gemini 3 Developer Guide (generateContent API). https://ai.google.dev/gemini-api/docs/gemini-3 — temperature and looping guidance cited in the temperature section.
