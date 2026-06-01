@@ -1,27 +1,41 @@
 # Prompt Engineering
 
-**Publisher:** Humanitarians AI  
-**Edition:** 2026  
-**License:** CC BY 4.0 for text; AI+1 marks and cover design are trademarks of Humanitarians AI.
+**Author:** Humanitarians AI Incorporated  
+**Publisher:** Humanitarians AI Incorporated, a 501(c)(3) nonprofit organization  
+**Copyright:** Copyright © 2026 Humanitarians AI Incorporated. All rights reserved.  
+**Edition:** 2026
 
-## Overview
+## Summary
 
-Prompt Engineering is part of the AI+1 series from Humanitarians AI. The book asks what a Prompt Engineering practitioner can do with AI while preserving the human judgment, accountability, and domain expertise that the tool cannot supply.
+*Prompt Engineering* is a structured textbook for readers who need a clear path through the subject rather than a loose collection of explanations. It begins with Chapter 1 — The Stochastic Machine: Why Output Is Sampled, Not Retrieved, moves through 15 core chapters, and ends with Chapter 15 — Production, Ethics, and What Comes Next.
 
-The book's front matter explains the copyright, CC BY 4.0 license, distribution model, AI and errata disclosure, and the Humanitarians AI publishing context. The introduction frames the reader's path through the chapters: where AI helps, where it fails, and how to keep the boundary between execution and judgment visible.
+AI matters to *Prompt Engineering* because the modern textbook is no longer only a static container. It is also part of a learning system: searchable, remixable, explainable, and increasingly connected to tools such as Medhavy. For Humanitarians AI books, the relevant question is not whether AI can replace the learner or the teacher. It cannot. The useful question is what AI can make easier to inspect: definitions, worked examples, misconceptions, practice sequences, alternate explanations, and the structure of an argument. This book treats AI as infrastructure for open, public-interest learning infrastructure. The chapters should still stand on their own as readable prose, but they are also designed to be legible to an intelligent textbook system.
 
 ## Table of Contents
 
-- [Chapter 3 — The Chinese Room and the Limits of Syntax](chapters/03-the-chinese-room-and-the-limits-of-syntax.md)
-- [Chapter 4 — Sycophancy and Computational Skepticism](chapters/04-sycophancy-and-computational-skepticism.md)
-- [Chapter 6 — Persona Patterns](chapters/06-persona-patterns.md)
-- [Chapter 10 — ReAct](chapters/10-react.md)
-- [Chapter 14 — LoRA and QLoRA](chapters/14-lora-and-qlora.md)
+- **Chapter 1: Chapter 1 — The Stochastic Machine: Why Output Is Sampled, Not Retrieved.** *Same prompt, twice, two answers — and the reason is the entire foundation of the discipline.* The intuition that a language model "looks things up" is seductive because so much of its behavior mimics retrieval. Ask for the capital of France and...
+- **Chapter 2: Chapter 2 — Hallucination and the Plausibility–Truth Gap.** *Why a model optimized to sound right is not optimized to be right.* Start with the misconception, because it is the one almost every new prompt engineer carries in unexamined. A fluent, confident, well-structured answer feels more likely to be correct than...
+- **Chapter 3: Chapter 3 — The Limits of Syntax: What a Pattern-Matcher Cannot Do.** *Why the best pattern-matcher in the world still does not understand your prompt.* The question — if a system produces outputs indistinguishable from a competent human speaker's, does it understand the language it uses? — is not new. In 1980, John Searle...
+- **Chapter 4: Chapter 4 — Sycophancy and Computational Skepticism.** *Approval is not accuracy — and the training regime that conflates them requires an architectural response, not a better prompt.* Two terms carry multiple meanings and need to be pulled apart before the mechanism lands. **Sycophancy** in casual usage suggests social fawning...
+- **Chapter 5: Chapter 5 — The Architect Mindset: Structured Prompt Frameworks.** *A prompt is not a sentence you polish until it works — it is a system with parts, and the parts that say "do not" are doing more work than you think.* Strip any production prompt down and you find four separable...
+- **Chapter 6: Chapter 6 — Persona and Audience Patterns.** *Two instructions that sound the same activate categorically different behaviors — and confusing them grounded an aircraft fleet inspection.* The distinction was formalized by White et al. (2023) in a catalog of prompt patterns modeled on software design patterns. Two of those...
+- **Chapter 7: Chapter 7 — Structuring and Governing Output.** *Four patterns that shape what the model emits, and one that decides what is allowed to leave — and why the difference between them is not cosmetic.* From Chapter 1: an autoregressive language model generates one token at a time, and each...
+- **Chapter 8: Chapter 8 — Reasoning and Range Patterns.** *When to tighten the path and when to widen the sample — and why the answer depends on the model, not the task.* From Chapter 1: an output is a sample from a conditional distribution. Given your prompt and the tokens so...
+- **Chapter 9: Chapter 9 — Prompt Brittleness and the Discipline of Evaluation.** *A single-prompt number is not a capability claim — it is the top of a distribution you have not yet measured.* Why should a colon-for-dash swap move anything? Because of exactly the Chapter 1 picture, taken seriously. The model assigns a probability...
+- **Chapter 10: Chapter 10 — Long-Context Prompting: Position, Retrieval, and Injection.** *Where in the window you put a thing decides whether the model uses it.* You already have a prior for this, even if you have never seen a language model. Recite a grocery list someone read you ten seconds ago and you...
+- **Chapter 11: Chapter 11 — Agentic and Multi-Turn Systems.** *The loop is the architectural response to single-shot limits — and it introduces three new problems, each with a measurable mechanism.* A language model generates each token by sampling from a distribution conditioned on the tokens before it: $$t_i \sim P(t_i \mid...
+- **Chapter 12: Chapter 12 — Automated Prompt Optimization: The Post-Manual Era.** *Once you can score an output, prompting becomes a search problem — and the machine will find prompts a human wouldn't have written.* Consider what a human prompt engineer actually does. They write an instruction. They run it on a few examples....
+- **Chapter 13: Chapter 13 — Beyond Prompting: The Fine-Tuning Stack.** *The binary is dead — prompting, SFT/RAG, and RL are layers of one parameter space, not competitors ranked by quality.* Here is the sentence that dissolves the binary. A language-model system has two sets of adjustable parameters: the prompt text — instructions,...
+- **Chapter 14: Chapter 14 — Prompt Engineering for CLI Coding Agents: Why Context Is the Bottleneck.** *The frontier model inside the loop is rarely the limiting factor — what limits it is what it knows at a given step.* Start with the structural difference, because everything else follows from it. A chat prompt is a single instruction with...
+- **Chapter 15: Chapter 15 — Production, Ethics, and What Comes Next.** *Tricks decay. Specification discipline does not. That is the whole book, and it is where we stop.* A notebook prompt and a production prompt system differ the way a sketch differs from a building that has to stand up in weather. Three...
 
-## Copyright and License
+## Files
 
-Copyright © 2026 Humanitarians AI. The text is licensed under CC BY 4.0. See [LICENSE.md](LICENSE.md) for full terms, including trademark restrictions for AI+1 marks and cover design.
+- `chapters/00-frontmatter.md` — title page, copyright, dedication, and preface
+- `chapters/00-introduction.md` — roadmap and book-level AI note
+- `chapters/99-back-matter.md` — acknowledgments, author note, references placeholder, and Medhavy note
+- `LICENSE.md` — rights and reuse terms
 
-## Errata
+## Medhavy
 
-Errata, corrections, and suspected mistakes may be submitted through [humanitarians.ai](https://www.humanitarians.ai/).
+This book is prepared for Kindle, online publication, and integration with Medhavy: https://www.medhavy.com/
