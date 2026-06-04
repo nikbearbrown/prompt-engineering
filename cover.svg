@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2560" width="1600" height="2560" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">
+  <g id="background"><rect x="0" y="0" width="1600" height="2560" fill="#1B6B5A"/></g>
+  <g id="symbol-fragments" transform="rotate(-5, 800, 850)">
+    <polygon points="791,201 584,429 493,519" fill="#F5F0E8"/>
+    <polygon points="791,201 278,184 224,238" fill="#F5F0E8"/>
+    <polygon points="791,201 801,543 757,587" fill="#F5F0E8"/>
+    <polygon points="791,201 313,184 211,285" fill="#F5F0E8"/>
+    <polygon points="791,201 323,179 261,241" fill="#F5C518"/>
+    <polygon points="791,201 750,482 650,582" fill="#F5F0E8"/>
+    <polygon points="791,201 328,215 249,294" fill="#F5F0E8"/>
+    <polygon points="791,201 294,167 231,229" fill="#F5F0E8"/>
+    <polygon points="791,201 262,154 203,213" fill="#F5F0E8"/>
+    <polygon points="791,201 252,222 220,254" fill="#F5C518"/>
+    <polygon points="791,201 1091,691 1055,728" fill="#F5F0E8"/>
+    <polygon points="791,201 552,457 509,499" fill="#F5F0E8"/>
+    <polygon points="791,201 349,180 313,216" fill="#F5F0E8"/>
+    <polygon points="791,201 301,184 265,219" fill="#F5F0E8"/>
+    <polygon points="791,201 308,225 245,288" fill="#F5C518"/>
+    <polygon points="905,239 796,266 729,275 692,202 732,115 821,115 880,171" fill="#F5F0E8"/>
+  </g>
+  <g id="title-letterforms">
+    <text x="120" y="1510" font-family="Arial Black, Arial, sans-serif" font-size="250" font-weight="900" letter-spacing="0" fill="#F5F0E8" textLength="1300" lengthAdjust="spacingAndGlyphs">PROMPT</text>
+    <text x="120" y="1768" font-family="Arial Black, Arial, sans-serif" font-size="250" font-weight="900" letter-spacing="0" fill="#F5C518" textLength="1300" lengthAdjust="spacingAndGlyphs">ENGINEERING</text>
+  </g>
+</svg>

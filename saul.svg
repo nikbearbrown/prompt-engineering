@@ -1,0 +1,58 @@
+<!-- The Decision Gate: Four Questions, Two Lanes | Book: Prompt Engineering | Chapter: 12-automated-prompt-optimization | Figure: 04 | Generated: 2026-05-29 | Source: pantry/12-automated-prompt-optimization-cajal.md -->
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title-04 fig-desc-04"><title id="fig-title-04">The Decision Gate: Four Questions, Two Lanes</title><desc id="fig-desc-04">An incoming task enters a four-condition gate testing metric, eval set, high volume, and stability. If all four pass, it routes to the automated lane (signature, optimizer, compiled prompt). If any one fails, it routes to the manual lane (a write-and-tweak loop).</desc><metadata><cajal:figure xmlns:cajal="https://bearbrown.ai/cajal/1.0" book-slug="prompt-engineering" chapter="12-automated-prompt-optimization" figure-number="04" date-generated="2026-05-29"/></metadata>
+<defs>
+<marker id="ah1204" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2a1a0e"/></marker>
+<marker id="ah1204r" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#C8102E"/></marker>
+</defs>
+<rect x="0" y="0" width="700" height="420" fill="#FFFFFF"/>
+<text x="350" y="34" text-anchor="middle" font-family="'EB Garamond',Georgia,serif" font-size="16" fill="#2a1a0e">The Decision Gate: Four Questions, Two Lanes</text>
+<text x="350" y="54" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#545454">All four conditions must hold to enter the automated lane; one failure routes to manual</text>
+
+<!-- task entry -->
+<rect x="290" y="74" width="120" height="38" fill="#F5F5F5" stroke="#545454" stroke-width="1.5"/>
+<text x="350" y="98" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Incoming task</text>
+<line x1="350" y1="112" x2="350" y2="128" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1204)"/>
+
+<!-- gate block with four condition bars -->
+<rect x="270" y="130" width="160" height="118" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.8"/>
+<text x="350" y="148" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">Gate: all four must hold</text>
+<rect x="282" y="156" width="136" height="18" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="350" y="169" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Has a metric?</text>
+<rect x="282" y="178" width="136" height="18" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="350" y="191" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Has an eval set?</text>
+<rect x="282" y="200" width="136" height="18" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="350" y="213" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">High volume?</text>
+<rect x="282" y="222" width="136" height="18" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="350" y="235" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">Stable task?</text>
+
+<!-- branch arrows -->
+<path d="M270,210 Q170,210 170,285" fill="none" stroke="#2a1a0e" stroke-width="1.5" marker-end="url(#ah1204)"/>
+<text x="195" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#2a1a0e">all hold</text>
+<path d="M430,210 Q530,210 530,285" fill="none" stroke="#C8102E" stroke-width="1.5" marker-end="url(#ah1204r)"/>
+<text x="505" y="232" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#C8102E">any fails</text>
+
+<!-- automated terminal (left) -->
+<rect x="60" y="287" width="220" height="90" fill="#F5F5F5" stroke="#2a1a0e" stroke-width="1.8"/>
+<text x="170" y="307" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Automated lane</text>
+<rect x="74" y="320" width="58" height="40" fill="#FFFFFF" stroke="#545454" stroke-width="1"/>
+<text x="103" y="344" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Signature</text>
+<line x1="132" y1="340" x2="148" y2="340" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah1204)"/>
+<rect x="150" y="320" width="58" height="40" fill="#FFFFFF" stroke="#545454" stroke-width="1"/>
+<text x="179" y="344" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Optimizer</text>
+<line x1="208" y1="340" x2="224" y2="340" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah1204)"/>
+<rect x="226" y="320" width="48" height="40" fill="#FFFFFF" stroke="#545454" stroke-width="1"/>
+<text x="250" y="338" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Compiled</text>
+<text x="250" y="350" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">prompt</text>
+
+<!-- manual terminal (right) -->
+<rect x="420" y="287" width="220" height="90" fill="#FFFFFF" stroke="#C8102E" stroke-width="1.8"/>
+<text x="530" y="307" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="12" fill="#2a1a0e">Manual lane</text>
+<rect x="470" y="322" width="60" height="38" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="500" y="345" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Write</text>
+<rect x="552" y="322" width="60" height="38" fill="#F5F5F5" stroke="#545454" stroke-width="1"/>
+<text x="582" y="345" text-anchor="middle" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="10" fill="#545454">Tweak</text>
+<path d="M530,322 Q541,312 552,322" fill="none" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah1204)"/>
+<path d="M552,358 Q541,368 530,358" fill="none" stroke="#2a1a0e" stroke-width="1.2" marker-end="url(#ah1204)"/>
+
+<text x="60" y="405" font-family="'Inter',-apple-system,'Helvetica Neue',sans-serif" font-size="11" fill="#545454">The gate is conjunctive. Automated optimization earns its overhead only when a metric, an eval set, high volume, and a stable target all coexist.</text>
+</svg>
